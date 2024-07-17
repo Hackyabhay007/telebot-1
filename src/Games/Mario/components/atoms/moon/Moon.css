@@ -1,0 +1,23 @@
+.moon {
+    background-image: url("../../../assets/img/gif/moon.gif");
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 100%;
+    width: 100px;
+    position: absolute;
+    top: 5px;
+    right: 100px;
+}
+
+/* Media Queries */
+@media (max-width: 1280px) {
+    .moon {
+        width: 80px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .moon {
+        right: 50px;
+    }
+}

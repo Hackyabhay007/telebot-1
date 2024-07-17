@@ -1,0 +1,50 @@
+/* src/components/fruitninja.css */
+
+/* Container for the game */
+.min-h-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Title styles */
+  .text-5xl {
+    font-size: 3rem;
+    margin-bottom: 2rem;
+  }
+  
+  /* Score styles */
+  .text-3xl {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  /* Fruits container */
+  .fruits-container {
+    position: relative;
+    width: 100%;
+    height: 80vh; /* Adjust height as needed */
+  }
+  
+  /* Individual fruit styles */
+  .fruit {
+    position: absolute;
+    font-size: 2rem;
+    cursor: pointer;
+  }
+  
+  /* Gradient background colors */
+  .from-gradient-start {
+    background-color: #ffd700; /* Golden yellow */
+  }
+  
+  .to-gradient-end {
+    background-color: #ffb700; /* Lighter yellow */
+  }
+  
+  /* Game over message styles */
+  .mt-6 {
+    margin-top: 1.5rem;
+  }
+  

@@ -1,0 +1,64 @@
+.App {
+  max-width: 1280px;
+
+  width: 100%;
+  height: 90vh;
+  margin: auto;
+  border: 0.5rem solid #eee;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgb(255, 134, 134);
+  /* background: linear-gradient(0deg, rgba(255,134,134,1) 0%, rgba(2,233,242,1) 0%, rgba(44,127,247,1) 100%); */
+  overflow: hidden;
+  user-select: none;
+  pointer-events: none;
+}
+
+.bgsky {
+  background: rgb(255, 134, 134);
+  background: linear-gradient(
+    0deg,
+    rgba(255, 134, 134, 1) 0%,
+    rgba(2, 233, 242, 1) 0%,
+    rgba(44, 127, 247, 1) 100%
+  );
+  animation: gradient 10s ease infinite;
+}
+
+.bgnight {
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 50, 1) 0%,
+    rgba(0, 0, 100, 1) 70%,
+    rgba(0, 0, 150, 1) 100%
+  );
+  animation: gradient 10s ease infinite;
+}
+/* Media Queries */
+@media (max-width: 1280px) {
+  .App {
+    width: 100%;
+    border: 0.2rem solid #eee;
+  }
+}
+
+@media (max-width: 1024px) {
+  .App {
+    height: 50vh;
+    top: 45%;
+  }
+}
+
+
+@keyframes gradient {
+  0% {
+      background-position: 0% 50%;
+  }
+  50% {
+      background-position: 100% 50%;
+  }
+  100% {
+      background-position: 0% 50%;
+  }
+}
