@@ -29,9 +29,9 @@ export const getBoostQuantity = (game, boostId) => {
 
 
 export const getBoosts = () => {
-  const boosts = localStorage.getItem(BOOSTS_KEY);
-  console.log(JSON.parse(boosts).TapCoin)
-  return boosts ? JSON.parse(boosts) : {};
+  // const boosts = localStorage.getItem(BOOSTS_KEY);
+  // return boosts ? JSON.parse(boosts) : {};
+  return  {}
 };
 
 /**
