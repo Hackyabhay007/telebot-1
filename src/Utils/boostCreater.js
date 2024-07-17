@@ -4,7 +4,7 @@ export const createBoost = async (boostData) => {
   try {
     // Add the task document to the 'tasks' collection in Firestore
     await firestore.collection("boost").add(boostData);
-    console.log("Boost created successfully:", boostData);
+    // console.log("Boost created successfully:", boostData);
     return true; // Return true to indicate success
   } catch (error) {
     console.error("Error creating task:", error);
@@ -20,22 +20,22 @@ const dailyBoost = [
     name: "10x",
     description: "You will get 10 Coins Per Tap For 1 min",
     time: 60,
-    limit: 1,
+    limit: 3,
     activated: false,
-    increment:10,
     startDay: new Date().getDate(),
     nextDay: new Date().getDate() + 1,
+    cost:0
   },
   {
     id: 2,
     name: "20x",
     description: "You will get 20 Coins Per Tap For 1 min",
     time: 60,
-    limit: 1,
+    limit: 3,
     activated: false,
-    increment:20,
     startDay: new Date().getDate(),
     nextDay: new Date().getDate() + 1,
+    cost:0
   },
 ];
 
@@ -78,48 +78,114 @@ export const getDailyBoost = async () => {
   }
 };
 
-const specialBoost = [
-  {
-    id: 1,
-    name: "10x",
-    description: "You will get 10 Coins Per Tap For 1 min",
-    time: 60,
-    limit: 1,
-    activated: false,
-    startDay: new Date().getDate(),
-    nextDay: new Date().getDate() + 1,
-  },
-  {
-    id: 2,
-    name: "20x",
-    description: "You will get 20 Coins Per Tap For 1 min",
-    time: 60,
-    limit: 1,
-    activated: false,
-    startDay: new Date().getDate(),
-    nextDay: new Date().getDate() + 1,
-  },
-];
+export const updateBoostLimit = async (boostId, newLimit) => {
+  try {
+    // Ensure boostId is a string
+    const boostIdStr = String(boostId);
 
-export const createSpecialBoost = async () => {
-  // Create each special task
-  for (const boost of dailyBoost) {
-    const success = await createBoost({
-      type: "daily",
-      ...boost,
-    });
-    if (success) {
-      console.log(`Special task "${boost.name}" created successfully!`);
-    } else {
-      console.log(`Failed to create special task "${boost.name}"`);
+  
+
+    // Reference to the specific document in the 'boost' collection
+    const boostRef = firestore.collection("boost").doc(boostIdStr);
+
+    // Check if the document exists
+    const docSnapshot = await boostRef.get();
+    if (!docSnapshot.exists) {
+      console.error(`No document found with ID ${boostIdStr}`);
+      return false; // Return false to indicate failure
     }
+
+    // Update the 'limit' field
+    await boostRef.update({ limit: newLimit });
+
+    console.log(`Boost with ID ${boostIdStr} limit updated to ${newLimit}`);
+    return true; // Return true to indicate success
+  } catch (error) {
+    console.error(`Error updating limit for boost with ID ${boostId}:`, error);
+    return false; // Return false to indicate failure
   }
 };
 
-export const getSpecailBoost = async () => {
+// ----------------------------------------------------special boost-------------------------------------------
+const paidBoost = [
+  {
+    id: 1,
+    name: "AutoTap",
+    description: "AutoTap for 5 seconds",
+    time: 5000,
+    limit: 1,
+    activated: false,
+    startDay: new Date().getDate(),
+    nextDay: new Date().getDate() + 1,
+    cost:500
+  },
+  {
+    id: 2,
+    name: "10x AutoTap",
+    description: "You will get 10 Coins Per Tap For 5 seconds",
+    time: 5000,
+    limit: 1,
+    activated: false,
+    startDay: new Date().getDate(),
+    nextDay: new Date().getDate() + 1,
+    cost :1000,
+  },
+  {
+    id: 3,
+    name: "50x AutoTap",
+    description: "You will get 10 Coins Per Tap For 5 seconds",
+    time: 5000,
+    limit: 1,
+    activated: false,
+    startDay: new Date().getDate(),
+    nextDay: new Date().getDate() + 1,
+    cost:500000
+  },
+  {
+    id: 4,
+    name: "Full Energy",
+    description: "Recharge your enengy to the maximum and do another round of mining",
+    time: 0,
+    limit: 1,
+    activated: false,
+    startDay: new Date().getDate(),
+    nextDay: new Date().getDate() + 1,
+    cost:100
+  },
+];
+
+export const createpaidBoost = async (boostData) => {
+  try {
+    // Add the task document to the 'tasks' collection in Firestore
+    await firestore.collection("paidBboost").add(boostData);
+    // console.log("Boost created successfully:", boostData);
+    return true; // Return true to indicate success
+  } catch (error) {
+    console.error("Error creating task:", error);
+    return false; // Return false to indicate failure
+  }
+};
+
+
+export const createPaidBoost = async () => {
+  // Create each special task
+  // for (const boost of paidBoost) {
+  //   const success = await createpaidBoost({
+  //     type: "paid",
+  //     ...boost,
+  //   });
+  //   if (success) {
+  //     // console.log(`Special task "${boost.name}" created successfully!`);
+  //   } else {
+  //     console.log(`Failed to create special task "${boost.name}"`);
+  //   }
+  // }
+};
+
+export const getPaidBoost = async () => {
   try {
     // Get all documents from the 'boost' collection
-    const snapshot = await firestore.collection("boost").get();
+    const snapshot = await firestore.collection("paidBoost").get();
     const boosts = [];
 
     snapshot.forEach((doc) => {
@@ -129,10 +195,10 @@ export const getSpecailBoost = async () => {
       });
     });
 
-    console.log("Boosts retrieved successfully:", boosts);
+    // console.log("Boosts retrieved successfully:", boosts);
     if (boosts.length === 0) {
-      // createDailyBoost();
-      return dailyBoost;
+      createPaidBoost();
+      return paidBoost;
     }
     return boosts.sort((a, b) => a.id - b.id); // Return the array of boost objects
   } catch (error) {
@@ -166,3 +232,28 @@ export const getSpecailBoost = async () => {
 // };
 
 // deleteAllBoosts()
+
+// export const listAllBoosts = async () => {
+//   try {
+//     const snapshot = await firestore.collection("paidboost").get();
+//     const boosts = [];
+
+//     snapshot.forEach((doc) => {
+//       boosts.push({
+//         id: doc.id,
+//         ...doc.data(),
+//       });
+//     });
+
+//     console.log("All boosts:", boosts);
+//     return boosts;
+//   } catch (error) {
+//     console.error("Error listing boosts:", error);
+//     return [];
+//   }
+// };
+
+// // Usage example
+// listAllBoosts().then((boosts) => {
+//   console.log(boosts);
+// });

@@ -4,7 +4,6 @@ import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 import coin from "../assets/coin.webp";
 import { CoinContext } from "../Utils/coinContext";
 import {
-  getBoostQuantity,
   deductBoost,
   purchaseBoost,
 } from "../components/boostUtil";
@@ -28,13 +27,12 @@ const TapCoinGame = () => {
   const { incrementCoin, updateCoinValue, coinValue } = useContext(CoinContext);
   const [showBoosts1, setShowBoosts1] = useState(false);
   const [showBoosts2, setShowBoosts2] = useState(false);
-  const boost10XQuantity = getBoostQuantity("TapCoin", 2);
-  const doubleCoinQuantity = getBoostQuantity("TapCoin", 1);
   const [isLoading, setIsLoading] = useState(true);
   const [isShaking, setIsShaking] = useState(false);
   const [showLevels, setShowLevels] = useState(false);
 
-  const {tapPerCoin , setTapPerCoin}=useContext(CoinContext)
+  const {tapPerCoin , setTapPerCoin , autoTap ,activeBoost , setAutoTap}=useContext(CoinContext)
+
 
   const navigate = useNavigate();
 
@@ -84,7 +82,7 @@ const TapCoinGame = () => {
 
     const interval = setInterval(() => {
       setScore((prevScore) => {
-        const newScore = Math.min(prevScore + 1, 500);
+        const newScore = Math.min(prevScore + 1, 1500);
         setScore(newScore);
         firestore.collection('userProgress').doc(localStorage.getItem("chatId")).set({ timestamp: Date.now(), score: newScore }); // Save progress
         return newScore;
@@ -127,23 +125,6 @@ const TapCoinGame = () => {
     });
   };
 
-  const handleBoostClick = (boostId) => {
-    if (boostId === 1) {
-      if (deductBoost("TapCoin", 1)) {
-        setDoubleCoinActive(true);
-        setTimeout(() => {
-          setDoubleCoinActive(false);
-        }, 10000); // Deactivate double coin after 10 seconds
-      }
-    } else if (boostId === 2) {
-      if (deductBoost("TapCoin", 2)) {
-        setTenXCoinActive(true);
-        setTimeout(() => {
-          setTenXCoinActive(false);
-        }, 10000); // Deactivate 10x boost after 10 seconds
-      }
-    }
-  };
 
   useEffect(() => {
     let resetInterval;
@@ -156,9 +137,35 @@ const TapCoinGame = () => {
     return () => clearInterval(resetInterval);
   }, [showResetPopup]);
 
+
+
+  const autoTapHandler=() =>{
+    function tap() {
+      console.log("Tap!"); 
+    }
+      const durationInMilliseconds = 5000;
+  
+    const intervalId = setInterval(tap, durationInMilliseconds);
+  
+    // Stop tapping after the specified duration
+    setTimeout(() => {
+      clearInterval(intervalId); // Stop the interval
+      console.log("Auto tap stopped.");
+    }, durationInMilliseconds);
+  }
+
+
+  if(autoTap){
+    console.log("Insie autpttewtr")
+    autoTapHandler()
+    setAutoTap(false)
+  }
+
   if (isLoading) {
     return <Loader />; // Display the loader while the content is loading
   }
+
+
 
   return (
     <WebAppProvider>
@@ -259,7 +266,7 @@ const TapCoinGame = () => {
                   ? "+10"
                   : doubleCoinActive
                   ? "+2"
-                  : "+1"}
+                  : "+"+tapPerCoin}
               </div>
             )}
           </div>

@@ -29,7 +29,6 @@ export const generateWalletAddress = () => {
   return walletAddress;
 };
 
-console.log(generateWalletAddress());
 
 export const createUser = async (userData) => {
   try {

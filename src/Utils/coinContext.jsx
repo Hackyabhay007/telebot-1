@@ -8,6 +8,10 @@ export const CoinProvider = ({ children }) => {
   const [maxCoin, setMaxCoin] = useState(0); // Initial coin value
   const [activeBoost, setActiveBoost] = useState(null);
   const [tapPerCoin , setTapPerCoin]=useState(1)
+  const [dailyBoost , setDailyBoost]=useState([])
+  const [paidBoost , setPaidBoost]=useState([])
+  const [autoTap , setAutoTap]=useState(false);
+  const [autoTapAmount , setAutoTapAmount]=useState(0)
 
   useEffect(() => {
     const chatid = localStorage.getItem("chatId");
@@ -68,6 +72,29 @@ export const CoinProvider = ({ children }) => {
     setCoinValue(amount);
   };
 
+  const chatId=localStorage.getItem("chatId")
+
+   const updateScore = async () => {
+    try {
+      const chatIdStr = String(chatId); // Ensure chatId is a string
+  
+      // Reference to the specific document in the 'userProgress' collection
+      const userProgressRef = firestore.collection('userProgress').doc(chatIdStr);
+  
+      // Set the new data (overwrites existing document or creates a new one)
+      await userProgressRef.set({
+        timestamp: Date.now(), // Update timestamp to current time
+        score: 1500 // Update score to newScore value
+      });
+  
+      console.log(`Score updated for chat ID ${chatIdStr} to ${1500}`);
+      return true; // Return true to indicate success
+    } catch (error) {
+      console.error(`Error updating score for chat ID ${chatId}:`, error);
+      return false; // Return false to indicate failure
+    }
+  };
+
   return (
     <CoinContext.Provider
       value={{
@@ -78,7 +105,16 @@ export const CoinProvider = ({ children }) => {
         activeBoost,
         setActiveBoost,
         tapPerCoin, 
-        setTapPerCoin
+        setTapPerCoin,
+        dailyBoost, 
+        setDailyBoost,
+        paidBoost, 
+        setPaidBoost,
+        autoTap,
+        setAutoTap,
+        updateScore,
+        autoTapAmount,
+        setAutoTapAmount,
       }}
     >
       {children}
