@@ -78,31 +78,45 @@ export const getDailyBoost = async () => {
   }
 };
 
-export const updateBoostLimit = async (boostId, newLimit) => {
-  try {
-    // Ensure boostId is a string
-    const boostIdStr = String(boostId);
+export const updateBoostLimit = async (boostId,boostData) => {
+  // try {
+  //   // Ensure boostId is a string
+  //   const boostIdStr = String(boostId);
+  //   // Reference to the specific document in the 'boost' collection
+  //   const boostRef = firestore.collection("boost").doc(boostIdStr);
 
-  
+  //   // Check if the document exists
+  //   const docSnapshot = await boostRef.get();
+  //   if (!docSnapshot.exists) {
+  //     console.error(`No document found with ID ${boostIdStr}`);
+  //     return false; // Return false to indicate failure
+  //   }
 
-    // Reference to the specific document in the 'boost' collection
-    const boostRef = firestore.collection("boost").doc(boostIdStr);
+  //   // Update the 'limit' field
+  //   await boostRef.update({ limit: newLimit });
 
-    // Check if the document exists
-    const docSnapshot = await boostRef.get();
-    if (!docSnapshot.exists) {
-      console.error(`No document found with ID ${boostIdStr}`);
-      return false; // Return false to indicate failure
-    }
+  //   console.log(`Boost with ID ${boostIdStr} limit updated to ${newLimit}`);
+  //   return true; // Return true to indicate success
+  // } catch (error) {
+  //   console.error(`Error updating limit for boost with ID ${boostId}:`, error);
+  //   return false; // Return false to indicate failure
+  // }
 
-    // Update the 'limit' field
-    await boostRef.update({ limit: newLimit });
-
-    console.log(`Boost with ID ${boostIdStr} limit updated to ${newLimit}`);
-    return true; // Return true to indicate success
-  } catch (error) {
-    console.error(`Error updating limit for boost with ID ${boostId}:`, error);
-    return false; // Return false to indicate failure
+  // const userId = localStorage.getItem('chatId');
+      const boostIdStr = String(boostId);
+  if (boostIdStr) {
+    firestore
+      .collection('boost')
+      .doc(boostId)
+      .set(boostData)
+      .then(() => {
+        console.log('Boost data updated in Firestore');
+      })
+      .catch((error) => {
+        console.error('Error updating boost data in Firestore: ', error);
+      });
+  } else {
+    console.error('Boost ID not found');
   }
 };
 

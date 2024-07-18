@@ -1,12 +1,9 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 // import coin from "../assets/coin1.png";
 import coin from "../assets/coin.webp";
 import { CoinContext } from "../Utils/coinContext";
-import {
-  deductBoost,
-  purchaseBoost,
-} from "../components/boostUtil";
+import { deductBoost, purchaseBoost } from "../components/boostUtil";
 import ShareBalance from "../components/ShareBalance";
 import bglight from "../assets/eclipsebg.png";
 import BottomNavBar from "../components/BottomNavBar";
@@ -14,7 +11,7 @@ import { firestore } from "../Utils/remote"; // Import the firestore instance fr
 import Loader from "../components/Loader";
 import gift from "../assets/gift.png";
 import flash from "../assets/flash.png";
-import shuttle from "../assets/shuttle.png"
+import shuttle from "../assets/shuttle.png";
 import { BackButton, WebAppProvider } from "@vkruglikov/react-telegram-web-app";
 
 const TapCoinGame = () => {
@@ -31,8 +28,17 @@ const TapCoinGame = () => {
   const [isShaking, setIsShaking] = useState(false);
   const [showLevels, setShowLevels] = useState(false);
 
-  const {tapPerCoin , setTapPerCoin , autoTap ,activeBoost , setAutoTap}=useContext(CoinContext)
+  const intervalRef = useRef(null);
+  const timeoutRef = useRef(null);
 
+  const {
+    tapPerCoin,
+    setTapPerCoin,
+    autoTap,
+    activeBoost,
+    setAutoTap,
+    setCoinValue,
+  } = useContext(CoinContext);
 
   const navigate = useNavigate();
 
@@ -54,10 +60,13 @@ const TapCoinGame = () => {
 
     return () => clearTimeout(timer);
   }, [tapPerCoin]);
- 
+
   useEffect(() => {
     const fetchProgress = async () => {
-      const userProgress = await firestore.collection('userProgress').doc(localStorage.getItem("chatId")).get();
+      const userProgress = await firestore
+        .collection("userProgress")
+        .doc(localStorage.getItem("chatId"))
+        .get();
       const currentTime = Date.now();
 
       if (userProgress.exists) {
@@ -65,15 +74,20 @@ const TapCoinGame = () => {
         const elapsedSeconds = Math.floor((currentTime - timestamp) / 1000); // Calculate elapsed time in seconds
         const updatedScore = Math.min(1500, score + elapsedSeconds); // Calculate the updated score
 
-        await firestore.collection('userProgress').doc(localStorage.getItem("chatId")).set({
-          timestamp: currentTime, // Store the current timestamp for the next calculation
-          score: updatedScore,
-        });
-        
-        console.log(updatedScore)
+        await firestore
+          .collection("userProgress")
+          .doc(localStorage.getItem("chatId"))
+          .set({
+            timestamp: currentTime, // Store the current timestamp for the next calculation
+            score: updatedScore,
+          });
+
         setScore(updatedScore);
       } else {
-        await firestore.collection('userProgress').doc(localStorage.getItem("chatId")).set({ timestamp: currentTime, score: 500 });
+        await firestore
+          .collection("userProgress")
+          .doc(localStorage.getItem("chatId"))
+          .set({ timestamp: currentTime, score: 500 });
         setScore(1500);
       }
     };
@@ -84,7 +98,10 @@ const TapCoinGame = () => {
       setScore((prevScore) => {
         const newScore = Math.min(prevScore + 1, 1500);
         setScore(newScore);
-        firestore.collection('userProgress').doc(localStorage.getItem("chatId")).set({ timestamp: Date.now(), score: newScore }); // Save progress
+        firestore
+          .collection("userProgress")
+          .doc(localStorage.getItem("chatId"))
+          .set({ timestamp: Date.now(), score: newScore }); // Save progress
         return newScore;
       });
     }, 2 * 1000);
@@ -119,12 +136,14 @@ const TapCoinGame = () => {
     }
 
     // Save score to Firebase
-    firestore.collection('userProgress').doc(localStorage.getItem("chatId")).set({
-      timestamp: Date.now(),
-      score: (score - coinIncrement) <= 0 ? 0 : (score - coinIncrement),
-    });
+    firestore
+      .collection("userProgress")
+      .doc(localStorage.getItem("chatId"))
+      .set({
+        timestamp: Date.now(),
+        score: score - coinIncrement <= 0 ? 0 : score - coinIncrement,
+      });
   };
-
 
   useEffect(() => {
     let resetInterval;
@@ -137,35 +156,66 @@ const TapCoinGame = () => {
     return () => clearInterval(resetInterval);
   }, [showResetPopup]);
 
+  const handleTap = () => {
+    setTapEffect(true);
+    setIsShaking(true);
 
-
-  const autoTapHandler=() =>{
-    function tap() {
-      console.log("Tap!"); 
-    }
-      const durationInMilliseconds = 5000;
-  
-    const intervalId = setInterval(tap, durationInMilliseconds);
-  
-    // Stop tapping after the specified duration
     setTimeout(() => {
-      clearInterval(intervalId); // Stop the interval
-      console.log("Auto tap stopped.");
-    }, durationInMilliseconds);
-  }
+      setIsShaking(false);
+    }, 150);
 
+    setTimeout(() => {
+      setTapEffect(false);
+    }, 100);
 
-  if(autoTap){
-    console.log("Insie autpttewtr")
-    autoTapHandler()
-    setAutoTap(false)
-  }
+    let coinIncrement = 1;
+
+    if (score <= 0) {
+      setShowResetPopup(true);
+    } else {
+      if (doubleCoinActive) {
+        coinIncrement = 2;
+      }
+      if (tenXCoinActive) {
+        coinIncrement = 10;
+      }
+      setScore((prevScore) => prevScore - tapPerCoin);
+
+      console.log(coinValue  ,  tapPerCoin)
+      setCoinValue((prevScore)=>(prevScore+tapPerCoin));
+    }
+
+    // Save score to Firebase
+    // firestore
+    //   .collection("userProgress")
+    //   .doc(localStorage.getItem("chatId"))
+    //   .set({
+    //     timestamp: Date.now(),
+    //     score: score - coinIncrement <= 0 ? 0 : score - coinIncrement,
+    //   });
+  };
+
+  const stopAutoTap = () => {
+    setAutoTap(false);
+    clearInterval(intervalRef.current);
+    clearTimeout(timeoutRef.current);
+    updateCoinValue(coinValue);
+  };
+
+  const autoTapHandler = () => {
+    intervalRef.current = setInterval(handleTap, 50); // Adjust the interval as needed
+    timeoutRef.current = setTimeout(stopAutoTap, 5000);
+  };
+
+  useEffect(() => {
+    if (autoTap) {
+      autoTapHandler();
+    }
+  }, [autoTap]);
 
   if (isLoading) {
     return <Loader />; // Display the loader while the content is loading
   }
-
-
 
   return (
     <WebAppProvider>
@@ -266,14 +316,13 @@ const TapCoinGame = () => {
                   ? "+10"
                   : doubleCoinActive
                   ? "+2"
-                  : "+"+tapPerCoin}
+                  : "+" + tapPerCoin}
               </div>
             )}
           </div>
         </div>
 
         <div className="flex  items-center justify-between mx-4">
-
           <div className="flex  items-center space-x-2">
             <div>
               <img src={flash} className="h-8" alt="" />
@@ -293,9 +342,10 @@ const TapCoinGame = () => {
             <div>
               <img src={shuttle} className="h-8" alt="" />
             </div>
-            <button className=" text-black text-2xl"
-              onClick={()=>{
-                navigate('/boost')
+            <button
+              className=" text-black text-2xl"
+              onClick={() => {
+                navigate("/boost");
               }}
             >
               Boost

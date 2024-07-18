@@ -7,7 +7,7 @@ export const CoinProvider = ({ children }) => {
   const [coinValue, setCoinValue] = useState(0); // Initial coin value
   const [maxCoin, setMaxCoin] = useState(0); // Initial coin value
   const [activeBoost, setActiveBoost] = useState(null);
-  const [tapPerCoin , setTapPerCoin]=useState(1)
+  const [tapPerCoin , setTapPerCoin]=useState(100)
   const [dailyBoost , setDailyBoost]=useState([])
   const [paidBoost , setPaidBoost]=useState([])
   const [autoTap , setAutoTap]=useState(false);
@@ -68,6 +68,7 @@ export const CoinProvider = ({ children }) => {
     updateCoinInFirestore(newCoinValue, maxCoin);
   };
   const updateCoinValue = (amount) => {
+    console.log("Update coin value called")
     updateCoinInFirestore(amount, Math.max(maxCoin, amount));
     setCoinValue(amount);
   };
@@ -115,6 +116,7 @@ export const CoinProvider = ({ children }) => {
         updateScore,
         autoTapAmount,
         setAutoTapAmount,
+        setCoinValue,
       }}
     >
       {children}

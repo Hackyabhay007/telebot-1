@@ -78,18 +78,38 @@ const Boost = () => {
     setActiveTab(tab);
   };
 
+  const goAheadHandler = (boost) => {
+    console.log(boost)
+    if (boost.name == "10x") {
+      setTapPerCoin(10);
+    } else {
+      setTapPerCoin(20);
+    }
+   
+
+    const updatedBoost = [];
+    for (let i = 0; i < dailyBoost.length; i++) {
+      if (dailyBoost[i].id == boost.id) {
+        updatedBoost.push({
+          ...boost,
+          limit: boost.limit - 1,
+        });
+      } else {
+        updatedBoost.push(dailyBoost[i]);
+      }
+    }
+
+    setDailyBoost(updatedBoost);
+     navigate("/games/tapcoin");
+  };
+
   const handleClaim = async (boost) => {
     if (boost.limit > 0) {
       setActiveBoost(boost);
-      if(boost.name=="10x"){
-        setTapPerCoin(10);
-      }
-      else{
-        setTapPerCoin(20)
-      }
     }
-    navigate("/games/tapcoin")
+    
     setGoHead(true);
+    goAheadHandler(boost)
   };
 
   const handleCloseNoBalancePopup = () => {
@@ -100,30 +120,7 @@ const Boost = () => {
     setSelectedBoost(null);
   };
 
-  const goAheadHandler = () => {
-    updateBoostLimit(activeBoost.id, activeBoost.limit - 1);
-    if (activeBoost.name == "10x") {
-      setTapPerCoin(10);
-    } else {
-      setTapPerCoin(20);
-    }
-    navigate("/games/tapcoin");
-
-    const updatedBoost = [];
-    console.log(dailyBoost);
-    for (let i = 0; i < dailyBoost.length; i++) {
-      if (dailyBoost[i].id == activeBoost.id) {
-        updatedBoost.push({
-          ...dailyBoost[i],
-          limit: activeBoost.limit - 1,
-        });
-      } else {
-        updatedBoost.push(dailyBoost[i]);
-      }
-    }
-
-    setDailyBoost(updatedBoost);
-  };
+  
 
   const handleBuy = (boost) => {
     console.log(boost);
@@ -197,7 +194,7 @@ const Boost = () => {
         {paidBoost.map((boost) => (
           <div
             key={boost.id}
-            className="flex  justify-between md:flex-row items-center mb-2 rounded-md shadow-md bg-[#FFFFE5] cursor-pointer p-4 text-black"
+            className="flex  justify-between md:flex-row items-center mb-2 rounded-md shadow-md bg-[#FFFFE5] cursor-pointer p-2 text-black"
           >
             <div className="flex  flex-grow justify-between">
               <div className="flex flex-col">
