@@ -132,16 +132,27 @@ const Boost = () => {
     updateCoinValue(coinValue - activeBoost.cost);
 
     if (activeBoost.name == "Full Energy") {
+      console.log("INsdie full Energu")
       updateScore();
     } else if (activeBoost.name == "AutoTap") {
       setAutoTapAmount(1);
+      setTapPerCoin(1)
+      setAutoTap(true);
+
+      setTapPerCoin(1)
     } else if (activeBoost.name == "10x AutoTap") {
       setAutoTapAmount(10);
+      setTapPerCoin(10)
+      setAutoTap(true);
+
     } else if (activeBoost.name == "50x AutoTap") {
       setAutoTapAmount(50);
+      setTapPerCoin(50)
+      setAutoTap(true);
+
+
     }
 
-    setAutoTap(true);
     navigate("/games/tapcoin");
   };
 

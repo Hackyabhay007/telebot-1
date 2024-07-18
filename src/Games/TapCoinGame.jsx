@@ -203,6 +203,9 @@ const TapCoinGame = () => {
   };
 
   const autoTapHandler = () => {
+    if(score==0){
+      return ;
+    }
     intervalRef.current = setInterval(handleTap, 50); // Adjust the interval as needed
     timeoutRef.current = setTimeout(stopAutoTap, 5000);
   };

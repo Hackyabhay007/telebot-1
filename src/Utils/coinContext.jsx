@@ -68,7 +68,6 @@ export const CoinProvider = ({ children }) => {
     updateCoinInFirestore(newCoinValue, maxCoin);
   };
   const updateCoinValue = (amount) => {
-    console.log("Update coin value called")
     updateCoinInFirestore(amount, Math.max(maxCoin, amount));
     setCoinValue(amount);
   };
