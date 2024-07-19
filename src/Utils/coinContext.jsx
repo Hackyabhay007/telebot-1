@@ -7,7 +7,7 @@ export const CoinProvider = ({ children }) => {
   const [coinValue, setCoinValue] = useState(0); // Initial coin value
   const [maxCoin, setMaxCoin] = useState(0); // Initial coin value
   const [activeBoost, setActiveBoost] = useState(null);
-  const [tapPerCoin , setTapPerCoin]=useState(1)
+  const [tapPerCoin , setTapPerCoin]=useState(100)
   const [dailyBoost , setDailyBoost]=useState([])
   const [paidBoost , setPaidBoost]=useState([])
   const [autoTap , setAutoTap]=useState(false);

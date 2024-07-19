@@ -20,22 +20,16 @@ const dailyBoost = [
     name: "10x",
     description: "You will get 10 Coins Per Tap For 1 min",
     time: 60,
-    limit: 3,
     activated: false,
-    startDay: new Date().getDate(),
-    nextDay: new Date().getDate() + 1,
-    cost:0
+    cost: 0,
   },
   {
     id: 2,
     name: "20x",
     description: "You will get 20 Coins Per Tap For 1 min",
     time: 60,
-    limit: 3,
     activated: false,
-    startDay: new Date().getDate(),
-    nextDay: new Date().getDate() + 1,
-    cost:0
+    cost: 0,
   },
 ];
 
@@ -78,49 +72,7 @@ export const getDailyBoost = async () => {
   }
 };
 
-export const updateBoostLimit = async (boostId,boostData) => {
-  // try {
-  //   // Ensure boostId is a string
-  //   const boostIdStr = String(boostId);
-  //   // Reference to the specific document in the 'boost' collection
-  //   const boostRef = firestore.collection("boost").doc(boostIdStr);
-
-  //   // Check if the document exists
-  //   const docSnapshot = await boostRef.get();
-  //   if (!docSnapshot.exists) {
-  //     console.error(`No document found with ID ${boostIdStr}`);
-  //     return false; // Return false to indicate failure
-  //   }
-
-  //   // Update the 'limit' field
-  //   await boostRef.update({ limit: newLimit });
-
-  //   console.log(`Boost with ID ${boostIdStr} limit updated to ${newLimit}`);
-  //   return true; // Return true to indicate success
-  // } catch (error) {
-  //   console.error(`Error updating limit for boost with ID ${boostId}:`, error);
-  //   return false; // Return false to indicate failure
-  // }
-
-  // const userId = localStorage.getItem('chatId');
-      const boostIdStr = String(boostId);
-  if (boostIdStr) {
-    firestore
-      .collection('boost')
-      .doc(boostId)
-      .set(boostData)
-      .then(() => {
-        console.log('Boost data updated in Firestore');
-      })
-      .catch((error) => {
-        console.error('Error updating boost data in Firestore: ', error);
-      });
-  } else {
-    console.error('Boost ID not found');
-  }
-};
-
-// ----------------------------------------------------special boost-------------------------------------------
+// ----------------------------------------------------paid boost-------------------------------------------
 const paidBoost = [
   {
     id: 1,
@@ -131,7 +83,7 @@ const paidBoost = [
     activated: false,
     startDay: new Date().getDate(),
     nextDay: new Date().getDate() + 1,
-    cost:500
+    cost: 1000,
   },
   {
     id: 2,
@@ -142,36 +94,48 @@ const paidBoost = [
     activated: false,
     startDay: new Date().getDate(),
     nextDay: new Date().getDate() + 1,
-    cost :1000,
+    cost: 5000,
   },
   {
     id: 3,
     name: "50x AutoTap",
-    description: "You will get 10 Coins Per Tap For 5 seconds",
+    description: "You will get 50 Coins Per Tap For 5 seconds",
     time: 5000,
     limit: 1,
     activated: false,
     startDay: new Date().getDate(),
     nextDay: new Date().getDate() + 1,
-    cost:500000
+    cost: 3000,
   },
   {
     id: 4,
-    name: "Full Energy",
-    description: "Recharge your enengy to the maximum and do another round of mining",
+    name: "100x AutoTap",
+    description: "You will get 100 Coins Per Tap For 5 seconds",
     time: 0,
     limit: 1,
     activated: false,
     startDay: new Date().getDate(),
     nextDay: new Date().getDate() + 1,
-    cost:100
+    cost: 100,
+  },
+  {
+    id: 5,
+    name: "Full Energy",
+    description:
+      "Recharge your enengy to the maximum and do another round of mining",
+    time: 0,
+    limit: 1,
+    activated: false,
+    startDay: new Date().getDate(),
+    nextDay: new Date().getDate() + 1,
+    cost: 100,
   },
 ];
 
 export const createpaidBoost = async (boostData) => {
   try {
     // Add the task document to the 'tasks' collection in Firestore
-    await firestore.collection("paidBboost").add(boostData);
+    await firestore.collection("paidboost").add(boostData);
     // console.log("Boost created successfully:", boostData);
     return true; // Return true to indicate success
   } catch (error) {
@@ -180,26 +144,25 @@ export const createpaidBoost = async (boostData) => {
   }
 };
 
-
 export const createPaidBoost = async () => {
   // Create each special task
-  // for (const boost of paidBoost) {
-  //   const success = await createpaidBoost({
-  //     type: "paid",
-  //     ...boost,
-  //   });
-  //   if (success) {
-  //     // console.log(`Special task "${boost.name}" created successfully!`);
-  //   } else {
-  //     console.log(`Failed to create special task "${boost.name}"`);
-  //   }
-  // }
+  for (const boost of paidBoost) {
+    const success = await createpaidBoost({
+      type: "paid",
+      ...boost,
+    });
+    if (success) {
+      // console.log(`Special task "${boost.name}" created successfully!`);
+    } else {
+      console.log(`Failed to create special task "${boost.name}"`);
+    }
+  }
 };
 
 export const getPaidBoost = async () => {
   try {
     // Get all documents from the 'boost' collection
-    const snapshot = await firestore.collection("paidBoost").get();
+    const snapshot = await firestore.collection("paidboost").get();
     const boosts = [];
 
     snapshot.forEach((doc) => {
@@ -224,7 +187,7 @@ export const getPaidBoost = async () => {
 // export const deleteAllBoosts = async () => {
 //   try {
 //     // Get all documents from the 'boost' collection
-//     const snapshot = await firestore.collection("boost").get();
+//     const snapshot = await firestore.collection("paidboost").get();
 
 //     // Create a batch to perform multiple deletions
 //     const batch = firestore.batch();

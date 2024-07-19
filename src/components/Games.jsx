@@ -37,7 +37,7 @@ const Games = () => {
             <span className="chakra-petch-bold">Tap Coin</span>
           </Link>
         </li>
-        <li className="w-full flex justify-center">
+        {/* <li className="w-full flex justify-center">
           <Link
             to="/games/mariorun"
             className="w-8/10 flex flex-col items-center backdrop-blur-sm bg-white/10 text-3xl text-golden p-4 rounded-lg shadow-lg transform transition-transform hover:scale-90"
@@ -45,7 +45,7 @@ const Games = () => {
             <img src={mario} className="w-24" alt="" />
             <span className="chakra-petch-bold">Mario Run</span>
           </Link>
-        </li>
+        </li> */}
       </ul>
     </div>
   );

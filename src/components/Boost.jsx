@@ -15,6 +15,7 @@ import {
   getPaidBoost,
 } from "../Utils/boostCreater";
 import { useNavigate } from "react-router-dom";
+import { UserDataContext } from "../Utils/userDataContext";
 
 const Boost = () => {
   const {
@@ -32,6 +33,9 @@ const Boost = () => {
     updateScore,
     setAutoTapAmount,
   } = useContext(CoinContext);
+
+  const {updateBoostLimit , userData}=useContext(UserDataContext)
+
   const [activeTab, setActiveTab] = useState("TapCoin");
   const [selectedBoost, setSelectedBoost] = useState(null);
   const [showNoBalancePopup, setShowNoBalancePopup] = useState(false);
@@ -74,54 +78,49 @@ const Boost = () => {
     fetchData();
   }, []);
 
-  const handleTabChange = (tab) => {
-    setActiveTab(tab);
-  };
-
-  const goAheadHandler = (boost) => {
-    console.log(boost)
-    if (boost.name == "10x") {
+ 
+  // handling gohead popup for daily boost 
+  const goAheadFreeBoostHandler = () => {
+    
+    if (activeBoost.name == "10x") {
       setTapPerCoin(10);
+      updateBoostLimit({limit10x:userData.limit10x-1})
     } else {
       setTapPerCoin(20);
-    }
-   
-
-    const updatedBoost = [];
-    for (let i = 0; i < dailyBoost.length; i++) {
-      if (dailyBoost[i].id == boost.id) {
-        updatedBoost.push({
-          ...boost,
-          limit: boost.limit - 1,
-        });
-      } else {
-        updatedBoost.push(dailyBoost[i]);
-      }
+      updateBoostLimit({limit20x:userData.limit20x-1})
     }
 
-    setDailyBoost(updatedBoost);
-     navigate("/games/tapcoin");
+    setGoHead(false);
+    setActiveBoost(null);
+     navigate("/games");
   };
 
-  const handleClaim = async (boost) => {
-    if (boost.limit > 0) {
+
+
+  
+  
+//  handler function for free booster 
+  const handleUse = async (boost) => {
+    if ((userData.limit10x > 0 && boost.id==1) || (userData.limit20x > 0 && boost.id==2)) {
       setActiveBoost(boost);
+      setGoHead(true);
     }
-    
-    setGoHead(true);
-    goAheadHandler(boost)
+
   };
+
 
   const handleCloseNoBalancePopup = () => {
     setShowNoBalancePopup(false);
   };
+
 
   const handleClosePopup = () => {
     setSelectedBoost(null);
   };
 
   
-
+  
+  // handler function for buying a paid boost 
   const handleBuy = (boost) => {
     console.log(boost);
     setActiveBoost(boost);
@@ -149,17 +148,21 @@ const Boost = () => {
       setAutoTapAmount(50);
       setTapPerCoin(50)
       setAutoTap(true);
-
-
+    }
+    else{
+      setAutoTapAmount(100);
+      setTapPerCoin(100)
+      setAutoTap(true);
     }
 
-    navigate("/games/tapcoin");
+    navigate("/games");
   };
-
+  
   if (isLoading) {
-    return <Loader />; // Display the loader while the content is loading
+    return <Loader />;
   }
-
+  
+  console.log("Active " , activeBoost)
   return (
     <div className="h-screen p-10 bg-custom-gradient-tapgame">
       <ShareBalance view={1} balance={coinValue} />
@@ -180,16 +183,15 @@ const Boost = () => {
                 <div className="mb-2">
                   <h3 className="text-lg font-bold text-black">
                     {boost.name}
-                    {"(" + boost.limit + ")"}
+                    {"(" +(boost.id==1? userData.limit10x : userData.limit20x)+ ")"}
                   </h3>
                 </div>
-                {/* <p className="text-sm font-bold mb-2">{boost.description}</p> */}
               </div>
               <div className="flex items-center justify-end">
                 <button
                   disabled={boost.limit <= 0 ? true : false}
                   className=" bg-golden text-black  hover:bg-zinc-800  font-bold py-1 px-4 rounded-3xl"
-                  onClick={() => handleClaim(boost)}
+                  onClick={() => handleUse(boost)}
                 >
                   Use
                 </button>
@@ -235,8 +237,8 @@ const Boost = () => {
             <button
               className="absolute top-2 right-2 text-white text-xl font-bold"
               onClick={() => {
-                setGoHead(false);
-                setActiveBoost(null);
+                 setActiveBoost(null)
+                 setGoHead(false)
               }}
             >
               &times;
@@ -258,7 +260,7 @@ const Boost = () => {
               {coinValue > activeBoost.cost ? (
                 <button
                   className="bg-golden text-black hover:bg-zinc-800 justify-center font-bold py-2 px-4 rounded-3xl"
-                  onClick={activeBoost.cost>0?goAheadPaidHandler:handleClaim}
+                  onClick={activeBoost.cost>0?goAheadPaidHandler:goAheadFreeBoostHandler}
                 >
                   Go ahead
                 </button>

@@ -13,6 +13,7 @@ import gift from "../assets/gift.png";
 import flash from "../assets/flash.png";
 import shuttle from "../assets/shuttle.png";
 import { BackButton, WebAppProvider } from "@vkruglikov/react-telegram-web-app";
+import { UserDataContext } from "../Utils/userDataContext";
 
 const TapCoinGame = () => {
   const [score, setScore] = useState(1500);
@@ -39,6 +40,8 @@ const TapCoinGame = () => {
     setAutoTap,
     setCoinValue,
   } = useContext(CoinContext);
+
+  const { updateBoostLimit } = useContext(UserDataContext);
 
   const navigate = useNavigate();
 
@@ -111,7 +114,6 @@ const TapCoinGame = () => {
 
   const handleClick = (event) => {
     setTapEffect(true);
-
     setTimeout(() => {
       setIsShaking(false);
     }, 50);
@@ -131,8 +133,14 @@ const TapCoinGame = () => {
       if (tenXCoinActive) {
         coinIncrement = 10;
       }
-      setScore((prevScore) => prevScore - tapPerCoin);
-      updateCoinValue(coinValue + tapPerCoin);
+
+      if (tapPerCoin > score) {
+        updateCoinValue(coinValue + score);
+        setScore(0);
+      } else {
+        setScore((prevScore) => prevScore - tapPerCoin);
+        updateCoinValue(coinValue + tapPerCoin);
+      }
     }
 
     // Save score to Firebase
@@ -156,7 +164,17 @@ const TapCoinGame = () => {
     return () => clearInterval(resetInterval);
   }, [showResetPopup]);
 
-  const handleTap = () => {
+
+  const stopAutoTap = () => {
+    setAutoTap(false);
+    clearInterval(intervalRef.current);
+    clearTimeout(timeoutRef.current);
+    updateCoinValue(coinValue);
+  };
+
+  
+
+    const handleTap = () => {
     setTapEffect(true);
     setIsShaking(true);
 
@@ -181,31 +199,16 @@ const TapCoinGame = () => {
       }
       setScore((prevScore) => prevScore - tapPerCoin);
 
-      console.log(coinValue  ,  tapPerCoin)
-      setCoinValue((prevScore)=>(prevScore+tapPerCoin));
+      setCoinValue((prevScore) => prevScore + tapPerCoin);
     }
-
-    // Save score to Firebase
-    // firestore
-    //   .collection("userProgress")
-    //   .doc(localStorage.getItem("chatId"))
-    //   .set({
-    //     timestamp: Date.now(),
-    //     score: score - coinIncrement <= 0 ? 0 : score - coinIncrement,
-    //   });
   };
 
-  const stopAutoTap = () => {
-    setAutoTap(false);
-    clearInterval(intervalRef.current);
-    clearTimeout(timeoutRef.current);
-    updateCoinValue(coinValue);
-  };
 
   const autoTapHandler = () => {
-    if(score==0){
-      return ;
+    if (score == 0) {
+      return;
     }
+
     intervalRef.current = setInterval(handleTap, 50); // Adjust the interval as needed
     timeoutRef.current = setTimeout(stopAutoTap, 5000);
   };
@@ -214,7 +217,84 @@ const TapCoinGame = () => {
     if (autoTap) {
       autoTapHandler();
     }
-  }, [autoTap]);
+  }, []);
+
+
+
+
+
+   
+
+  // const stopAutoTap = () => {
+  //   setAutoTap(false);
+  //   clearInterval(intervalRef.current);
+  //   clearTimeout(timeoutRef.current);
+  //   updateCoinValue(coinValue);
+  // };
+  
+  // const handleTap = () => {
+  //   setTapEffect(true);
+  //   setIsShaking(true);
+  
+  //   setTimeout(() => {
+  //     setIsShaking(false);
+  //   }, 150);
+  
+  //   setTimeout(() => {
+  //     setTapEffect(false);
+  //   }, 100);
+  
+  //   let coinIncrement = 1;
+  
+  //   if (doubleCoinActive) {
+  //     coinIncrement = 2;
+  //   }
+  //   if (tenXCoinActive) {
+  //     coinIncrement = 10;
+  //   }
+  
+  //   setScore((prevScore) => {
+  //     const newScore = prevScore - tapPerCoin;
+  //     if (newScore <= 0) {
+  //       setShowResetPopup(true);
+  //       stopAutoTap(); 
+  //       return 0;
+  //     }
+  //     return newScore;
+  //   });
+  
+  //   setCoinValue((prevScore) => prevScore + tapPerCoin);
+  // };
+  
+  // const autoTapHandler = () => {
+  //   if (score === 0) {
+  //     return;
+  //   }
+  
+  //   intervalRef.current = setInterval(handleTap, 50); 
+  //   timeoutRef.current = setTimeout(stopAutoTap, 5000);
+  // };
+  
+  // useEffect(() => {
+  //   if (autoTap) {
+  //     autoTapHandler();
+  //   }
+  // }, [autoTap, score]); 
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   if (isLoading) {
     return <Loader />; // Display the loader while the content is loading

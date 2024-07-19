@@ -1,43 +1,45 @@
-import React, { createContext, useState, useEffect } from 'react';
-import { firestore } from './remote';
+import React, { createContext, useState, useEffect } from "react";
+import { firestore } from "./remote";
 
 export const UserDataContext = createContext();
 
 export const UserDataProvider = ({ children }) => {
   const [userData, setUserData] = useState({
     claimedTasks: [],
-  coin: 0,
-  maxCoin: 0,
-  referralCount: 0,
-  refs: [], 
+    coin: 0,
+    maxCoin: 0,
+    referralCount: 0,
+    refs: [],
+    limit10x: 3,
+    limit20x: 3,
+    startDay10x: new Date().getDate(),
+    nextDay10x: new Date().getDate() + 1,
+    startDay20x: new Date().getDate(),
+    nextDay20x: new Date().getDate() + 1,
   });
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const chatId = localStorage.getItem('chatId');
-        const docRef = firestore.collection('users').doc(chatId ? chatId : 'defaultId');
+        const chatId = localStorage.getItem("chatId");
+        const docRef = firestore
+          .collection("users")
+          .doc(chatId ? chatId : "defaultId");
         const doc = await docRef.get();
         if (doc.exists) {
           const userData = doc.data();
-          setUserData({
-            claimedTasks: userData.claimedTasks || [],
-            coin: userData.coin || 0,
-            maxCoin: userData.maxCoin || 0,
-            referralCount: userData.referralCount || 0,
-            refs: userData.refs || [], // Add this line
-          });
+          setUserData({ ...userData });
         } else {
-          console.error('User not found');
+          console.error("User not found");
         }
       } catch (error) {
-        console.error('Error fetching user data:', error);
+        console.error("Error fetching user data:", error);
       }
     };
 
     fetchData();
 
-    const unsubscribe = firestore.collection('users').onSnapshot(() => {
+    const unsubscribe = firestore.collection("users").onSnapshot(() => {
       fetchData(); // Re-fetch data on Firestore snapshot changes
     });
 
@@ -45,20 +47,20 @@ export const UserDataProvider = ({ children }) => {
   }, []);
 
   const updateUserInFirestore = (newUserData) => {
-    const userId = localStorage.getItem('chatId');
+    const userId = localStorage.getItem("chatId");
     if (userId) {
       firestore
-        .collection('users')
+        .collection("users")
         .doc(userId)
         .set(newUserData)
         .then(() => {
-          console.log('User data updated in Firestore');
+          console.log("User data updated in Firestore");
         })
         .catch((error) => {
-          console.error('Error updating user data in Firestore: ', error);
+          console.error("Error updating user data in Firestore: ", error);
         });
     } else {
-      console.error('User ID not found');
+      console.error("User ID not found");
     }
   };
 
@@ -88,53 +90,49 @@ export const UserDataProvider = ({ children }) => {
   };
 
   const removeClaimedTask = (taskId) => {
-    const newClaimedTasks = (userData.claimedTasks || []).filter((id) => id !== taskId);
+    const newClaimedTasks = (userData.claimedTasks || []).filter(
+      (id) => id !== taskId
+    );
     updateUserData({ claimedTasks: newClaimedTasks });
   };
 
-
   const addRef = async (refId) => {
     try {
-      const currentUserId=localStorage.getItem('chatId')
-      const userDocRef = firestore.collection('users').doc(refId);
+      const currentUserId = localStorage.getItem("chatId");
+      const userDocRef = firestore.collection("users").doc(refId);
       const userDoc = await userDocRef.get();
-  
+
       if (userDoc.exists) {
         const userData = userDoc.data();
         if (userData.refs && userData.refs.includes(currentUserId)) {
           // Referral ID already exists, no need to add it
           return;
         }
-  
+
         // Referral ID doesn't exist, add it to the refs array
         if (userData.refs) {
           // Check if the new referral ID already exists in the refs array
           if (!userData.refs.includes(currentUserId)) {
-            
             const newRefs = [...(userData.refs || []), currentUserId];
-      await userDocRef.update({ refs: newRefs });
-
-            } else {
-              console.error('User ID not found');
-            }
-          
+            await userDocRef.update({ refs: newRefs });
+          } else {
+            console.error("User ID not found");
+          }
         } else {
           const newRefs = [...(userData.refs || []), currentUserId];
           // If the refs array doesn't exist, create a new one with the new referral ID
           await userDocRef.update({ refs: newRefs });
         }
-      } 
+      }
     } catch (error) {
-      console.error('Error adding referral:', error);
+      console.error("Error adding referral:", error);
     }
   };
-  
-  
-  
+
   const getRefs = () => {
     return userData.refs || [];
   };
-  
+
   const getCoin = () => {
     return userData.coin || 0;
   };
@@ -147,6 +145,12 @@ export const UserDataProvider = ({ children }) => {
       maxCoin: Math.max(numericCoinValue, userData.maxCoin || 0),
     });
   };
+
+  const updateBoostLimit = (data) => {
+    console.log(data);
+    updateUserData(data);
+  };
+
   const getMaxCoin = () => {
     return userData.maxCoin || 0;
   };
@@ -157,33 +161,51 @@ export const UserDataProvider = ({ children }) => {
 
   const fetchTotalUsers = async () => {
     try {
-      const usersSnapshot = await firestore.collection('users').get();
+      const usersSnapshot = await firestore.collection("users").get();
       return usersSnapshot.size;
     } catch (error) {
-      console.error('Error fetching total users:', error);
+      console.error("Error fetching total users:", error);
     }
   };
 
+  useEffect(() => {
+    if (
+      userData.nextDay10x == new Date().getDate() ||
+      userData.nextDay20x == new Date().getDate()
+    ) {
+      const data = {
+        startDay10x: new Date().getDate(),
+        nextDay10x: new Date().getDate() + 1,
+        startDay20x: new Date().getDate(),
+        nextDay20x: new Date().getDate() + 1,
+        limit10x:3,
+        limit20x:3,
+      };
+      updateUserData(data)
+    }
+  } , []);
+
   return (
     <UserDataContext.Provider
-    value={{
-      fetchTotalUsers,
-      userData,
-      updateUserData,
-      incrementReferralCount,
-      decrementReferralCount,
-      getReferralCount,
-      addClaimedTask,
-      removeClaimedTask,
-      getCoin,
-      updateCoin,
-      getMaxCoin,
-      updateMaxCoin,
-      addRef, 
-      getRefs, 
-    }}
-  >
-    {children}
-  </UserDataContext.Provider>
+      value={{
+        updateBoostLimit,
+        fetchTotalUsers,
+        userData,
+        updateUserData,
+        incrementReferralCount,
+        decrementReferralCount,
+        getReferralCount,
+        addClaimedTask,
+        removeClaimedTask,
+        getCoin,
+        updateCoin,
+        getMaxCoin,
+        updateMaxCoin,
+        addRef,
+        getRefs,
+      }}
+    >
+      {children}
+    </UserDataContext.Provider>
   );
 };
