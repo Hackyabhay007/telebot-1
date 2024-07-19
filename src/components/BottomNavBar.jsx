@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 import React, { useState, useRef } from "react";
 import { NavLink } from "react-router-dom";
 import { FaTrophy, FaGamepad, FaChartBar, FaRocket } from "react-icons/fa";
@@ -8,7 +9,10 @@ import chart from "../assets/chart.png";
 import fire from "../assets/fire.png";
 import { useDispatch, useSelector } from "react-redux";
 import { setDie } from "../Games/Mario/config/redux/engineSlice";
-import mine from "../../src/assets/mine.png"
+import mine from "../../src/assets/mine.png";
+import group from "../../src/assets/group.png";
+import earn from "../../src/assets/earn.png";
+import stats from "../../src/assets/stats.png";
 
 const navItems = [
   {
@@ -22,19 +26,19 @@ const navItems = [
     to: "/referral",
     icon: <FaTrophy className="text-green-500 mb-2" />,
     label: "Friends",
-    img: trophy,
+    img: group,
   },
   {
     to: "/tasks",
     icon: <FaGamepad className="text-green-500 mb-2" />,
     label: "Earn",
-    img: taskimg,
+    img: earn,
   },
   {
     to: "/stats",
     icon: <FaChartBar className="mb-2" />,
     label: "Stats",
-    img: chart,
+    img: stats,
   },
 ];
 
@@ -68,16 +72,11 @@ const BottomNavBar = () => {
           >
             <div className="flex flex-col items-center">
               <div
-                className={`rounded-3xl p-3 border-2 shadow-xl w-20  h-24 flex flex-col items-center justify-center ${
-                  selectedItem === index
-                    ? "backdrop-blur-sm bg-white/10 border border-golden"
-                    : "bg-[#FFFFE5] "
-                }`}
+                className={` rounded-xl p-4 border-2 shadow-md shadow-orange-500 w-20  h-24 flex flex-col items-center justify-center bg-[#F9C399] border-[#FA650F]
+]`}
               >
-                <img src={item.img} className="" />
-                <span className="text-sm  font-bold">
-                  {item.label}
-                </span>
+                <img src={item.img} className=" h-12" />
+                <span className="text-sm  font-bold">{item.label}</span>
               </div>
             </div>
           </NavLink>
