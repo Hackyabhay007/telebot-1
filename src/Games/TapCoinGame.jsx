@@ -14,6 +14,7 @@ import flash from "../assets/flash.png";
 import shuttle from "../assets/shuttle.png";
 import { BackButton, WebAppProvider } from "@vkruglikov/react-telegram-web-app";
 import { UserDataContext } from "../Utils/userDataContext";
+import coin1 from "../../src/assets/coin1.png";
 
 const TapCoinGame = () => {
   const [score, setScore] = useState(1500);
@@ -23,11 +24,11 @@ const TapCoinGame = () => {
   const [showResetPopup, setShowResetPopup] = useState(false);
   const [resetTimer, setResetTimer] = useState(60); // 1 minute timer
   const { incrementCoin, updateCoinValue, coinValue } = useContext(CoinContext);
-  const [showBoosts1, setShowBoosts1] = useState(false);
-  const [showBoosts2, setShowBoosts2] = useState(false);
+
   const [isLoading, setIsLoading] = useState(true);
   const [isShaking, setIsShaking] = useState(false);
   const [showLevels, setShowLevels] = useState(false);
+  const [clicks, setClicks] = useState([]);
 
   const intervalRef = useRef(null);
   const timeoutRef = useRef(null);
@@ -113,7 +114,6 @@ const TapCoinGame = () => {
   }, []);
 
   const handleClick = (event) => {
-    setTapEffect(true);
     setTimeout(() => {
       setIsShaking(false);
     }, 50);
@@ -164,7 +164,6 @@ const TapCoinGame = () => {
     return () => clearInterval(resetInterval);
   }, [showResetPopup]);
 
-
   const stopAutoTap = () => {
     setAutoTap(false);
     clearInterval(intervalRef.current);
@@ -172,9 +171,7 @@ const TapCoinGame = () => {
     updateCoinValue(coinValue);
   };
 
-  
-
-    const handleTap = () => {
+  const handleTap = () => {
     setTapEffect(true);
     setIsShaking(true);
 
@@ -203,7 +200,6 @@ const TapCoinGame = () => {
     }
   };
 
-
   const autoTapHandler = () => {
     if (score == 0) {
       return;
@@ -219,86 +215,95 @@ const TapCoinGame = () => {
     }
   }, []);
 
-
-
-
-
-   
-
   // const stopAutoTap = () => {
   //   setAutoTap(false);
   //   clearInterval(intervalRef.current);
   //   clearTimeout(timeoutRef.current);
   //   updateCoinValue(coinValue);
   // };
-  
+
   // const handleTap = () => {
   //   setTapEffect(true);
   //   setIsShaking(true);
-  
+
   //   setTimeout(() => {
   //     setIsShaking(false);
   //   }, 150);
-  
+
   //   setTimeout(() => {
   //     setTapEffect(false);
   //   }, 100);
-  
+
   //   let coinIncrement = 1;
-  
+
   //   if (doubleCoinActive) {
   //     coinIncrement = 2;
   //   }
   //   if (tenXCoinActive) {
   //     coinIncrement = 10;
   //   }
-  
+
   //   setScore((prevScore) => {
   //     const newScore = prevScore - tapPerCoin;
   //     if (newScore <= 0) {
   //       setShowResetPopup(true);
-  //       stopAutoTap(); 
+  //       stopAutoTap();
   //       return 0;
   //     }
   //     return newScore;
   //   });
-  
+
   //   setCoinValue((prevScore) => prevScore + tapPerCoin);
   // };
-  
+
   // const autoTapHandler = () => {
   //   if (score === 0) {
   //     return;
   //   }
-  
-  //   intervalRef.current = setInterval(handleTap, 50); 
+
+  //   intervalRef.current = setInterval(handleTap, 50);
   //   timeoutRef.current = setTimeout(stopAutoTap, 5000);
   // };
-  
+
   // useEffect(() => {
   //   if (autoTap) {
   //     autoTapHandler();
   //   }
-  // }, [autoTap, score]); 
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  // }, [autoTap, score]);
 
   if (isLoading) {
     return <Loader />; // Display the loader while the content is loading
   }
+
+  const handleCardClick = (e) => {
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    card.style.transform = `perspective(1000px) rotateX(${
+      -y / 10
+    }deg) rotateY(${x / 10}deg)`;
+    setTimeout(() => {
+      card.style.transform = "";
+    }, 100);
+
+    if (score <= 0) {
+      setShowResetPopup(true);
+    } else {
+      if (tapPerCoin > score) {
+        updateCoinValue(coinValue + score);
+        setScore(0);
+      } else {
+        setScore((prevScore) => prevScore - tapPerCoin);
+        updateCoinValue(coinValue + tapPerCoin);
+      }
+    }
+
+    setClicks([...clicks, { id: Date.now(), x: e.pageX, y: e.pageY }]);
+  };
+  const handleAnimationEnd = (id) => {
+    setClicks((prevClicks) => prevClicks.filter((click) => click.id !== id));
+  };
 
   return (
     <WebAppProvider>
@@ -372,7 +377,7 @@ const TapCoinGame = () => {
           </div>
         </div>
 
-        <div className="relative w-full h-full flex items-center justify-center mb-20">
+        {/* <div className="relative w-full h-full flex items-center justify-center mb-20">
           <div className="absolute left-0 w-full   h-[70%] rotate-12 bg-no-repeat bg-gradient-to-l from-transparent to-golden filter opacity-70 blur-2xl"></div>
           <div className="absolute right-0 w-full   h-[70%] rotate-12 bg-no-repeat bg-gradient-to-l from-golden to-transparent filter opacity-70 blur-2xl"></div>
 
@@ -384,7 +389,7 @@ const TapCoinGame = () => {
             className={` coin-container flex  justify-center w-full  transform `}
           >
             <img
-              src={coin}
+              src={coin1}
               alt="coin"
               className={` w-[60%] h-auto ${isShaking ? "animate-shake" : ""}`}
             />
@@ -403,36 +408,54 @@ const TapCoinGame = () => {
               </div>
             )}
           </div>
+        </div> */}
+
+        <div className="px-4 mt-4 flex justify-center">
+          <div
+            className="w-80 h-80 p-4 rounded-full circle-outer"
+            onClick={handleCardClick}
+          >
+            <div className="w-full h-full rounded-full circle-inner">
+              <img src={coin1} alt="Main Character" className="w-full h-full" />
+            </div>
+          </div>
         </div>
 
-        <div className="flex  items-center justify-between mx-4">
-          <div className="flex  items-center space-x-2">
-            <div>
-              <img src={flash} className="h-8" alt="" />
-            </div>
-            <p className="text-2xl text-black mb-2">{score}/1500</p>
-            {/* <div className="w-full bg-gray-200 rounded-lg border border-golden bg-transparent overflow-hidden p-1">
-              <div className="h-1 bg-white rounded-lg">
-                <div
-                  className="h-full bg-[#FFFFE5] rounded-lg"
-                  style={{ width: `${(score / 500) * 100}%` }}
-                ></div>
+        <div className=" mx-4">
+          <div className="flex  items-center justify-between mb-2">
+            <div className="flex  items-center space-x-2">
+              <div>
+                <img src={flash} className="h-8" alt="" />
               </div>
-            </div> */}
+              <p className="text-xl text-black ">
+                <span className="text-2xl">{score}</span>/1500
+              </p>
+            </div>
+
+            {/* boost button  */}
+            <div className="rounded-lg flex justify-center  px-2 space-x-1 bg-[#F9C399] border-[#FA650F] border shadow-custom  shadow-[#FA650F]">
+              <div>
+                <img src={shuttle} className="h-10" alt="" />
+              </div>
+              <button
+                className=" text-black text-xl"
+                onClick={() => {
+                  navigate("/boost");
+                }}
+              >
+                Boost
+              </button>
+            </div>
           </div>
 
-          <div className=" flex justify-center space-x-2">
-            <div>
-              <img src={shuttle} className="h-8" alt="" />
+          {/* progres bar  */}
+          <div className="w-full border-orange-500 border-2  rounded-lg ">
+            <div className="h-4 bg-orange-500 rounded-lg">
+              <div
+                className="h-full bg-[#FDCD45] rounded-lg"
+                style={{ width: `${(score / 1500) * 100}%` }}
+              ></div>
             </div>
-            <button
-              className=" text-black text-2xl"
-              onClick={() => {
-                navigate("/boost");
-              }}
-            >
-              Boost
-            </button>
           </div>
         </div>
         {showResetPopup && (
@@ -451,6 +474,21 @@ const TapCoinGame = () => {
             </div>
           </div>
         )}
+
+        {clicks.map((click) => (
+          <div
+            key={click.id}
+            className="absolute text-5xl font-bold opacity-0 text-white pointer-events-none"
+            style={{
+              top: `${click.y - 42}px`,
+              left: `${click.x - 28}px`,
+              animation: `float 1s ease-out`,
+            }}
+            onAnimationEnd={() => handleAnimationEnd(click.id)}
+          >
+            +{tapPerCoin}
+          </div>
+        ))}
       </div>
       <BackButton onClick={() => navigate("/games")} />;
     </WebAppProvider>
