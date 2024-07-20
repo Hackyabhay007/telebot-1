@@ -47,7 +47,7 @@ const TapSwapStats = () => {
       <div className="rounded-lg">
         <Profile />
 
-        <div className=" items-center mb-10 border text-black">
+        <div className=" items-center   text-black mt-10 mb-20">
           <div className="text-center text-lg">Your Balance</div>
           <div className="flex justify-center items-center space-x-2">
             <img src={dollar} className="h-8 w-8" alt="" />
@@ -56,7 +56,7 @@ const TapSwapStats = () => {
         </div>
 
         <animated.div
-          className="text-black  shadow-md mb-2 p-2 flex justify-between rounded-md border border-orange-400 backdrop-blur-sm bg-[#FDE5C1]
+          className="text-black  shadow-md mb-3 p-2 flex justify-between rounded-md border border-orange-400 backdrop-blur-sm bg-[#FDE5C1]
 ]"
           style={level1Props}
         >
@@ -65,7 +65,7 @@ const TapSwapStats = () => {
         </animated.div>
 
         <animated.div
-          className="text-black  shadow-md mb-2 p-2 flex justify-between rounded-md border border-orange-400 backdrop-blur-sm bg-[#FDE5C1]
+          className="text-black  shadow-md mb-3 p-2 flex justify-between rounded-md border border-orange-400 backdrop-blur-sm bg-[#FDE5C1]
 ]"
           style={level2Props}
         >
@@ -76,7 +76,7 @@ const TapSwapStats = () => {
         </animated.div>
 
         <animated.div
-          className="text-black  shadow-md mb-2 p-2 flex justify-between rounded-md border border-orange-400 backdrop-blur-sm bg-[#FDE5C1]
+          className="text-black  shadow-md mb-3 p-2 flex justify-between rounded-md border border-orange-400 backdrop-blur-sm bg-[#FDE5C1]
 ]"
           style={level3Props}
         >
