@@ -15,6 +15,10 @@ import shuttle from "../assets/shuttle.png";
 import { BackButton, WebAppProvider } from "@vkruglikov/react-telegram-web-app";
 import { UserDataContext } from "../Utils/userDataContext";
 import coin1 from "../../src/assets/coin1.png";
+import dollar from "../../src/assets/dollar.png";
+import dailyreward from "../../src/assets/dailyreward.png"
+import dailytask from "../../src/assets/dailytask.png"
+import Profile from "../components/Profile";
 
 const TapCoinGame = () => {
   const [score, setScore] = useState(1500);
@@ -315,6 +319,10 @@ const TapCoinGame = () => {
         <div className="mt-8 space-y-8">
           {/* levels */}
 
+           <div>
+                 
+           </div>
+
           <div className="relative flex">
             <h1
               onClick={() => {
@@ -359,65 +367,43 @@ const TapCoinGame = () => {
           <div className="flex">
             <div
               onClick={() => navigate("/tasks")}
-              className="mx-2 shadow-md px-6 py-2 flex flex-col items-center border-2 rounded-xl bg-[#FFFFE5] text-black"
+              className="mx-2 shadow-md  p-2 flex flex-col items-center border-2 rounded-xl border-[#F9C399] text-black"
             >
-              <img src={gift} alt="" className="h-8 w-8" />
+              <img src={dailyreward} alt="" className="h-8 w-8" />
               <div>Daily Reward</div>
+            </div>
+            <div
+              onClick={() => navigate("/tasks")}
+              className="mx-2 shadow-md  p-2 flex flex-col items-center border-2 rounded-xl border-[#F9C399] text-black"
+            >
+              <img src={dollar} alt="" className="h-8 w-8" />
+              <div>Daily Coins</div>
+            </div>
+            <div
+              onClick={() => navigate("/tasks")}
+              className="mx-2 shadow-md  p-2 flex flex-col items-center border-2 rounded-xl border-[#F9C399] text-black"
+            >
+              <img src={dailytask} alt="" className="h-8 w-8" />
+              <div>Daily Task</div>
             </div>
           </div>
 
           <div className="flex items-center justify-center">
-            {/* <ShareBalance view={1} /> */}
             <div className="flex items-center space-x-2">
-              <div>
-                <img src={coin} alt="" className="h-10 w-10" />
-              </div>
+              <img src={dollar} alt="" className="h-10 w-10" />
               <div className="text-black text-2xl">{coinValue}</div>
             </div>
           </div>
         </div>
 
-        {/* <div className="relative w-full h-full flex items-center justify-center mb-20">
+        <div className="relative w-full h-full flex items-center justify-center">
           <div className="absolute left-0 w-full   h-[70%] rotate-12 bg-no-repeat bg-gradient-to-l from-transparent to-golden filter opacity-70 blur-2xl"></div>
           <div className="absolute right-0 w-full   h-[70%] rotate-12 bg-no-repeat bg-gradient-to-l from-golden to-transparent filter opacity-70 blur-2xl"></div>
 
           <div
-            onClick={(event) => {
-              handleClick(event);
-              setIsShaking(true);
-            }}
             className={` coin-container flex  justify-center w-full  transform `}
           >
-            <img
-              src={coin1}
-              alt="coin"
-              className={` w-[60%] h-auto ${isShaking ? "animate-shake" : ""}`}
-            />
-            {tapEffect && (
-              <div
-                className="tap top-20 absolute text-3xl  mr"
-                style={{ animation: "float 0.9s " }}
-              >
-                {doubleCoinActive && tenXCoinActive
-                  ? "+12"
-                  : tenXCoinActive
-                  ? "+10"
-                  : doubleCoinActive
-                  ? "+2"
-                  : "+" + tapPerCoin}
-              </div>
-            )}
-          </div>
-        </div> */}
-
-        <div className="px-4 mt-4 flex justify-center">
-          <div
-            className="w-80 h-80 p-4 rounded-full circle-outer"
-            onClick={handleCardClick}
-          >
-            <div className="w-full h-full rounded-full circle-inner">
-              <img src={coin1} alt="Main Character" className="w-full h-full" />
-            </div>
+            <img src={coin1} onClick={handleCardClick} />
           </div>
         </div>
 

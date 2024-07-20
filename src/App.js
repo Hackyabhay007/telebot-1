@@ -27,17 +27,14 @@ function App() {
         <CoinProvider>
           <Provider store={store}>
             <Router>
-              <div className="min-h-screen overflow-hidden text-primary font-body  bg-custom-gradient-tapgame">
+              <div className="min-h-screen overflow-hidden  font-body  bg-custom-gradient-tapgame">
                 <Routes>
                   <Route path="/" element={<Admin />} />
                   <Route path="/home/:chatId" element={<Home />} />
                   <Route path="/home/:chatId/:refId" element={<Home />} />
                   <Route path="/referral" element={<Referral />} />
                   <Route path="/tasks" element={<Tasks />} />
-                  {/* <Route path="/games" element={<Games />} /> */}
-                  {/* <Route path="/games/tapcoin" element={<TapCoinGame />} /> */}
-                  <Route path="/games" element={<TapCoinGame />} />
-                  {/* <Route path="/games/mariorun" element={<MarioGame />} /> */}
+                  {/* <Route path="/games" element={<TapCoinGame />} /> */}
                   <Route path="/boost" element={<Boost />} />
                   <Route path="/stats" element={<Stats />} />
                 </Routes>

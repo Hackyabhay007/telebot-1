@@ -1,8 +1,9 @@
 import { useSpring, animated } from "react-spring";
-import coin from "../Games/Assets/coin.png";
 import { CoinContext } from "../Utils/coinContext";
 import { useContext, useEffect, useState } from "react";
 import { UserDataContext } from "../Utils/userDataContext";
+import dollar from "../../src/assets/dollar.png";
+import Profile from "./Profile";
 
 const TapSwapStats = () => {
   const { coinValue } = useContext(CoinContext);
@@ -20,9 +21,6 @@ const TapSwapStats = () => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   };
 
-  // Generate random values within specified ranges
-  const totalShareBalance = getRandomNumber(1000000, 1000000000); // More than 1,000,000
-  const dailyUsers = getRandomNumber(500, 5000); // 500 to 5000
   const gamesPlayed = getRandomNumber(1000000, 3000000); // 1,000,000 to 3,000,000
   const onlineUsers = getRandomNumber(500, 5000); // 500 to 5000
 
@@ -45,54 +43,48 @@ const TapSwapStats = () => {
   });
 
   return (
-    <div className="p-4 rounded-lg chakra-petch-bold overflow-hidden">
-      <div className="grid md:grid-cols-2 gap-4">
-        <div>
-          <div className="p-4 rounded-lg">
-            <div className="flex items-center mb-10 border text-black rounded-md border-golden bg-[#FFFFE5]">
-              <img src={coin} className="h-24" alt="" />
-              <div className="text-center">
-                <h3 className="text-xl font-bold chakra-petch-bold text-golden">
-                  Total Balance
-                </h3>
-                <p className="text-lg chakra-petch-bold  ">{coinValue}</p>
-              </div>
-            </div>
-            <animated.div
-              className=" mb-3 p-2 rounded-md border border-golden backdrop-blur-sm bg-[#FFFFE5]"
-              style={level1Props}
-            >
-              <div className="flex justify-between items-center mb-2">
-                <h3 className="text-xl font-bold text-golden">Total Users</h3>
-              </div>
-              <p className="text-lg text-black chakra-petch-bold">
-                {totalUsers}
-              </p>
-            </animated.div>
-            <animated.div
-              className="bg-[#FFFFE5] p-2 rounded-md border border-golden backdrop-blur-sm "
-              style={level2Props}
-            >
-              <div className="flex justify-between items-center mb-2">
-                <h3 className="text-xl font-bold text-golden">Games Played</h3>
-              </div>
-              <p className="text-lg text-black chakra-petch-bold">
-                {gamesPlayed.toLocaleString()}
-              </p>
-            </animated.div>
-            <animated.div
-              className="mt-3 p-2 rounded-md border border-golden backdrop-blur-sm bg-[#FFFFE5]"
-              style={level3Props}
-            >
-              <div className="flex justify-between items-center mb-2">
-                <h3 className="text-xl font-bold text-golden">Online Users</h3>
-              </div>
-              <p className="text-lg text-black chakra-petch-bold">
-                {onlineUsers.toLocaleString()}
-              </p>
-            </animated.div>
+    <div className="mx-4 rounded-lg chakra-petch-bold overflow-hidden pt-4">
+      <div className="rounded-lg">
+        <Profile />
+
+        <div className=" items-center mb-10 border text-black">
+          <div className="text-center text-lg">Your Balance</div>
+          <div className="flex justify-center items-center space-x-2">
+            <img src={dollar} className="h-8 w-8" alt="" />
+            <p className="text-4xl chakra-petch-bold  ">{coinValue}</p>
           </div>
         </div>
+
+        <animated.div
+          className="text-black  shadow-md mb-2 p-2 flex justify-between rounded-md border border-orange-400 backdrop-blur-sm bg-[#FDE5C1]
+]"
+          style={level1Props}
+        >
+          <div className="font-bold text-lg">Total Users</div>
+          <p className="text-lg chakra-petch-bold">{totalUsers}</p>
+        </animated.div>
+
+        <animated.div
+          className="text-black  shadow-md mb-2 p-2 flex justify-between rounded-md border border-orange-400 backdrop-blur-sm bg-[#FDE5C1]
+]"
+          style={level2Props}
+        >
+          <div className="font-bold text-lg">Games Played</div>
+          <p className="text-lg chakra-petch-bold">
+            {gamesPlayed.toLocaleString()}
+          </p>
+        </animated.div>
+
+        <animated.div
+          className="text-black  shadow-md mb-2 p-2 flex justify-between rounded-md border border-orange-400 backdrop-blur-sm bg-[#FDE5C1]
+]"
+          style={level3Props}
+        >
+          <div className="font-bold text-lg">Online Users</div>
+          <p className="text-lg chakra-petch-bold">
+            {onlineUsers.toLocaleString()}
+          </p>
+        </animated.div>
       </div>
     </div>
   );
