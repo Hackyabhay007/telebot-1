@@ -16,8 +16,8 @@ import { BackButton, WebAppProvider } from "@vkruglikov/react-telegram-web-app";
 import { UserDataContext } from "../Utils/userDataContext";
 import coin1 from "../../src/assets/coin1.png";
 import dollar from "../../src/assets/dollar.png";
-import dailyreward from "../../src/assets/dailyreward.png"
-import dailytask from "../../src/assets/dailytask.png"
+import dailyreward from "../../src/assets/dailyreward.png";
+import dailytask from "../../src/assets/dailytask.png";
 import Profile from "../components/Profile";
 
 const TapCoinGame = () => {
@@ -33,6 +33,7 @@ const TapCoinGame = () => {
   const [isShaking, setIsShaking] = useState(false);
   const [showLevels, setShowLevels] = useState(false);
   const [clicks, setClicks] = useState([]);
+  const [levels, setLevels] = useState("01");
 
   const intervalRef = useRef(null);
   const timeoutRef = useRef(null);
@@ -46,8 +47,9 @@ const TapCoinGame = () => {
     setCoinValue,
   } = useContext(CoinContext);
 
-  const { updateBoostLimit } = useContext(UserDataContext);
+  const { updateBoostLimit, userData } = useContext(UserDataContext);
 
+  console.log(userData);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -318,20 +320,17 @@ const TapCoinGame = () => {
       >
         <div className="mt-8 space-y-8">
           {/* levels */}
-
-           <div>
-                 
-           </div>
-
-          <div className="relative flex">
-            <h1
-              onClick={() => {
-                setShowLevels(!showLevels);
-              }}
-              className="cursor-pointerpointer flex gap-7 justify-between rounded-r-xl bg-[#FFFFE5] text-black px-5  py-1 shadow-md"
-            >
-              <span className="flex items-center space-x-1">
-                <span> Level</span>
+          <div className="flex">
+            <h1 className="flex gap-7 justify-between rounded-r-xl bg-[#FFFFE5] text-black px-5  py-1 shadow-md">
+              <div className="">
+                <div className="inline-block">Level - {levels}</div>
+                <div className="inline-block border-orange-500 border-2  rounded-lg ">
+                  <div
+                    className="h-4 bg-[#FDCD45] rounded-lg"
+                    style={{ width: `${(coinValue / 5000) * 100}%` }}
+                  ></div>
+                </div>
+                {/* 
                 {!showLevels ? (
                   <span>
                     <svg
@@ -352,15 +351,9 @@ const TapCoinGame = () => {
                       <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
                     </svg>
                   </span>
-                )}
-              </span>
-              <span>1/18</span>
-            </h1>
-            {showLevels && (
-              <div className="absolute top-8 left-12 bg-red-200">
-                Levels PoPUP
+                )} */}
               </div>
-            )}
+            </h1>
           </div>
 
           {/* daily reward */}

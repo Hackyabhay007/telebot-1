@@ -34,7 +34,7 @@ function App() {
                   <Route path="/home/:chatId/:refId" element={<Home />} />
                   <Route path="/referral" element={<Referral />} />
                   <Route path="/tasks" element={<Tasks />} />
-                  {/* <Route path="/games" element={<TapCoinGame />} /> */}
+                  <Route path="/games" element={<TapCoinGame />} />
                   <Route path="/boost" element={<Boost />} />
                   <Route path="/stats" element={<Stats />} />
                 </Routes>

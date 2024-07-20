@@ -16,6 +16,7 @@ export const UserDataProvider = ({ children }) => {
     nextDay10x: new Date().getDate() + 1,
     startDay20x: new Date().getDate(),
     nextDay20x: new Date().getDate() + 1,
+    level:"01",
   });
 
   useEffect(() => {
