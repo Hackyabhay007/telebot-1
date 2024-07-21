@@ -314,23 +314,36 @@ const TapCoinGame = () => {
   return (
     <WebAppProvider>
       <div
-        className=" min-h-screen  overflow-hidden   flex flex-col justify-start i  bg-custom-gradient-tapgame text-white font-display chakra-petch-bold  "
+        className=" min-h-screen  overflow-hidden   flex flex-col justify-start mt-10  bg-custom-gradient-tapgame text-white font-display chakra-petch-bold  "
         onCopy={(e) => e.preventDefault()}
         onCut={(e) => e.preventDefault()}
       >
-        <div className="mt-8 space-y-8">
+        <div className="space-y-2">
+          <div className="mx-4">
+            <Profile />
+          </div>
           {/* levels */}
-          <div className="flex">
-            <h1 className="flex gap-7 justify-between rounded-r-xl bg-[#FFFFE5] text-black px-5  py-1 shadow-md">
-              <div className="">
-                <div className="inline-block">Level - {levels}</div>
-                <div className="inline-block border-orange-500 border-2  rounded-lg ">
+          <div className="flex  justify-between  bg-[#FFFFE5] text-black   shadow-md mx-3 px-2 border-orange-400 border rounded-xl py-1">
+            <div className="flex items-center justify-center space-x-2">
+              <div className="w-20">Level -{levels}</div>
+              <div className="w-[60vw] ">
+                <div className="h-4 bg-orange-500 rounded-lg ">
                   <div
-                    className="h-4 bg-[#FDCD45] rounded-lg"
-                    style={{ width: `${(coinValue / 5000) * 100}%` }}
+                    className="h-full bg-[#FDCD45] rounded-lg"
+                    style={{ width: `${(coinValue / 50000) * 100}%` }}
                   ></div>
                 </div>
-                {/* 
+              </div>
+              <div>
+                <svg
+                  className="h-3"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 320 512"
+                >
+                  <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z" />
+                </svg>
+              </div>
+              {/* 
                 {!showLevels ? (
                   <span>
                     <svg
@@ -352,14 +365,13 @@ const TapCoinGame = () => {
                     </svg>
                   </span>
                 )} */}
-              </div>
-            </h1>
+            </div>
           </div>
 
           {/* daily reward */}
           <div className="flex">
             <div
-              onClick={() => navigate("/tasks")}
+              onClick={() => navigate("/dailyrewards")}
               className="mx-2 shadow-md  p-2 flex flex-col items-center border-2 rounded-xl border-[#F9C399] text-black"
             >
               <img src={dailyreward} alt="" className="h-8 w-8" />

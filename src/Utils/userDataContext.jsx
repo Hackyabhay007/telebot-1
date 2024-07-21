@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from "react";
 import { firestore } from "./remote";
+import DailyReward from "../Pages/DailyReward";
 
 export const UserDataContext = createContext();
 
@@ -16,7 +17,7 @@ export const UserDataProvider = ({ children }) => {
     nextDay10x: new Date().getDate() + 1,
     startDay20x: new Date().getDate(),
     nextDay20x: new Date().getDate() + 1,
-    level:"01",
+    DailyReward:[]
   });
 
   useEffect(() => {
@@ -29,6 +30,7 @@ export const UserDataProvider = ({ children }) => {
         const doc = await docRef.get();
         if (doc.exists) {
           const userData = doc.data();
+          console.log(userData)
           setUserData({ ...userData });
         } else {
           console.error("User not found");

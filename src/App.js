@@ -17,6 +17,7 @@ import { LoadingProvider, useLoading } from "./Utils/LoadingContext";
 import { Provider } from "react-redux";
 import { store } from "./Games/Mario/config/redux/store";
 import TelegramWebApps from "telegram-web-app-api";
+import DailyReward from "./Pages/DailyReward";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
                   <Route path="/games" element={<TapCoinGame />} />
                   <Route path="/boost" element={<Boost />} />
                   <Route path="/stats" element={<Stats />} />
+                  <Route path="/dailyrewards" element={<DailyReward />} />
                 </Routes>
                 <BottomNavBar />
               </div>

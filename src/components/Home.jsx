@@ -29,7 +29,8 @@ const AuthPage = () => {
 
         if (isAuthenticated) {
           console.log(
-            "User already exists, redirect to /games" + isAuthenticated
+            "User already exists, redirect to /games" +
+              JSON.stringify(isAuthenticated)
           );
           //  navigate("/games");
         } else {
@@ -45,11 +46,31 @@ const AuthPage = () => {
 
           const userData = {
             chatId: chatId,
-            coin: 100000,
             walletAddress: walletAddress,
-            referralCount: 0,
-            maxCoin: 0,
             claimedTasks: [],
+            coin: 100000,
+            maxCoin: 100000,
+            referralCount: 0,
+            refs: [],
+            limit10x: 3,
+            limit20x: 3,
+            startDay10x: new Date().getDate(),
+            nextDay10x: new Date().getDate() + 1,
+            startDay20x: new Date().getDate(),
+            nextDay20x: new Date().getDate() + 1,
+            DailyReward: [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+            ],
+            created_at:new Date().getDate()
           };
 
           const createdUser = await createUser(userData);
