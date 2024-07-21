@@ -28,6 +28,16 @@ import level5 from "../../src/assets/level-5.png";
 import level6 from "../../src/assets/level-6.png";
 import level7 from "../../src/assets/level-7.png";
 import level8 from "../../src/assets/level-8.png";
+import level9 from "../../src/assets/level-9.png";
+import level10 from "../../src/assets/level-10.png";
+import level11 from "../../src/assets/level-11.png";
+import level12 from "../../src/assets/level-12.png";
+import level13 from "../../src/assets/level-13.png";
+import level14 from "../../src/assets/level-14.png";
+import level15 from "../../src/assets/level-15.png";
+import level16 from "../../src/assets/level-16.png";
+import level17 from "../../src/assets/level-17.png";
+
 import profile2 from "../../src/assets/profile-2.png";
 import rank1 from "../../src/assets/rankOneBadge.png";
 import rank2 from "../../src/assets/rankTwoBadge.png";
@@ -52,6 +62,13 @@ const Levels = () => {
     "08",
     "09",
     "10",
+    "11",
+    "12",
+    "13",
+    "14",
+    "15",
+    "16",
+    "17",
   ];
 
   const levelMinPoints = [
@@ -92,6 +109,43 @@ const Levels = () => {
       id: 8,
       image: level8,
     },
+    {
+      id: 9,
+      image: level9,
+    },
+    {
+      id: 10,
+      image: level10,
+    },
+    {
+      id: 11,
+      image: level11,
+    },
+    {
+      id: 12,
+      image: level12,
+    },
+    {
+      id: 13,
+      image: level13,
+    },
+    {
+      id: 14,
+      image: level14,
+    },
+    {
+      id: 15,
+      image: level15,
+    },
+    {
+      id: 16,
+      image: level16,
+    },
+    {
+      id: 8,
+      image: level17,
+    },
+
   ];
 
   useEffect(() => {
@@ -160,7 +214,7 @@ const Levels = () => {
                   setLevel(level-1)
                 }
                 else{
-                  setLevel(7)
+                  setLevel(16)
                 }
                }}
               >
@@ -177,7 +231,7 @@ const Levels = () => {
               </span>
               <span className="absolute right-5 top-1/2"
                 onClick={()=>{
-                  if(level<7){
+                  if(level<16){
                     setLevel(level+1)
                   }
                   else{
