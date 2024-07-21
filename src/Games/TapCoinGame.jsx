@@ -47,7 +47,7 @@ const TapCoinGame = () => {
     setCoinValue,
   } = useContext(CoinContext);
 
-  const { updateBoostLimit, userData } = useContext(UserDataContext);
+  const { updateBoostLimit, userData , level } = useContext(UserDataContext);
 
   console.log(userData);
   const navigate = useNavigate();
@@ -311,6 +311,26 @@ const TapCoinGame = () => {
     setClicks((prevClicks) => prevClicks.filter((click) => click.id !== id));
   };
 
+  const levelNames = [
+    "01",
+    "02",
+    "03",
+    "04",
+    "05",
+    "06",
+    "07",
+    "08",
+    "09",
+    "10",
+  ];
+
+  const levelMinPoints = [
+    0, 500000, 1000000, 1500000, 2000000, 2500000, 3000000, 3500000, 5000000,
+    6500000,
+  ];
+
+
+
   return (
     <WebAppProvider>
       <div
@@ -325,16 +345,20 @@ const TapCoinGame = () => {
           {/* levels */}
           <div className="flex  justify-between  bg-[#FFFFE5] text-black   shadow-md mx-3 px-2 border-orange-400 border rounded-xl py-1">
             <div className="flex items-center justify-center space-x-2">
-              <div className="w-20">Level -{levels}</div>
+              <div className="w-20">Level - {levelNames[level-1]}</div>
               <div className="w-[60vw] ">
                 <div className="h-4 bg-orange-500 rounded-lg ">
                   <div
                     className="h-full bg-[#FDCD45] rounded-lg"
-                    style={{ width: `${(coinValue / 50000) * 100}%` }}
+                    style={{ width: `${(userData.maxCoin / levelMinPoints[level]) * 100}%` }}
                   ></div>
                 </div>
               </div>
-              <div>
+              <div
+                onClick={()=>{
+                  navigate("/levels")
+                }}
+                   >
                 <svg
                   className="h-3"
                   xmlns="http://www.w3.org/2000/svg"

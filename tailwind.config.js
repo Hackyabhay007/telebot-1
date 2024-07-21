@@ -17,6 +17,7 @@ module.exports = {
         'custom': 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',
       },
       backgroundImage: {
+        'level-gradient': 'linear-gradient(14.64deg, #FA650F 25%, rgba(252, 247, 189, 0.26) 59.35%)',
         'custom-gradient': 'linear-gradient(202.37deg, #600E8F 23.75%, #360A5A 52.09%, #181723 102.48%)',
         'custom-gradient-tapgame': 'linear-gradient(to bottom, #FDE5C1,#F7DAB8 ,#FFB169, #FFB268)',
         'sky': 'linear-gradient(0deg, rgba(255,134,134,1) 0%, rgba(2,233,242,1) 0%, rgba(44,127,247,1) 100%)',
