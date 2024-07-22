@@ -123,7 +123,7 @@ const DailyReward = () => {
           ))}
         </div>
       </div>
-      <BottomNavBar/>
+      {/* <BottomNavBar/> */}
     </div>
   );
 };

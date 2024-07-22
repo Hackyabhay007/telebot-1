@@ -20,9 +20,8 @@ export const UserDataProvider = ({ children }) => {
     DailyReward: [],
   });
 
-  const [level, setLevel] = useState(0);
+  const [level, setLevel] = useState(1);
   const [users, setUsers] = useState([]);
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -240,31 +239,43 @@ export const UserDataProvider = ({ children }) => {
 
   const fetchUsers = async (specificUserId) => {
     try {
-      const usersRef = firestore.collection('users');
-      
+      const usersRef = firestore.collection("users");
+
       // Fetch top three users
-      const topThreeSnapshot = await usersRef.orderBy('maxCoin', 'desc').limit(3).get();
-      let topUsers = topThreeSnapshot.docs.map(doc => ({
+      const topThreeSnapshot = await usersRef
+        .orderBy("maxCoin", "desc")
+        .limit(3)
+        .get();
+      let topUsers = topThreeSnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
 
       // Check if the specific user is in the top three
-      const specificUserIndex = topUsers.findIndex(user => user.id === specificUserId);
+      const specificUserIndex = topUsers.findIndex(
+        (user) => user.id === specificUserId
+      );
 
       if (specificUserIndex === -1) {
         // Specific user is not in the top three, fetch their data
         const specificUserDoc = await usersRef.doc(specificUserId).get();
         if (specificUserDoc.exists) {
-          const specificUserData = { id: specificUserDoc.id, ...specificUserDoc.data() };
+          const specificUserData = {
+            id: specificUserDoc.id,
+            ...specificUserDoc.data(),
+          };
           topUsers.push(specificUserData);
         }
       }
 
       // Fetch one more user if we need to ensure we have four users total
       if (topUsers.length < 4) {
-        const additionalUsersSnapshot = await usersRef.orderBy('maxCoin', 'desc').offset(3).limit(1).get();
-        additionalUsersSnapshot.forEach(doc => {
+        const additionalUsersSnapshot = await usersRef
+          .orderBy("maxCoin", "desc")
+          .offset(3)
+          .limit(1)
+          .get();
+        additionalUsersSnapshot.forEach((doc) => {
           topUsers.push({ id: doc.id, ...doc.data() });
         });
       }
@@ -275,9 +286,82 @@ export const UserDataProvider = ({ children }) => {
     }
   };
 
+  const createTotalBalanceDitributed = async () => {
+    try {
+      // Add the task document to the 'tasks' collection in Firestore
+      await firestore.collection("TotalBalance").add({
+        totalBalance: 1000000,
+        onlineUsers:500,
+        total:100,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+      return true; // Return true to indicate success
+    } catch (error) {
+      console.error("Error creating task:", error);
+      return false; // Return false to indicate failure
+    }
+  };
+
+  const fetchTotalBalance = async () => {
+    try {
+      const totalBalanceSnapshot = await firestore
+        .collection("TotalBalance")
+        .get();
+
+      if (totalBalanceSnapshot.empty) {
+        console.log("No total balance found.");
+        createTotalBalanceDitributed()
+        return null; // Return null if no documents are found
+      }
+
+      // Assuming there's only one document in the collection
+      const totalBalanceDoc = totalBalanceSnapshot.docs[0];
+      const totalBalanceData = totalBalanceDoc.data();
+
+      console.log("Total balance:", totalBalanceData.totalBalance);
+      return totalBalanceData.totalBalance;
+    } catch (error) {
+      console.error("Error fetching total balance:", error);
+      return null; // Return null to indicate failure
+    }
+  };
+
+
+
+
+  const ReferralClaimDBHandler =async (data)=>{
+    const userId = localStorage.getItem("chatId");
+    const newUserData= { ...userData  , data}
+    if (userId) {
+      firestore
+        .collection("users")
+        .doc(userId)
+        .set(newUserData)
+        .then(() => {
+          console.log("User data updated in Firestore");
+        })
+        .catch((error) => {
+          console.error("Error updating user data in Firestore: ", error);
+        });
+    } else {
+      console.error("User ID not found");
+    }
+  }
+
+  const SocialMediaClaimDBHandler = (newData)=>{
+    const newUserData = { ...userData, ...newData };
+    setUserData(newUserData);
+    console.log(newUserData)
+    // updateUserInFirestore(newUserData);
+  }
+
   return (
     <UserDataContext.Provider
       value={{
+        SocialMediaClaimDBHandler,
+        ReferralClaimDBHandler,
+        fetchTotalBalance,
         level,
         users,
         fetchUsers,

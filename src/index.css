@@ -148,3 +148,31 @@
     font-style: italic;
   }
   
+
+
+  /* index.css or tailwind.css */
+@keyframes slideInFromBottom {
+  from {
+      transform: translateY(100%);
+  }
+  to {
+      transform: translateY(0);
+  }
+}
+
+@keyframes slideOutToBottom {
+  from {
+      transform: translateY(0);
+  }
+  to {
+      transform: translateY(100%);
+  }
+}
+
+.modal-enter {
+  animation: slideInFromBottom 0.3s ease-out;
+}
+
+.modal-exit {
+  animation: slideOutToBottom 0.3s ease-in;
+}

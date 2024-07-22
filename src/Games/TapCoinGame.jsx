@@ -395,7 +395,7 @@ const TapCoinGame = () => {
           {/* daily reward */}
           <div className="flex justify-between mx-4">
             <div
-              onClick={() => navigate("/dailyrewards")}
+              onClick={() => navigate("/boost")}
               className="w-32 shadow-md  p-1 flex flex-col items-center border-2 rounded-xl border-[#F9C399] text-black"
             >
               <img src={dailyreward} alt="" className="h-8 w-8" />

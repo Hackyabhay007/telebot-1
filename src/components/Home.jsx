@@ -21,9 +21,6 @@ const AuthPage = () => {
   const { addRef } = useContext(UserDataContext);
 
   useEffect(() => {
-    console.log("Login ID:", chatId);
-    console.log("Referral ID:", refId);
-
     const authenticate = async () => {
       try {
         const isAuthenticated = await authenticateUserById(chatId);
@@ -52,6 +49,7 @@ const AuthPage = () => {
             coin: 100000,
             maxCoin: 100000,
             referralCount: 0,
+            invitefriendsclaim:[],
             refs: [],
             limit10x: 3,
             limit20x: 3,
@@ -71,7 +69,11 @@ const AuthPage = () => {
               false,
               false,
             ],
-            created_at:new Date().getDate()
+            created_at:new Date().getDate(),
+            joinYoutube:false,
+            joinTelegram:false,
+            joinTwitter:false,
+            joinInstagram:false , 
           };
 
           const createdUser = await createUser(userData);

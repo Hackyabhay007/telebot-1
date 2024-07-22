@@ -24,7 +24,6 @@ function App() {
   return (
     <LoadingProvider>
       <UserDataProvider>
-        {" "}
         {/* Wrap the entire app with the CoinProvider */}
         <CoinProvider>
           <Provider store={store}>
