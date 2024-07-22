@@ -14,9 +14,14 @@ import {
   updateBoostLimit,
   getPaidBoost,
 } from "../Utils/boostCreater";
-import dollar from "../../src/assets/dollar.png"
+import dollar from "../../src/assets/dollar.png";
 import { useNavigate } from "react-router-dom";
 import { UserDataContext } from "../Utils/userDataContext";
+import dailyBoost1 from "../../src/assets/10x.png";
+import dailyBoost2 from "../../src/assets/20x .png";
+import autoTap from "../../src/assets/autoTap.png";
+import fiftyX from "../../src/assets/50x.png";
+import flash from "../../src/assets/flash.png";
 
 const Boost = () => {
   const {
@@ -166,7 +171,7 @@ const Boost = () => {
           <div className=" flex justify-center items-center space-x-2 px-12">
             <img src={dollar} className="h-12" alt="" />
 
-            <p className="text-3xl chakra-petch-bold  text-golden">
+            <p className="text-4xl chakra-petch-bold ">
               {coinValue !== null ? coinValue : "Loading..."}
             </p>
           </div>
@@ -174,38 +179,45 @@ const Boost = () => {
       </div>
 
       <div className="text-white h-[0.09px] my-4 opacity-10 bg-white"></div>
-      <h1 className="chakra-petch-bold text-xl text-black">
-        {" "}
-        Free Daily Booster
-      </h1>
+      <h1 className="text-2xl text-black font-bold">Free Daily Booster</h1>
       <div className="">
         {dailyBoost.map((boost) => (
           <div
             key={boost.id}
-            className="flex flex-row md:flex-row items-center mb-2 rounded-md shadow-md bg-[#FFFFE5] cursor-pointer p-2 text-black"
+            className="border-orange-400 border  flex flex-row md:flex-row items-center mb-2 rounded-md shadow-md bg-[#FFFFE5] cursor-pointer p-2 text-black"
           >
             <div className="flex justify-between flex-grow">
-              <div className="flex flex-col">
-                <div className="mb-2">
-                  <h3 className="text-lg font-bold text-black">
-                    {boost.name}
-                    {"(" +
-                      (boost.id == 1 ? userData.limit10x : userData.limit20x) +
-                      ")"}
-                  </h3>
+              <div className="flex space-x-4">
+                <div className="flex justify-center items-center">
+                  <img
+                    src={boost.name === "10x" ? dailyBoost1 : dailyBoost2}
+                    alt=""
+                  />
+                </div>
+                <div className="flex flex-col justify-center items-center">
+                  <div className="">
+                    <h3 className="text-lg font-bold text-black">
+                      {boost.name} Boost
+                      {"(" +
+                        (boost.id == 1
+                          ? userData.limit10x
+                          : userData.limit20x) +
+                        ")"}
+                    </h3>
+                  </div>
                 </div>
               </div>
-              <div className="flex items-center justify-end">
+              <div className="flex items-center ">
                 <button
                   disabled={boost.limit <= 0 ? true : false}
-                  className=" bg-golden text-black  hover:bg-zinc-800  font-bold py-1 px-4 rounded-3xl"
+                  className="text-white bg-orange-400 px-4 py-1 rounded-md shadow-md font-bold"
                   onClick={() => {
                     handleUse(boost);
                     setIsAnimating(true);
                     setTimeout(() => setIsAnimating(false), 100);
                   }}
                 >
-                  Use
+                  USE
                 </button>
               </div>
             </div>
@@ -214,25 +226,48 @@ const Boost = () => {
       </div>
 
       {/* Boosters  */}
-      <h1 className="chakra-petch-bold text-xl text-black"> Booster</h1>
+      <h1 className="chakra-petch-bold text-2xl text-black mt-4"> Booster</h1>
       <div className="">
         {paidBoost.map((boost) => (
           <div
             key={boost.id}
-            className="flex  justify-between md:flex-row items-center mb-2 rounded-md shadow-md bg-[#FFFFE5] cursor-pointer p-2 text-black"
+            className="flex  justify-between md:flex-row items-center mb-2 border border-orange-400  rounded-md shadow-md bg-[#FFFFE5] cursor-pointer p-2 text-black"
           >
             <div className="flex  flex-grow justify-between">
-              <div className="flex flex-col">
+              <div className="flex space-x-6">
+                <div
+                  className={`${
+                    boost.name === "AutoTap" || "Full Energy"? "" : " bg-orange-400 "
+                  }flex justify-center items-center p-1 rounded-full w-9`}
+                >
+                  <img
+                    className=""
+                    src={boost.name == "AutoTap" && autoTap}
+                    alt=""
+                  />
+                  <img
+                    className=""
+                    src={boost.name == "10x AutoTap" && dailyBoost1}
+                    alt=""
+                  />
+                  <img
+                    className=""
+                    src={boost.name == "50x AutoTap" && fiftyX}
+                    alt=""
+                  />
+                  {boost.name === "100x AutoTap" && <div className="text-progrerss-bar-start rounded-full font-bold text-xl tracking-tighter">100x</div>}
+                  <img src={boost.name == "Full Energy" && flash} className="" alt="" />
+                </div>
                 <div className="mb-2">
                   <h3 className="text-lg font-bold text-black">{boost.name}</h3>
                 </div>
-                {/* <p className="text-sm font-bold mb-2">{boost.description}</p> */}
               </div>
+
               <div className="flex items-center justify-end">
                 {
                   <button
                     disabled={boost.limit <= 0 ? true : false}
-                    className=" bg-golden text-black  hover:bg-zinc-800  font-bold py-1 px-4 rounded-3xl"
+                    className="bg-orange-400 text-white px-4 py-1 rounded-md font-bold"
                     onClick={() => handleBuy(boost)}
                   >
                     Buy
