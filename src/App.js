@@ -29,7 +29,7 @@ function App() {
         <CoinProvider>
           <Provider store={store}>
             <Router>
-              <div className="min-h-screen overflow-hidden  font-body  bg-custom-gradient-tapgame">
+              <div className="h-screen overflow-hidden  font-body  bg-custom-gradient-tapgame">
                 <Routes>
                   <Route path="/" element={<Admin />} />
                   <Route path="/home/:chatId" element={<Home />} />
@@ -42,7 +42,7 @@ function App() {
                   <Route path="/dailyrewards" element={<DailyReward />} />
                   <Route path="/levels" element={<Levels />} />
                 </Routes>
-                <BottomNavBar />
+                {/* <BottomNavBar /> */}
               </div>
             </Router>
           </Provider>

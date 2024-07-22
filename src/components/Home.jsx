@@ -6,6 +6,7 @@ import { FaCopy } from "react-icons/fa"; // Import the copy icon
 import { useSpring, animated } from "react-spring"; // Import animations
 import { ethers } from "ethers";
 import { UserDataContext } from "../Utils/userDataContext.jsx";
+import BottomNavBar from "./BottomNavBar.jsx";
 
 const AuthPage = () => {
   const navigate = useNavigate();
@@ -269,6 +270,7 @@ const AuthPage = () => {
           </div>
         </div>
       )}
+      <BottomNavBar/>
     </div>
   );
 };

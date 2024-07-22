@@ -393,24 +393,24 @@ const TapCoinGame = () => {
           </div>
 
           {/* daily reward */}
-          <div className="flex">
+          <div className="flex justify-between mx-4">
             <div
               onClick={() => navigate("/dailyrewards")}
-              className="mx-2 shadow-md  p-2 flex flex-col items-center border-2 rounded-xl border-[#F9C399] text-black"
+              className="w-32 shadow-md  p-2 flex flex-col items-center border-2 rounded-xl border-[#F9C399] text-black"
             >
               <img src={dailyreward} alt="" className="h-8 w-8" />
               <div>Daily Reward</div>
             </div>
             <div
               onClick={() => navigate("/tasks")}
-              className="mx-2 shadow-md  p-2 flex flex-col items-center border-2 rounded-xl border-[#F9C399] text-black"
+              className="w-32 shadow-md  p-2 flex flex-col items-center border-2 rounded-xl border-[#F9C399] text-black"
             >
               <img src={dollar} alt="" className="h-8 w-8" />
               <div>Daily Coins</div>
             </div>
             <div
               onClick={() => navigate("/tasks")}
-              className="mx-2 shadow-md  p-2 flex flex-col items-center border-2 rounded-xl border-[#F9C399] text-black"
+              className="w-32 shadow-md  p-2 flex flex-col items-center border-2 rounded-xl border-[#F9C399] text-black"
             >
               <img src={dailytask} alt="" className="h-8 w-8" />
               <div>Daily Task</div>
@@ -467,7 +467,7 @@ const TapCoinGame = () => {
           <div className="w-full border-orange-500 border-2  rounded-lg ">
             <div className="h-4 bg-orange-500 rounded-lg">
               <div
-                className="h-full bg-[#FDCD45] rounded-lg"
+                className="h-full bg-progress-bar rounded-lg"
                 style={{ width: `${(score / 1500) * 100}%` }}
               ></div>
             </div>
@@ -504,6 +504,8 @@ const TapCoinGame = () => {
             +{tapPerCoin}
           </div>
         ))}
+
+        <BottomNavBar></BottomNavBar>
       </div>
       <BackButton onClick={() => navigate("/games")} />;
     </WebAppProvider>

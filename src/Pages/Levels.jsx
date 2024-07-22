@@ -44,8 +44,10 @@ import rank2 from "../../src/assets/rankTwoBadge.png";
 import rank3 from "../../src/assets/rankThreeBadge.png";
 
 const Levels = () => {
-  const { updateBoostLimit, userData, level,setLevel , users, fetchUsers } =
+  const { updateBoostLimit, userData , users, fetchUsers } =
     useContext(UserDataContext);
+
+    const [level , setLevel]=useState(0)
 
   const ranks = [rank1, rank2, rank3, ""];
 
@@ -142,7 +144,7 @@ const Levels = () => {
       image: level16,
     },
     {
-      id: 8,
+      id: 17,
       image: level17,
     },
 
@@ -153,7 +155,7 @@ const Levels = () => {
     if (chatId) {
       fetchUsers(chatId);
     }
-  }, [fetchUsers]);
+  }, []);
 
   function formatNumber(num) {
     if (num >= 1000000) {
@@ -165,6 +167,8 @@ const Levels = () => {
     }
   }
 
+  console.log("Re renderng")
+
   return (
     <WebAppProvider>
       <div className=" min-h-screen  overflow-hidden   flex flex-col justify-start mt-10  bg-custom-gradient-tapgame text-white font-display chakra-petch-bold  ">
@@ -175,8 +179,8 @@ const Levels = () => {
           {/* levels */}
           <div className="flex my-4 justify-between  bg-[#FFFFE5] text-black   shadow-md mx-3 px-2 border-orange-400 border rounded-xl py-1">
             <div className="flex items-center justify-center space-x-2">
-              <div className="w-20">Level - {levelNames[level - 1]}</div>
-              <div className="w-[60vw] ">
+              <div className="w-20">Level - {levelNames[level]}</div>
+              {/* <div className="w-[60vw] ">
                 <div className="h-4 bg-orange-500 rounded-lg ">
                   <div
                     className="h-full bg-[#FDCD45] rounded-lg"
@@ -187,7 +191,7 @@ const Levels = () => {
                     }}
                   ></div>
                 </div>
-              </div>
+              </div> */}
               <div
                 onClick={() => {
                   navigate("/levels");
@@ -235,7 +239,7 @@ const Levels = () => {
                     setLevel(level+1)
                   }
                   else{
-                    setLevel(1)
+                    setLevel(0)
                   }
                 }}
               >
@@ -252,7 +256,7 @@ const Levels = () => {
                   />
                 </svg>
               </span>
-              <img src={imageData[level].image} className="pb-5 w-52 h-52" />
+              <img src={imageData[level].image} className="pb-5 h-52" />
               <img
                 src={levelCircle}
                 alt=""
@@ -262,7 +266,7 @@ const Levels = () => {
           </div>
 
           {users.map((user, index) => (
-            <div className="flex justify-around items-center gap-6  bg-[#FDE5C1]  rounded-lg shadow-md border border-orange-400 my-2 py-2 mx-4">
+            <div className="flex justify-between px-4 items-center gap-6  bg-[#FDE5C1]  rounded-lg shadow-md border border-orange-400 my-2 py-2 mx-4">
               <div className="flex space-x-2">
                 <div className="p-2  rounded-full bg-[#FA891B]">
                   <img className=" p-1  h-8" src={profile2} alt="profile" />
@@ -279,7 +283,7 @@ const Levels = () => {
               <div>
                 <img src={ranks[index]} alt="" />
               </div>
-              <div className="flex bg-[#FA891B] items-center justify-center px-3 py-1 rounded-lg space-x-2">
+              <div className="w-28 flex bg-[#FA891B] items-center justify-center px-3 py-1 rounded-lg space-x-2">
                 <div className="">
                   <img src={dollar} alt="" className="h-7" />
                 </div>
