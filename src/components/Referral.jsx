@@ -6,6 +6,8 @@ import BottomNavBar from "./BottomNavBar";
 import Loader from "./Loader"; // Import the Loader component
 import Profile from "./Profile";
 import share from "../../src/assets/share.png";
+import group from "../../src/assets/group.png";
+import dollar from "../../src/assets/dollar.png";
 
 const Referral = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -14,11 +16,18 @@ const Referral = () => {
     to: { opacity: 1, transform: "translateY(0px)" },
     delay: 200,
   });
-
+  const [addFriendModal, setAddFriendModal] = useState(false);
   const [referralLink, setReferralLink] = useState("");
   const [copied, setCopied] = useState(false); // State to track if referral link is copied
-  const { getReferralCount, userData, addRef, getRefs } =
-    useContext(UserDataContext);
+  const {
+    getReferralCount,
+    userData,
+    addRef,
+    getRefs,
+    ReferralClaimDBHandler,
+  } = useContext(UserDataContext);
+
+  const [addFriendActiveModal, setAddFriendActiveModal] = useState(0);
 
   useEffect(() => {
     // Simulate loading time
@@ -57,20 +66,212 @@ const Referral = () => {
     window.open(telegramLink, "_blank");
   };
 
+  const AddFriendClaimHandler = (count, amount) => {
+    const newDAta = userData.invitefriendsclaim;
+    const arrayData = [];
+    for (let i = 0; i < userData.referralCount; i++) {
+      arrayData.push(false);
+    }
+
+    ReferralClaimDBHandler({
+      referralCount: count,
+      maxCoin: userData.maxCoin + amount,
+      coin: userData.coin + amount,
+      invitefriendsclaim: newDAta,
+    });
+  };
+
+  function getNthTerm(n) {
+    const startNumber = 250;
+    const commonRatio = 2;
+    if (n < 1) {
+      throw new Error("The term number must be a positive integer.");
+    }
+    return startNumber * Math.pow(commonRatio, n - 1);
+  }
+
   return (
     <div className="mt-4 overflow-hidden rounded-lg chakra-petch-bold">
       <div className="mx-4">
         <Profile></Profile>
       </div>
-      <div className="items-center mb-4 mt-12">
+      <div className="items-center mb-2 mt-6">
         <p className="text-3xl chakra-petch-bold text-black text-center mb-10">
-          Referrals Count: {userData.refs.length}
+          Referrals Count: {userData?.referralCount}
         </p>
       </div>
+
+      {/* add friends  */}
+      <div className="space-y-2 mx-4 mb-4">
+        <h1 className="text-center text-2xl font-bold">Invite Friends</h1>
+
+        <div className="border border-orange-400 shadow-md px-2 py-1 rounded-lg">
+          <div className="flex justify-between items-center">
+            <div className="flex justify-center items-center space-x-6">
+              <div>
+                <img src={group} alt="" className="h-5" />
+              </div>
+              <div className="">
+                <div className="font-bold">
+                  Add {userData.referralCount + 1} friends
+                </div>
+                <div className="flex space-x-1 ">
+                  <div className="flex items-center justify-center">
+                    <img src={dollar} className="h-5" alt="" />
+                  </div>
+                  <div className="text-sm font-bold">
+                    {getNthTerm(userData.referralCount + 1)} coins
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center">
+              {addFriendModal && addFriendActiveModal === 1 ? (
+                <svg
+                  className="h-6"
+                  onClick={() => {
+                    setAddFriendModal(!addFriendModal);
+                    setAddFriendActiveModal(0);
+                  }}
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 512 512"
+                >
+                  <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+                </svg>
+              ) : (
+                <svg
+                  className="h-6"
+                  onClick={() => {
+                    setAddFriendModal(!addFriendModal);
+                    setAddFriendActiveModal(1);
+                  }}
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 320 512"
+                >
+                  <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z" />
+                </svg>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div className="border border-orange-400 shadow-md p-2 rounded-lg">
+          <div className="flex justify-between items-center">
+            <div className="flex justify-center items-center space-x-6">
+              <div>
+                <img src={group} alt="" className="h-5" />
+              </div>
+              <div className="">
+                <div className="font-bold">
+                  Add {userData.referralCount + 2} friends
+                </div>
+                <div className="flex space-x-1 ">
+                  <div className="flex items-center justify-center">
+                    <img src={dollar} className="h-5" alt="" />
+                  </div>
+                  <div className="text-sm font-bold">
+                    {getNthTerm(userData.referralCount + 2)} coins
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center">
+              {addFriendModal && addFriendActiveModal === 2 ? (
+                <svg
+                  className="h-6"
+                  onClick={() => {
+                    setAddFriendModal(!addFriendModal);
+                    setAddFriendActiveModal(0);
+                  }}
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 512 512"
+                >
+                  <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+                </svg>
+              ) : (
+                <svg
+                  className="h-6"
+                  onClick={() => {
+                    setAddFriendModal(!addFriendModal);
+                    setAddFriendActiveModal(2);
+                  }}
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 320 512"
+                >
+                  <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z" />
+                </svg>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div className="border border-orange-400 shadow-md p-2 rounded-lg">
+          <div className="flex justify-between items-center">
+            <div className="flex justify-center items-center space-x-6">
+              <div>
+                <img src={group} alt="" className="h-5" />
+              </div>
+              <div className="">
+                <div className="font-bold">
+                  Add {userData.referralCount + 3} friends
+                </div>
+                <div className="flex space-x-1 ">
+                  <div className="flex items-center justify-center">
+                    <img src={dollar} className="h-5" alt="" />
+                  </div>
+                  <div className="text-sm font-bold">
+                    <div className="text-sm font-bold">
+                      {getNthTerm(userData.referralCount + 3)} coins
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center">
+              {addFriendModal && addFriendActiveModal===3 ? (
+                <svg
+                  className="h-6"
+                  onClick={() => {
+                    setAddFriendModal(!addFriendModal);
+                    setAddFriendActiveModal(0)
+                  }}
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 512 512"
+                >
+                  <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+                </svg>
+              ) : (
+                <svg
+                  className="h-6"
+                  onClick={() => {
+                    setAddFriendModal(!addFriendModal);
+                    setAddFriendActiveModal(3)
+                  }}
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 320 512"
+                >
+                  <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z" />
+                </svg>
+              )}
+            </div>
+          </div>
+          {/* <div className="w-full border-orange-500 border-2  rounded-lg ">
+              <div className="h-4 bg-orange-500 rounded-lg">
+                <div
+                  className="h-full bg-progress-bar rounded-lg  flex items-center"
+                  style={{ width: `${(userData.referralCount / 2) * 100}%` }}
+                >
+                  {userData.referralCount}/2
+                </div>
+              </div>
+            </div> */}
+        </div>
+      </div>
+
       <div className="grid md:grid-cols-2 gap-4">
         <animated.div
           style={level3Props}
-          className="text-black border shadow-md mx-4 rounded-lg border-orange-400"
+          className="text-black border-2  shadow-md mx-4 rounded-lg border-orange-400"
         >
           <div className="p-4  rounded-lg border  backdrop-blur-sm ">
             <div className="flex justify-between items-center mb-2">
@@ -78,7 +279,17 @@ const Referral = () => {
                 My Invite Link
               </h3>
               <div className="rounded-full bg-orange-400">
-                <div className="p-2">
+                <div
+                  className="p-2"
+                  onClick={() => {
+                    window.open(
+                      `https://t.me/HodlSwap_bot?start=${localStorage.getItem(
+                        "chatId"
+                      )}`,
+                      "__blank"
+                    );
+                  }}
+                >
                   <img src={share} alt="" className="h-3" />
                 </div>
               </div>
@@ -133,8 +344,6 @@ const Referral = () => {
           Invite a Friend
         </button>
       </div> */}
-
- 
 
       {/* <div className="fixed inset-0 z-50 flex items-end justify-center bg-black bg-opacity-50 transition-opacity duration-300">
         <div

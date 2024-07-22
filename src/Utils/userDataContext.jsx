@@ -319,7 +319,7 @@ export const UserDataProvider = ({ children }) => {
       const totalBalanceDoc = totalBalanceSnapshot.docs[0];
       const totalBalanceData = totalBalanceDoc.data();
 
-      console.log("Total balance:", totalBalanceData.totalBalance);
+      console.log("Total balance:", totalBalanceData);
       return totalBalanceData.totalBalance;
     } catch (error) {
       console.error("Error fetching total balance:", error);

@@ -3,12 +3,11 @@ import ShareBalance from "./ShareBalance";
 import coin from "../Games/Assets/coin.png";
 import boost1Image from "../assets/boosts/star-dynamic-premium.png";
 import boost2Image from "../assets/boosts/sun-dynamic-premium.png";
-// import { purchaseBoost, initializeData } from "./boostUtil";
 import { CoinContext } from "../Utils/coinContext";
 import BoostPurchasePopup from "./BoostPurchasePopup";
 import NoBalancePopup from "./NoBalancePoup";
 import BottomNavBar from "./BottomNavBar";
-import Loader from "./Loader"; // Import the Loader component
+import Loader from "./Loader";
 import {
   getDailyBoost,
   updateBoostLimit,
@@ -42,7 +41,6 @@ const Boost = () => {
 
   const { updateBoostLimit, userData } = useContext(UserDataContext);
 
-  const [activeTab, setActiveTab] = useState("TapCoin");
   const [selectedBoost, setSelectedBoost] = useState(null);
   const [showNoBalancePopup, setShowNoBalancePopup] = useState(false);
   const [requiredAmount, setRequiredAmount] = useState(0);
@@ -160,7 +158,6 @@ const Boost = () => {
     return <Loader />;
   }
 
-  console.log("Active ", activeBoost);
   return (
     <div className="h-screen p-10 bg-custom-gradient-tapgame">
       <div className="flex items-center justify-center py-2 ">
@@ -270,7 +267,7 @@ const Boost = () => {
                     className="bg-orange-400 text-white px-4 py-1 rounded-md font-bold"
                     onClick={() => handleBuy(boost)}
                   >
-                    Buy
+                    BUY
                   </button>
                 }
               </div>

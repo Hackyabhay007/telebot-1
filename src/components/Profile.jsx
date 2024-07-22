@@ -5,7 +5,6 @@ import { UserDataContext } from "../Utils/userDataContext";
 const Profile = () => {
   const { userData } = useContext(UserDataContext);
 
-  console.log(userData)
   return (
     <div className="flex space-x-4 ">
       <img

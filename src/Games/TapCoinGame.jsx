@@ -31,9 +31,7 @@ const TapCoinGame = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [isShaking, setIsShaking] = useState(false);
-  const [showLevels, setShowLevels] = useState(false);
   const [clicks, setClicks] = useState([]);
-  const [levels, setLevels] = useState("01");
 
   const intervalRef = useRef(null);
   const timeoutRef = useRef(null);
@@ -49,7 +47,6 @@ const TapCoinGame = () => {
 
   const { updateBoostLimit, userData , level } = useContext(UserDataContext);
 
-  console.log(userData);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -97,7 +94,7 @@ const TapCoinGame = () => {
         await firestore
           .collection("userProgress")
           .doc(localStorage.getItem("chatId"))
-          .set({ timestamp: currentTime, score: 500 });
+          .set({ timestamp: currentTime, score: 1500 });
         setScore(1500);
       }
     };
@@ -119,45 +116,7 @@ const TapCoinGame = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const handleClick = (event) => {
-    setTimeout(() => {
-      setIsShaking(false);
-    }, 50);
-
-    setTimeout(() => {
-      setTapEffect(false);
-    }, 400);
-
-    let coinIncrement = 1;
-
-    if (score <= 0) {
-      setShowResetPopup(true);
-    } else {
-      if (doubleCoinActive) {
-        coinIncrement = 2;
-      }
-      if (tenXCoinActive) {
-        coinIncrement = 10;
-      }
-
-      if (tapPerCoin > score) {
-        updateCoinValue(coinValue + score);
-        setScore(0);
-      } else {
-        setScore((prevScore) => prevScore - tapPerCoin);
-        updateCoinValue(coinValue + tapPerCoin);
-      }
-    }
-
-    // Save score to Firebase
-    firestore
-      .collection("userProgress")
-      .doc(localStorage.getItem("chatId"))
-      .set({
-        timestamp: Date.now(),
-        score: score - coinIncrement <= 0 ? 0 : score - coinIncrement,
-      });
-  };
+ 
 
   useEffect(() => {
     let resetInterval;
@@ -178,16 +137,7 @@ const TapCoinGame = () => {
   };
 
   const handleTap = () => {
-    setTapEffect(true);
-    setIsShaking(true);
-
-    setTimeout(() => {
-      setIsShaking(false);
-    }, 150);
-
-    setTimeout(() => {
-      setTapEffect(false);
-    }, 100);
+   console.log("Handle Tap called" , score)
 
     let coinIncrement = 1;
 
@@ -202,15 +152,13 @@ const TapCoinGame = () => {
       }
       setScore((prevScore) => prevScore - tapPerCoin);
 
+      console.log("score" , score)
+
       setCoinValue((prevScore) => prevScore + tapPerCoin);
     }
   };
 
   const autoTapHandler = () => {
-    if (score == 0) {
-      return;
-    }
-
     intervalRef.current = setInterval(handleTap, 50); // Adjust the interval as needed
     timeoutRef.current = setTimeout(stopAutoTap, 5000);
   };
