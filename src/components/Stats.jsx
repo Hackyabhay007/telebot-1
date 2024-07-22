@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { UserDataContext } from "../Utils/userDataContext";
 import dollar from "../../src/assets/dollar.png";
 import Profile from "./Profile";
+import BottomNavBar from "./BottomNavBar";
 
 const TapSwapStats = () => {
   const { coinValue } = useContext(CoinContext);
@@ -11,10 +12,14 @@ const TapSwapStats = () => {
 
   const [totalUsers, setTotalUsers] = useState("");
 
-  useEffect(async () => {
-    const data = await fetchTotalUsers();
-    setTotalUsers(data);
-  }, []);
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const data = await fetchTotalUsers();
+      setTotalUsers(data);
+    };
+
+    fetchUsers();
+  }, [fetchTotalUsers]);
 
   // Helper function to generate random numbers within a range
   const getRandomNumber = (min, max) => {
@@ -43,21 +48,20 @@ const TapSwapStats = () => {
   });
 
   return (
-    <div className="mx-4 rounded-lg chakra-petch-bold overflow-hidden pt-4">
-      <div className="rounded-lg">
+    <div className="rounded-lg chakra-petch-bold overflow-hidden pt-4">
+      <div className="rounded-lg mx-4">
         <Profile />
 
-        <div className=" items-center   text-black mt-10 mb-20">
+        <div className="items-center text-black mt-10 mb-20">
           <div className="text-center text-lg">Your Balance</div>
           <div className="flex justify-center items-center space-x-2">
-            <img src={dollar} className="h-8 w-8" alt="" />
-            <p className="text-4xl chakra-petch-bold  ">{coinValue}</p>
+            <img src={dollar} className="h-8 w-8" alt="Dollar" />
+            <p className="text-4xl chakra-petch-bold">{coinValue}</p>
           </div>
         </div>
 
         <animated.div
-          className="text-black  shadow-md mb-3 p-2 flex justify-between rounded-md border border-orange-400 backdrop-blur-sm bg-[#FDE5C1]
-]"
+          className="text-black shadow-md mb-3 p-2 flex justify-between rounded-md border border-orange-400 backdrop-blur-sm bg-[#FDE5C1]"
           style={level1Props}
         >
           <div className="font-bold text-lg">Total Users</div>
@@ -65,8 +69,7 @@ const TapSwapStats = () => {
         </animated.div>
 
         <animated.div
-          className="text-black  shadow-md mb-3 p-2 flex justify-between rounded-md border border-orange-400 backdrop-blur-sm bg-[#FDE5C1]
-]"
+          className="text-black shadow-md mb-3 p-2 flex justify-between rounded-md border border-orange-400 backdrop-blur-sm bg-[#FDE5C1]"
           style={level2Props}
         >
           <div className="font-bold text-lg">Games Played</div>
@@ -76,8 +79,7 @@ const TapSwapStats = () => {
         </animated.div>
 
         <animated.div
-          className="text-black  shadow-md mb-3 p-2 flex justify-between rounded-md border border-orange-400 backdrop-blur-sm bg-[#FDE5C1]
-]"
+          className="text-black shadow-md mb-3 p-2 flex justify-between rounded-md border border-orange-400 backdrop-blur-sm bg-[#FDE5C1]"
           style={level3Props}
         >
           <div className="font-bold text-lg">Online Users</div>
@@ -86,6 +88,7 @@ const TapSwapStats = () => {
           </p>
         </animated.div>
       </div>
+      <BottomNavBar />
     </div>
   );
 };

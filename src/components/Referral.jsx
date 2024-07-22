@@ -4,6 +4,8 @@ import { useSpring, animated } from "react-spring";
 import { UserDataContext } from "../Utils/userDataContext";
 import BottomNavBar from "./BottomNavBar";
 import Loader from "./Loader"; // Import the Loader component
+import Profile from "./Profile";
+import share from "../../src/assets/share.png";
 
 const Referral = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -52,37 +54,47 @@ const Referral = () => {
   const handleInviteClick = () => {
     const chatId = localStorage.getItem("chatId");
     const telegramLink = `https://t.me/HodlSwap_bot?start=${chatId}`;
-    window.open(telegramLink, '_blank'); 
+    window.open(telegramLink, "_blank");
   };
 
   return (
-    <div className="py-12 px-10 overflow-hidden rounded-lg chakra-petch-bold">
-      <div className="items-center mb-4">
+    <div className="mt-4 overflow-hidden rounded-lg chakra-petch-bold">
+      <div className="mx-4">
+        <Profile></Profile>
+      </div>
+      <div className="items-center mb-4 mt-12">
         <p className="text-3xl chakra-petch-bold text-black text-center mb-10">
-          Referral Count: {userData.refs.length}
+          Referrals Count: {userData.refs.length}
         </p>
       </div>
       <div className="grid md:grid-cols-2 gap-4">
-        <animated.div style={level3Props} className="bg-[#FFFFE5] text-black">
-          <div className="p-4  rounded-lg border border-golden backdrop-blur-sm ">
-            <div className="flex items-center mb-2">
+        <animated.div
+          style={level3Props}
+          className="text-black border shadow-md mx-4 rounded-lg border-orange-400"
+        >
+          <div className="p-4  rounded-lg border  backdrop-blur-sm ">
+            <div className="flex justify-between items-center mb-2">
               <h3 className="text-xl font-bold chakra-petch-bold ">
-                Referral Program
+                My Invite Link
               </h3>
+              <div className="rounded-full bg-orange-400">
+                <div className="p-2">
+                  <img src={share} alt="" className="h-3" />
+                </div>
+              </div>
             </div>
-            <p className="text-lg chakra-petch-regular">
-              Invite friends to join and earn rewards!
-            </p>
-            <div className="flex items-center mt-4">
-              <div className="flex w-full p-1 rounded-full backdrop-blur-sm bg-golden/10">
+            <div className="flex justify-between items-center mt-4 space-x-2">
+              <div className="flex w-full ">
                 <input
                   type="text"
                   value={referralLink}
                   readOnly
-                  className="w-full  p-2 rounded-lg bg-transparent"
+                  className="w-full  p-2 rounded-lg bg-white"
                 />
+              </div>
+              <div>
                 <button
-                  className="p-2 bg-golden text-black rounded-full"
+                  className="px-4 py-2  rounded-lg bg-orange-400 text-white"
                   onClick={handleCopyReferralLink}
                 >
                   {copied ? "Copied" : "Copy"}
@@ -91,8 +103,8 @@ const Referral = () => {
             </div>
           </div>
         </animated.div>
-        <div className="mt-4">
-          <h3 className="text-xl font-bold chakra-petch-bold text-black">
+        <div className="mt-4 mx-4">
+          <h3 className="text-2xl font-bold chakra-petch-bold text-black">
             My Referrals:
           </h3>
           <ul className="mt-4">
@@ -105,20 +117,24 @@ const Referral = () => {
                   <FaRobot className="mr-2" /> User_{referral}
                 </li>
               ))}
-            {userData.refs && userData.refs.length <= 0 && (
-              <p className=" text-white">No Refferal's Found</p>
-            )}
           </ul>
+          <div className="flex justify-center items-center mt-20">
+            {userData.refs && userData.refs.length <= 0 && (
+              <p className=" text-black">You don't have any referrals</p>
+            )}
+          </div>
         </div>
       </div>
 
       <div className="absolute bottom-[130px] left-1/2 transform -translate-x-1/2">
-        <button 
-        onClick={handleInviteClick}
-        className="border-2 px-9 py-3 animate-scale-up-down bg-[#FFFFE5] text-black rounded-lg">
+        <button
+          onClick={handleInviteClick}
+          className="border-2 px-9 py-3 animate-scale-up-down bg-orange-400 text-white rounded-lg"
+        >
           Invite a Friend
         </button>
       </div>
+      <BottomNavBar />
     </div>
   );
 };
