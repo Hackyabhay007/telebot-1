@@ -1,10 +1,4 @@
 import React, { useState, useContext, useEffect, Children } from "react";
-import level1 from "../assets/levels/level1.png";
-import level2 from "../assets/levels/level2.png";
-import level3 from "../assets/levels/level3.png";
-import level4 from "../assets/levels/level4.png";
-import level5 from "../assets/levels/level5.png";
-import level6 from "../assets/levels/level6.png";
 import SpecialTaskPopup from "./SpecialTaskPopup";
 import boy from "../assets/boy.png";
 import { UserDataContext } from "../Utils/userDataContext";
@@ -18,6 +12,23 @@ import instagram from "../../src/assets/instagram.png";
 import twitter from "../../src/assets/twitter.png";
 import dollar from "../../src/assets/dollar.png";
 import group from "../../src/assets/group.png";
+import level1 from "../../src/assets/level-1.png";
+import level2 from "../../src/assets/level-2.png";
+import level3 from "../../src/assets/level-3.png";
+import level4 from "../../src/assets/level-4.png";
+import level5 from "../../src/assets/level-5.png";
+import level6 from "../../src/assets/level-6.png";
+import level7 from "../../src/assets/level-7.png";
+import level8 from "../../src/assets/level-8.png";
+import level9 from "../../src/assets/level-9.png";
+import level10 from "../../src/assets/level-10.png";
+import level11 from "../../src/assets/level-11.png";
+import level12 from "../../src/assets/level-12.png";
+import level13 from "../../src/assets/level-13.png";
+import level14 from "../../src/assets/level-14.png";
+import level15 from "../../src/assets/level-15.png";
+import level16 from "../../src/assets/level-16.png";
+import level17 from "../../src/assets/level-17.png";
 
 function Tasks() {
   const [loading, setLoading] = useState(true); // Add loading state
@@ -25,10 +36,10 @@ function Tasks() {
   const [showSpecialTaskPopup, setShowSpecialTaskPopup] = useState(false);
   const [selectedSpecialTask, setSelectedSpecialTask] = useState(null);
   const [tasks, setTasks] = useState({ special: [], leagues: [], ref: [] });
+  const [levels, setLevels] = useState([]);
 
   // state for add friends
   const [addFriendModal, setAddFriendModal] = useState(false);
-  const [addFriendBonus, setAddFriendBonus] = useState(0);
 
   const {
     userData,
@@ -38,14 +49,21 @@ function Tasks() {
     updateUserData,
     level,
     ReferralClaimDBHandler,
+    fetchLevels,
     SocialMediaClaimDBHandler,
   } = useContext(UserDataContext);
   const { updateCoinValue } = useContext(CoinContext);
 
-  const addFriend = {
-    bonus: 250,
-    starting: 1,
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await fetchLevels();
+      setLevels(data.Levels);
+    };
+
+    fetchData();
+  }, []);
+
+  console.log(userData);
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -129,12 +147,80 @@ function Tasks() {
     return false;
   };
 
+  const imageData = [
+    {
+      id: 1,
+      image: level1,
+    },
+    {
+      id: 2,
+      image: level2,
+    },
+    {
+      id: 3,
+      image: level3,
+    },
+    {
+      id: 4,
+      image: level4,
+    },
+    {
+      id: 5,
+      image: level5,
+    },
+    {
+      id: 6,
+      image: level6,
+    },
+    {
+      id: 7,
+      image: level7,
+    },
+    {
+      id: 8,
+      image: level8,
+    },
+    {
+      id: 9,
+      image: level9,
+    },
+    {
+      id: 10,
+      image: level10,
+    },
+    {
+      id: 11,
+      image: level11,
+    },
+    {
+      id: 12,
+      image: level12,
+    },
+    {
+      id: 13,
+      image: level13,
+    },
+    {
+      id: 14,
+      image: level14,
+    },
+    {
+      id: 15,
+      image: level15,
+    },
+    {
+      id: 16,
+      image: level16,
+    },
+    {
+      id: 17,
+      image: level17,
+    },
+  ];
+
   if (loading) {
     return <Loader />;
   }
-
-
-
 
   const SocialMediaClaimHandler = (id) => {
     if (id == "youtube") {
@@ -168,7 +254,7 @@ function Tasks() {
     }
   };
 
-
+  console.log(levels);
   return (
     <div className="py-4 overflow-hidden space-y-2">
       <div className=" mx-4">
@@ -358,117 +444,50 @@ function Tasks() {
           </div>
         </div>
 
-        
 
-        {/* {activeTab === "leagues" &&
-          tasks[activeTab].map((level) => (
-            <div
-              key={level.id}
-              className={`flex flex-col items-start rounded-md backdrop-blur-sm mb-2 bg-golden/10 relative p-6 ${
-                level.claimed ? "opacity-50" : ""
-              }`}
-            >
-              <div className="flex">
-                <div className="flex">
-                  <div className="relative">
+        <div>
+          <div className="text-center text-2xl font-bold mt-4">Levels</div>
+          <div className="space-y-2">
+            {levels.slice(level, level + 3).map((le, index) => (
+              <div
+                key={level.id}
+                className="space-y-2 border border-orange-400 shadow-md px-2 py-1 rounded-lg"
+              >
+                <div className="flex justify-between">
+                  <div>
                     <img
-                      src={getLevelImage(level.name)}
-                      alt={level.name}
-                      className="h-10"
+                      src={imageData[level - 1 + index].image}
+                      alt=""
+                      className="h-8"
                     />
                   </div>
-                  <div className="flex-grow relative">
-                    <h3 className="text-sm font-bold text-golden">
-                      {level.name}
-                    </h3>
-                    <p className="text-sm text-white">{level.reward} coins</p>
+                  <div>
+                    <button
+                      className="bg-orange-400 text-white px-4 py-1 rounded-md font-bold"
+                      disabled={userData.maxCoin> levels[level - 1 + index].end}
+                        // onClick={() => handleBuy(boost)}
+                    >
+                      Claim
+                    </button>
                   </div>
                 </div>
-                <button
-                  className="bg-zinc-800 text-white font-bold py-1 px-4 mt-3 mr-4 rounded-3xl absolute top-4 right-2"
-                  style={{
-                    opacity: isTaskClaimable(level) ? 1 : 0.4,
-                  }}
-                  onClick={() => {
-                    handleClaim(level);
-                  }}
-                  disabled={!isTaskClaimable(level) || level.claimed}
-                >
-                  Claim
-                </button>
-              </div>
-
-              <div className="w-full bg-transparent rounded-full relative  mt-2 overflow-hidden">
-                <div className="h-4 bg-gray-200 rounded-full">
-                  <div
-                    className="h-full bg-golden rounded-full"
-                    style={{
-                      width: `${Math.min(
-                        (userData.coin / level.required) * 100,
-                        100
-                      )}%`,
-                    }}
-                  ></div>
-                </div>
-                <div className="text-center text-black text-xs font-medium absolute py-2 -top-2 left-4 ">
-                  <p>
-                    {userData.coin}/{level.required}
-                  </p>
+                <div className="w-full border-orange-500 border-2  rounded-lg ">
+                  <div className="h-4 bg-orange-500 rounded-lg">
+                    <div
+                      className="flex items-center h-full bg-progress-bar rounded-lg text-white"
+                      style={{
+                        width: `${
+                          (userData.maxCoin / levels[level - 1 + index].end) *
+                          100
+                        }%`,
+                      }}
+                    >
+                      {userData.maxCoin + "/" + levels[level - 1 + index].end}
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))} */}
-        <div
-          key={level.id}
-          className={`flex flex-col items-start rounded-md backdrop-blur-sm mb-2 bg-golden/10 relative p-6 ${
-            level.claimed ? "opacity-50" : ""
-          }`}
-        >
-          <div className="flex">
-            <div className="flex">
-              <div className="relative">
-                <img
-                  src={getLevelImage(level.name)}
-                  alt={level.name}
-                  className="h-10"
-                />
-              </div>
-              <div className="flex-grow relative">
-                <h3 className="text-sm font-bold text-golden">{level.name}</h3>
-                <p className="text-sm text-white">{level.reward} coins</p>
-              </div>
-            </div>
-            <button
-              className="bg-zinc-800 text-white font-bold py-1 px-4 mt-3 mr-4 rounded-3xl absolute top-4 right-2"
-              style={{
-                opacity: isTaskClaimable(level) ? 1 : 0.4,
-              }}
-              onClick={() => {
-                handleClaim(level);
-              }}
-              disabled={!isTaskClaimable(level) || level.claimed}
-            >
-              Claim
-            </button>
-          </div>
-
-          <div className="w-full bg-transparent rounded-full relative  mt-2 overflow-hidden">
-            <div className="h-4 bg-gray-200 rounded-full">
-              <div
-                className="h-full bg-golden rounded-full"
-                style={{
-                  width: `${Math.min(
-                    (userData.coin / level.required) * 100,
-                    100
-                  )}%`,
-                }}
-              ></div>
-            </div>
-            <div className="text-center text-black text-xs font-medium absolute py-2 -top-2 left-4 ">
-              <p>
-                {userData.coin}/{level.required}
-              </p>
-            </div>
+            ))}
           </div>
         </div>
       </div>

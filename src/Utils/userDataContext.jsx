@@ -22,6 +22,7 @@ export const UserDataProvider = ({ children }) => {
 
   const [level, setLevel] = useState(1);
   const [users, setUsers] = useState([]);
+  const [levelsData, setLevelsData]= useState ([])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -291,8 +292,8 @@ export const UserDataProvider = ({ children }) => {
       // Add the task document to the 'tasks' collection in Firestore
       await firestore.collection("TotalBalance").add({
         totalBalance: 1000000,
-        onlineUsers:500,
-        total:100,
+        onlineUsers: 500,
+        total: 100,
         createdAt: new Date(),
         updatedAt: new Date(),
       });
@@ -311,7 +312,7 @@ export const UserDataProvider = ({ children }) => {
 
       if (totalBalanceSnapshot.empty) {
         console.log("No total balance found.");
-        createTotalBalanceDitributed()
+        createTotalBalanceDitributed();
         return null; // Return null if no documents are found
       }
 
@@ -327,12 +328,9 @@ export const UserDataProvider = ({ children }) => {
     }
   };
 
-
-
-
-  const ReferralClaimDBHandler =async (data)=>{
+  const ReferralClaimDBHandler = async (data) => {
     const userId = localStorage.getItem("chatId");
-    const newUserData= { ...userData  , data}
+    const newUserData = { ...userData, data };
     if (userId) {
       firestore
         .collection("users")
@@ -347,18 +345,147 @@ export const UserDataProvider = ({ children }) => {
     } else {
       console.error("User ID not found");
     }
-  }
+  };
 
-  const SocialMediaClaimDBHandler = (newData)=>{
+  const SocialMediaClaimDBHandler = (newData) => {
     const newUserData = { ...userData, ...newData };
     setUserData(newUserData);
-    console.log(newUserData)
+    console.log(newUserData);
     // updateUserInFirestore(newUserData);
-  }
+  };
+
+  const Levels = [
+    {
+      id: 1,
+      start: 0,
+      end: 500000,
+    },
+    {
+      id:2 , 
+      start:500000,
+      end:1000000,
+    },
+    {
+      id:3 , 
+      start:10000000,
+      end:1500000,
+    },
+    {
+      id:4 , 
+      start:1500000,
+      end:2000000,
+    },
+    {
+      id:5 , 
+      start:2000000,
+      end:2500000,
+    },
+    {
+      id:6 , 
+      start:2500000,
+      end:3000000,
+    },
+    {
+      id:7 , 
+      start:3000000,
+      end:3500000,
+    },
+    {
+      id:8 , 
+      start:3500000,
+      end:4000000,
+    },
+    {
+      id:9 , 
+      start:4000000,
+      end:4800000,
+    },
+    {
+      id:10 , 
+      start:4800000,
+      end:5600000,
+    },
+    {
+      id:11 , 
+      start:5600000,
+      end:6400000,
+    },
+    {
+      id:12 , 
+      start:6400000,
+      end:7200000,
+    },
+    {
+      id:13 , 
+      start:7200000,
+      end:8000000,
+    },
+    {
+      id:14 , 
+      start:8000000,
+      end:8800000,
+    },
+    {
+      id:15 , 
+      start:8800000,
+      end:9600000,
+    },
+    {
+      id:16 , 
+      start:9600000,
+      end:10400000,
+    },
+    {
+      id:17 , 
+      start:10400000,
+      end:11200000,
+    }
+  ];
+
+  const createLevels = async () => {
+    try {
+      // Add the task document to the 'tasks' collection in Firestore
+      await firestore.collection("Levels").add({Levels});
+      return true; // Return true to indicate success
+    } catch (error) {
+      console.error("Error creating levels:", error);
+      return false; // Return false to indicate failure
+    }
+  };
+
+  const fetchLevels = async () => {
+    try {
+      const levelsSnapshot = await firestore
+        .collection("Levels")
+        .get();
+
+      if (levelsSnapshot.empty) {
+        console.log("No levels found.");
+        createLevels();
+        return Levels; // Return null if no documents are found
+      }
+
+      // Assuming there's only one document in the collection
+      const levelsDoc = levelsSnapshot.docs[0];
+      const levelsData = levelsDoc.data();
+
+      console.log("Total levels:", levelsData);
+      return levelsData;
+    } catch (error) {
+      console.error("Error fetching total balance:", error);
+      return null; // Return null to indicate failure
+    }
+  };
+
+  useEffect( ()=>{
+    fetchLevels ()
+  })
+
 
   return (
     <UserDataContext.Provider
       value={{
+        fetchLevels , 
         SocialMediaClaimDBHandler,
         ReferralClaimDBHandler,
         fetchTotalBalance,
