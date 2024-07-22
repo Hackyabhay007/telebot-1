@@ -67,15 +67,15 @@ const BottomNavBar = () => {
             key={index}
             to={item.to}
             activeClassName="border border-white text-golden"
-            className="text-black hover:text-white flex-grow flex-shrink "
+            className="text-black  flex-grow flex-shrink "
             onClick={() => handleItemSelect(index)}
           >
             <div className="flex flex-col items-center">
               <div
-                className={` rounded-xl p-4 border-2 shadow-md shadow-orange-500 w-20  h-24 flex flex-col items-center justify-center bg-[#F9C399] border-[#FA650F]
+                className={` rounded-xl p-1 border-2 shadow-md shadow-orange-500 w-16  h-20 flex flex-col items-center justify-center bg-[#F9C399] border-[#FA650F]
 ]`}
               >
-                <img src={item.img} className=" h-12" />
+                <img src={item.img} className=" h-8" />
                 <span className="text-sm  font-bold">{item.label}</span>
               </div>
             </div>
