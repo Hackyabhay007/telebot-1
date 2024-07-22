@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import Profile from "../components/Profile";
 import dollar from "../../src/assets/dollar.png";
 import { UserDataContext } from "../Utils/userDataContext";
+import BottomNavBar from "../components/BottomNavBar";
 
 const dailyRewardData = [
   {
@@ -73,7 +74,7 @@ const DailyReward = () => {
     const dailyreward = userData.DailyReward;
     const newCoinValue = userData.coin + reward.amount;
     const newMaxCoinValue = userData.maxCoin + reward.amount;
-    dailyreward[reward.id-1] = true;
+    dailyreward[reward.id - 1] = true;
 
     updateUserData({
       DailyReward: dailyreward,
@@ -122,6 +123,7 @@ const DailyReward = () => {
           ))}
         </div>
       </div>
+      <BottomNavBar/>
     </div>
   );
 };

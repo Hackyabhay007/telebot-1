@@ -396,24 +396,24 @@ const TapCoinGame = () => {
           <div className="flex justify-between mx-4">
             <div
               onClick={() => navigate("/dailyrewards")}
-              className="w-32 shadow-md  p-2 flex flex-col items-center border-2 rounded-xl border-[#F9C399] text-black"
+              className="w-32 shadow-md  p-1 flex flex-col items-center border-2 rounded-xl border-[#F9C399] text-black"
             >
               <img src={dailyreward} alt="" className="h-8 w-8" />
-              <div>Daily Reward</div>
+              <div className="text-sm">Daily Reward</div>
             </div>
             <div
-              onClick={() => navigate("/tasks")}
-              className="w-32 shadow-md  p-2 flex flex-col items-center border-2 rounded-xl border-[#F9C399] text-black"
+              onClick={() => navigate("/dailyrewards")}
+              className="w-32 shadow-md  p-1 flex flex-col items-center border-2 rounded-xl border-[#F9C399] text-black"
             >
               <img src={dollar} alt="" className="h-8 w-8" />
-              <div>Daily Coins</div>
+              <div className="text-sm">Daily Coins</div>
             </div>
             <div
               onClick={() => navigate("/tasks")}
-              className="w-32 shadow-md  p-2 flex flex-col items-center border-2 rounded-xl border-[#F9C399] text-black"
+              className="w-32 shadow-md  p-1 flex flex-col items-center border-2 rounded-xl border-[#F9C399] text-black"
             >
-              <img src={dailytask} alt="" className="h-8 w-8" />
-              <div>Daily Task</div>
+              <img src={dailytask} alt="" className="h-8" />
+              <div className="text-sm"> Daily Task</div>
             </div>
           </div>
 
