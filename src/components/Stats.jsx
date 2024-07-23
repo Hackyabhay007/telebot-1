@@ -4,6 +4,7 @@ import { Children, useContext, useEffect, useState } from "react";
 import { UserDataContext } from "../Utils/userDataContext";
 import dollar from "../../src/assets/dollar.png";
 import BottomNavBar from "./BottomNavBar";
+import Loader from "./Loader";
 
 const TapSwapStats = () => {
   const { coinValue } = useContext(CoinContext);
@@ -16,6 +17,7 @@ const TapSwapStats = () => {
   const [totalUsers, setTotalUsers] = useState(1000);
   const [onlineUsers, setOnlineUsers] = useState(500);
   const [gamesPlayed, setTotalGamesPlayed] = useState(100000);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -31,7 +33,15 @@ const TapSwapStats = () => {
     console.log(balance);
     return balance;
   };
+   
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   // useEffect(() => {
   //   const data = totalBalance();
@@ -79,6 +89,12 @@ const TapSwapStats = () => {
     to: { opacity: 1, transform: "translateY(0px)" },
     delay: 1500,
   });
+
+
+
+   if (isLoading) {
+    return <Loader />; // Display the loader while the content is loading
+  }
 
   return (
     <div className="rounded-lg chakra-petch-bold overflow-hidden pt-4">

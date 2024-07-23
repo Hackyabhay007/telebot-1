@@ -1,6 +1,7 @@
-import React, { useContext } from "react";
+import React, { useContext , useEffect , useState } from "react";
 import Profile from "../components/Profile";
 import dollar from "../../src/assets/dollar.png";
+import Loader from "../components/Loader";
 import { UserDataContext } from "../Utils/userDataContext";
 
 const dailyRewardData = [
@@ -190,6 +191,9 @@ const dailyRewardData = [
 const DailyReward = () => {
   const { userData, updateUserData } = useContext(UserDataContext);
 
+  const [isLoading, setIsLoading] = useState(true);
+
+
   const ClaimHandler = (reward) => {
     const dailyreward = userData.DailyReward;
     const newCoinValue = userData.coin + reward.amount;
@@ -202,6 +206,18 @@ const DailyReward = () => {
       maxCoin: newMaxCoinValue,
     });
   };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, []);
+ 
+  if (isLoading) {
+    return <Loader />; // Display the loader while the content is loading
+  }
   
   console.log(userData)
   return (
