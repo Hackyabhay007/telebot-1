@@ -44,7 +44,6 @@ const navItems = [
 
 const BottomNavBar = () => {
   const [selectedItem, setSelectedItem] = useState(null);
-  const dispatch = useDispatch();
   const isPlay = useSelector((state) => state.engine.play);
   const bgMusic = useRef(null);
   const marioDie = useRef(null);
@@ -60,7 +59,14 @@ const BottomNavBar = () => {
   };
 
   return (
-    <div className="fixed bottom-3 w-full text-black">
+    <div
+      className="fixed bottom-2 w-full text-black z-50  bg-glass-bg/10 backdrop-blur  "
+      // style={{
+      //   backdropFilter: "blur(20px)",
+      //   WebkitBackdropFilter: "blur(10px)",
+      //   width: "100%",
+      // }}
+    >
       <div className="flex justify-around py-2">
         {navItems.map((item, index) => (
           <NavLink

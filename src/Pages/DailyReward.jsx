@@ -2,7 +2,6 @@ import React, { useContext } from "react";
 import Profile from "../components/Profile";
 import dollar from "../../src/assets/dollar.png";
 import { UserDataContext } from "../Utils/userDataContext";
-import BottomNavBar from "../components/BottomNavBar";
 
 const dailyRewardData = [
   {
@@ -65,6 +64,127 @@ const dailyRewardData = [
     amount: 1000000,
     label: "1M",
   },
+  {
+    id: 11,
+    day: "11",
+    amount: 1500000,
+    label: "1.5M",
+  },
+  {
+    id: 12,
+    day: "12",
+    amount: 2000000,
+    label: "2M",
+  },
+  {
+    id: 13,
+    day: "13",
+    amount: 2500000,
+    label: "2.5M",
+  },
+  {
+    id: 14,
+    day: "14",
+    amount:3000000,
+    label: "3M",
+  },
+  {
+    id: 15,
+    day: "15",
+    amount:3500000,
+    label: "3.5M",
+  },
+  {
+    id: 16,
+    day: "16",
+    amount: 4000000,
+    label: "4M",
+  },
+  {
+    id: 17,
+    day: "17",
+    amount: 4500000,
+    label: "4.5M",
+  },
+  {
+    id: 18,
+    day: "18",
+    amount: 5000000,
+    label: "5M",
+  },
+  {
+    id: 19,
+    day: "19",
+    amount: 5500000,
+    label: "5.5M",
+  },
+  {
+    id: 20,
+    day: "20",
+    amount: 6000000,
+    label: "6M",
+  },
+  {
+    id: 21,
+    day: "21",
+    amount: 7000000,
+    label: "7M",
+  },
+  {
+    id: 22,
+    day: "22",
+    amount: 8000000,
+    label: "8M",
+  },
+  {
+    id: 23,
+    day: "23",
+    amount: 9000000,
+    label: "9M",
+  },
+  {
+    id: 24,
+    day: "24",
+    amount:10000000,
+    label: "10M",
+  },
+  {
+    id: 25,
+    day: "25",
+    amount:11000000,
+    label: "11M",
+  },
+  {
+    id: 26,
+    day: "26",
+    amount: 12000000,
+    label: "12M",
+  },
+  {
+    id: 27,
+    day: "27",
+    amount: 13000000,
+    label: "13M",
+  },
+  {
+    id: 28,
+    day: "28",
+    amount: 14000000,
+    label: "14M",
+  },
+  {
+    id: 29,
+    day: "29",
+    amount: 15000000,
+    label: "15M",
+  },
+  {
+    id: 30,
+    day: "30",
+    amount: 20000000,
+    label: "20M",
+  },
+
 ];
 
 const DailyReward = () => {
@@ -82,16 +202,13 @@ const DailyReward = () => {
       maxCoin: newMaxCoinValue,
     });
   };
-
-  console.log(userData);
+  
+  console.log(userData)
   return (
     <div className="text-black ">
-      <div className=" m-4">
-        <Profile />
-      </div>
       <div className="flex flex-col items-center my-10">
         <img src={dollar} alt="" className="h-16" />
-        <h1 className="text-3xl font-bold">Daily Reward</h1>
+        <h1 className="text-3xl font-bold">Daily Coins</h1>
       </div>
       <div className="flex  flex-col items-center">
         <div className="grid grid-cols-4 justify-center gap-3 ">
@@ -123,7 +240,6 @@ const DailyReward = () => {
           ))}
         </div>
       </div>
-      {/* <BottomNavBar/> */}
     </div>
   );
 };

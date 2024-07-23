@@ -14,10 +14,17 @@ module.exports = {
         'custom-gradient-end': '#FFB268',
          "progrerss-bar-start":"#FCA933",
          "progrerss-bar-end":"#FEE14F",
-
+         'glass-bg': 'rgba(255, 255, 255, 0.3)',
+      },
+      backdropFilter: {
+        'none': 'none',
+        'blur': 'blur(10px)',
       },
       boxShadow: {
         'custom': 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',
+      },
+      borderColor: {
+        'glass-border': 'rgba(255, 255, 255, 0.18)', // Slightly transparent border color
       },
       backgroundImage: {
         'level-gradient': 'linear-gradient(14.64deg, #FA650F 25%, rgba(252, 247, 189, 0.26) 59.35%)',
@@ -43,6 +50,9 @@ module.exports = {
         'scale-up-down': 'scale-up-down 2s infinite',
       },
     },
+  },
+  variants: {
+    backdropFilter: ['responsive'],
   },
   plugins: [],
 }
