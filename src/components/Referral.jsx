@@ -92,9 +92,7 @@ const Referral = () => {
 
   return (
     <div className="mt-4 overflow-hidden rounded-lg chakra-petch-bold">
-      <div className="mx-4">
-        <Profile></Profile>
-      </div>
+  
       <div className="items-center mb-2 mt-6">
         <p className="text-3xl chakra-petch-bold text-black text-center mb-10">
           Referrals Count: {userData?.referralCount}

@@ -6,14 +6,14 @@ const Profile = () => {
   const { userData } = useContext(UserDataContext);
 
   return (
-    <div className="flex space-x-4 ">
+    <div className="flex items-center space-x-2 ">
       <img
         className="p-0.5 border rounded-lg shadow-md shadow-orange-500  border-[#FA650F]"
         src={profile}
         alt="profile"
       />
 
-      <div className="text-black ">{userData?.chatId} (you)</div>
+      <div className="text-black ">{userData?.chatId}</div>
     </div>
   );
 };

@@ -22,7 +22,6 @@ import Profile from "../components/Profile";
 
 const TapCoinGame = () => {
   const [score, setScore] = useState(1500);
-  const [tapEffect, setTapEffect] = useState(false);
   const [doubleCoinActive, setDoubleCoinActive] = useState(false);
   const [tenXCoinActive, setTenXCoinActive] = useState(false);
   const [showResetPopup, setShowResetPopup] = useState(false);
@@ -45,7 +44,7 @@ const TapCoinGame = () => {
     setCoinValue,
   } = useContext(CoinContext);
 
-  const { updateBoostLimit, userData , level } = useContext(UserDataContext);
+  const { updateBoostLimit, userData, level } = useContext(UserDataContext);
 
   const navigate = useNavigate();
 
@@ -116,8 +115,6 @@ const TapCoinGame = () => {
     return () => clearInterval(interval);
   }, []);
 
- 
-
   useEffect(() => {
     let resetInterval;
     if (showResetPopup) {
@@ -137,7 +134,7 @@ const TapCoinGame = () => {
   };
 
   const handleTap = () => {
-   console.log("Handle Tap called" , score)
+    console.log("Handle Tap called", score);
 
     let coinIncrement = 1;
 
@@ -152,7 +149,7 @@ const TapCoinGame = () => {
       }
       setScore((prevScore) => prevScore - tapPerCoin);
 
-      console.log("score" , score)
+      console.log("score", score);
 
       setCoinValue((prevScore) => prevScore + tapPerCoin);
     }
@@ -277,8 +274,6 @@ const TapCoinGame = () => {
     6500000,
   ];
 
-
-
   return (
     <WebAppProvider>
       <div
@@ -287,33 +282,39 @@ const TapCoinGame = () => {
         onCut={(e) => e.preventDefault()}
       >
         <div className="space-y-2">
-          <div className="mx-4">
-            <Profile />
-          </div>
           {/* levels */}
-          <div className="flex  justify-between  bg-[#FFFFE5] text-black   shadow-md mx-3 px-2 border-orange-400 border rounded-xl py-1">
-            <div className="flex items-center justify-center space-x-2">
-              <div className="w-20">Level - {levelNames[level-1]}</div>
-              <div className="w-[60vw] ">
-                <div className="h-4 bg-orange-500 rounded-lg ">
-                  <div
-                    className="h-full bg-[#FDCD45] rounded-lg"
-                    style={{ width: `${(userData.maxCoin / levelMinPoints[level]) * 100}%` }}
-                  ></div>
-                </div>
+          <div className="flex  justify-between items-center bg-[#FFFFE5] text-black   shadow-md mx-3 px-1 border-orange-400 border rounded-xl py-1">
+            <div className="flex  w-full justify-between items-center space-x-2">
+              <div className="flex justify-center items-center">
+                <Profile />
               </div>
-              <div
-                onClick={()=>{
-                  navigate("/levels")
-                }}
-                   >
-                <svg
-                  className="h-3"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 320 512"
+              <div className="flex justify-center items-center">
+                <div className="w-20">Level - {levelNames[level - 1]}</div>
+                <div className="w-[40vw] ">
+                  <div className="h-4 bg-orange-500 rounded-lg ">
+                    <div
+                      className="h-full bg-[#FDCD45] rounded-lg"
+                      style={{
+                        width: `${
+                          (userData.maxCoin / levelMinPoints[level]) * 100
+                        }%`,
+                      }}
+                    ></div>
+                  </div>
+                </div>
+                <div
+                  onClick={() => {
+                    navigate("/levels");
+                  }}
                 >
-                  <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z" />
-                </svg>
+                  <svg
+                    className="h-3"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 320 512"
+                  >
+                    <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z" />
+                  </svg>
+                </div>
               </div>
               {/* 
                 {!showLevels ? (
@@ -364,7 +365,9 @@ const TapCoinGame = () => {
               <div className="text-sm"> Daily Task</div>
             </div>
           </div>
+           
 
+           {/* balance  */}
           <div className="flex items-center justify-center">
             <div className="flex items-center space-x-2">
               <img src={dollar} alt="" className="h-10 w-10" />
@@ -380,7 +383,7 @@ const TapCoinGame = () => {
           <div
             className={` coin-container flex  justify-center   transform w-80`}
           >
-            <img src={coin1} onClick={handleCardClick} className="w-[80%]"/>
+            <img src={coin1} onClick={handleCardClick} className="w-[80%]" />
           </div>
         </div>
 

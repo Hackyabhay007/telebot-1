@@ -173,9 +173,6 @@ const Levels = () => {
     <WebAppProvider>
       <div className=" min-h-screen  overflow-hidden   flex flex-col justify-start mt-10  bg-custom-gradient-tapgame text-white font-display chakra-petch-bold  ">
         <div className="">
-          <div className="mx-4 ">
-            <Profile />
-          </div>
           {/* levels */}
           <div className="flex my-4 justify-between  bg-[#FFFFE5] text-black   shadow-md mx-3 px-2 border-orange-400 border rounded-xl py-1">
             <div className="flex items-center justify-center space-x-2">
