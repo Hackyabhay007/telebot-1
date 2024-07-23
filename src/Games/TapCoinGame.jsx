@@ -378,9 +378,9 @@ const TapCoinGame = () => {
           <div className="absolute right-0 w-full   h-[70%] rotate-12 bg-no-repeat bg-gradient-to-l from-golden to-transparent filter opacity-70 blur-2xl"></div>
 
           <div
-            className={` coin-container flex  justify-center w-full  transform `}
+            className={` coin-container flex  justify-center   transform w-80`}
           >
-            <img src={coin1} onClick={handleCardClick} />
+            <img src={coin1} onClick={handleCardClick} className="w-[80%]"/>
           </div>
         </div>
 
