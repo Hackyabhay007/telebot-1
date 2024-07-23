@@ -238,54 +238,54 @@ export const UserDataProvider = ({ children }) => {
     }
   }, []);
 
-  const fetchUsers = async (specificUserId) => {
-    try {
-      const usersRef = firestore.collection("users");
+  // const fetchUsers = async (specificUserId) => {
+  //   try {
+  //     const usersRef = firestore.collection("users");
 
-      // Fetch top three users
-      const topThreeSnapshot = await usersRef
-        .orderBy("maxCoin", "desc")
-        .limit(3)
-        .get();
-      let topUsers = topThreeSnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
+  //     // Fetch top three users
+  //     const topThreeSnapshot = await usersRef
+  //       .orderBy("maxCoin", "desc")
+  //       .limit(3)
+  //       .get();
+  //     let topUsers = topThreeSnapshot.docs.map((doc) => ({
+  //       id: doc.id,
+  //       ...doc.data(),
+  //     }));
 
-      // Check if the specific user is in the top three
-      const specificUserIndex = topUsers.findIndex(
-        (user) => user.id === specificUserId
-      );
+  //     // Check if the specific user is in the top three
+  //     const specificUserIndex = topUsers.findIndex(
+  //       (user) => user.id === specificUserId
+  //     );
 
-      if (specificUserIndex === -1) {
-        // Specific user is not in the top three, fetch their data
-        const specificUserDoc = await usersRef.doc(specificUserId).get();
-        if (specificUserDoc.exists) {
-          const specificUserData = {
-            id: specificUserDoc.id,
-            ...specificUserDoc.data(),
-          };
-          topUsers.push(specificUserData);
-        }
-      }
+  //     if (specificUserIndex === -1) {
+  //       // Specific user is not in the top three, fetch their data
+  //       const specificUserDoc = await usersRef.doc(specificUserId).get();
+  //       if (specificUserDoc.exists) {
+  //         const specificUserData = {
+  //           id: specificUserDoc.id,
+  //           ...specificUserDoc.data(),
+  //         };
+  //         topUsers.push(specificUserData);
+  //       }
+  //     }
 
-      // Fetch one more user if we need to ensure we have four users total
-      if (topUsers.length < 4) {
-        const additionalUsersSnapshot = await usersRef
-          .orderBy("maxCoin", "desc")
-          .offset(3)
-          .limit(1)
-          .get();
-        additionalUsersSnapshot.forEach((doc) => {
-          topUsers.push({ id: doc.id, ...doc.data() });
-        });
-      }
+  //     // Fetch one more user if we need to ensure we have four users total
+  //     if (topUsers.length < 4) {
+  //       const additionalUsersSnapshot = await usersRef
+  //         .orderBy("maxCoin", "desc")
+  //         .offset(3)
+  //         .limit(1)
+  //         .get();
+  //       additionalUsersSnapshot.forEach((doc) => {
+  //         topUsers.push({ id: doc.id, ...doc.data() });
+  //       });
+  //     }
 
-      setUsers(topUsers.slice(0, 4)); // Ensure we have exactly four users
-    } catch (error) {
-      console.error("Error fetching users: ", error);
-    }
-  };
+  //     setUsers(topUsers.slice(0, 4)); // Ensure we have exactly four users
+  //   } catch (error) {
+  //     console.error("Error fetching users: ", error);
+  //   }
+  // };
 
   const createTotalBalanceDitributed = async () => {
     try {
@@ -480,6 +480,61 @@ export const UserDataProvider = ({ children }) => {
   useEffect( ()=>{
     fetchLevels ()
   })
+
+
+  const fetchUsers = async (specificUserId, minMaxCoin, maxMaxCoin) => {
+    try {
+      const usersRef = firestore.collection("users");
+  
+      // Fetch users within the maxCoin range
+      const rangeUsersSnapshot = await usersRef
+        .where("maxCoin", ">=", minMaxCoin)
+        .where("maxCoin", "<=", maxMaxCoin)
+        .orderBy("maxCoin", "desc")
+        .limit(3)
+        .get();
+      let rangeUsers = rangeUsersSnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+  
+      // Check if the specific user is in the range users
+      const specificUserIndex = rangeUsers.findIndex(
+        (user) => user.id === specificUserId
+      );
+  
+      if (specificUserIndex === -1) {
+        // Specific user is not in the range users, fetch their data
+        const specificUserDoc = await usersRef.doc(specificUserId).get();
+        if (specificUserDoc.exists) {
+          const specificUserData = {
+            id: specificUserDoc.id,
+            ...specificUserDoc.data(),
+          };
+          rangeUsers.push(specificUserData);
+        }
+      }
+  
+      // Fetch more users if we need to ensure we have four users total
+      if (rangeUsers.length < 4) {
+        const additionalUsersSnapshot = await usersRef
+          .where("maxCoin", ">=", minMaxCoin)
+          .where("maxCoin", "<=", maxMaxCoin)
+          .orderBy("maxCoin", "desc")
+          .offset(3)
+          .limit(1)
+          .get();
+        additionalUsersSnapshot.forEach((doc) => {
+          rangeUsers.push({ id: doc.id, ...doc.data() });
+        });
+      }
+  
+      setUsers(rangeUsers.slice(0, 4)); // Ensure we have exactly four users
+    } catch (error) {
+      console.error("Error fetching users: ", error);
+    }
+  };
+  
 
 
   return (

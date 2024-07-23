@@ -11,7 +11,6 @@ import telegram from "../../src/assets/telegram.png";
 import instagram from "../../src/assets/instagram.png";
 import twitter from "../../src/assets/twitter.png";
 import dollar from "../../src/assets/dollar.png";
-import group from "../../src/assets/group.png";
 import level1 from "../../src/assets/level-1.png";
 import level2 from "../../src/assets/level-2.png";
 import level3 from "../../src/assets/level-3.png";
@@ -29,6 +28,8 @@ import level14 from "../../src/assets/level-14.png";
 import level15 from "../../src/assets/level-15.png";
 import level16 from "../../src/assets/level-16.png";
 import level17 from "../../src/assets/level-17.png";
+import socialYoutube from "../../src/assets/socialYoutube.png";
+import { button } from "@material-tailwind/react";
 
 function Tasks() {
   const [loading, setLoading] = useState(true); // Add loading state
@@ -38,8 +39,52 @@ function Tasks() {
   const [tasks, setTasks] = useState({ special: [], leagues: [], ref: [] });
   const [levels, setLevels] = useState([]);
 
-  // state for add friends
-  const [addFriendModal, setAddFriendModal] = useState(false);
+  // state for socails friends
+  const [socialModal, setSoialModal] = useState(false);
+  const [socialModalData, setSoialModalData] = useState({});
+
+
+  // state for levels 
+  const [levelModal , setLevelModal]=useState(false)
+
+  const socialData = [
+    {
+      id: "youtube",
+      heading: "Who is Satoshi Nakamoto? The Creator of Bitcoin?",
+      description:
+        "These are 6 cruptography experts people thought could be Satoshi Nakamoto",
+      image: socialYoutube,
+      button1: "Watch Video & Earn",
+      button2: "Check",
+    },
+    {
+      id: "telegram",
+      heading: "Who is Satoshi Nakamoto? The Creator of Bitcoin?",
+      description:
+        "These are 6 cruptography expertspeople thought could be Satoshi Nakamoto",
+      image: telegram,
+      button1: "Watch Video & Earn",
+      button2: "Check",
+    },
+    {
+      id: "instagram",
+      heading: "Who is Satoshi Nakamoto? The Creator of Bitcoin?",
+      description:
+        "These are 6 cruptography experts people thought could be Satoshi Nakamoto",
+      image: instagram,
+      button1: "Watch Video & Earn",
+      button2: "Check",
+    },
+    {
+      id: "twitter",
+      heading: "Who is Satoshi Nakamoto? The Creator of Bitcoin?",
+      description:
+        "These are 6 cruptography experts people thought could be Satoshi Nakamoto",
+      image: twitter,
+      button1: "Watch Video & Earn",
+      button2: "Check",
+    },
+  ];
 
   const {
     userData,
@@ -229,6 +274,7 @@ function Tasks() {
         maxCoin: userData.maxCoin + 5000,
         coin: userData.coin + 5000,
       };
+
       SocialMediaClaimDBHandler(newData);
     } else if (id === "telegram") {
       const newData = {
@@ -254,7 +300,11 @@ function Tasks() {
     }
   };
 
-  console.log(levels);
+  const SocialMediaHandler = (id) => {
+    const activeData = socialData.find((data) => data.id === id);
+    setSoialModalData(activeData);
+  };
+
   return (
     <div className="py-4 overflow-hidden space-y-2">
       <div className=" mx-4">
@@ -272,19 +322,19 @@ function Tasks() {
                   <div>
                     <img src={dollar} className="h-5" alt="" />
                   </div>
-                  <p className="font-bold text-sm">5000 Coins</p>
+                  <p className="font-bold text-sm">100,000 Coins</p>
                 </div>
               </div>
             </div>
 
             <div className="flex items-center">
-              {!addFriendModal ? (
+              {!socialModal ? (
                 <svg
                   className="h-6"
                   disabled={!userData.joinYoutube}
                   onClick={() => {
-                    setAddFriendModal(!addFriendModal);
-                    SocialMediaClaimHandler("youtube");
+                    setSoialModal(!socialModal);
+                    SocialMediaHandler("youtube");
                   }}
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 320 512"
@@ -295,7 +345,7 @@ function Tasks() {
                 <svg
                   className="h-6"
                   onClick={() => {
-                    setAddFriendModal(!addFriendModal);
+                    setSoialModal(!socialModal);
                   }}
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 512 512"
@@ -317,19 +367,19 @@ function Tasks() {
                   <div>
                     <img src={dollar} className="h-5" alt="" />
                   </div>
-                  <p className="font-bold text-sm">5000 Coins</p>
+                  <p className="font-bold text-sm">100,00 Coins</p>
                 </div>
               </div>
             </div>
 
             <div className="flex items-center">
-              {!addFriendModal ? (
+              {!socialModal ? (
                 <svg
                   className="h-6"
                   disabled={!userData.joinTelegram}
                   onClick={() => {
-                    setAddFriendModal(!addFriendModal);
-                    SocialMediaClaimHandler("telegram");
+                    setSoialModal(!socialModal);
+                    SocialMediaHandler("telegram");
                   }}
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 320 512"
@@ -340,7 +390,7 @@ function Tasks() {
                 <svg
                   className="h-6"
                   onClick={() => {
-                    setAddFriendModal(!addFriendModal);
+                    setSoialModal(!socialModal);
                   }}
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 512 512"
@@ -364,19 +414,19 @@ function Tasks() {
                   <div>
                     <img src={dollar} className="h-5" alt="" />
                   </div>
-                  <p className="font-bold text-sm">5000 Coins</p>
+                  <p className="font-bold text-sm">100,000 Coins</p>
                 </div>
               </div>
             </div>
 
             <div className="flex items-center">
-              {!addFriendModal ? (
+              {!socialModal ? (
                 <svg
                   className="h-6"
                   disabled={!userData.joinInstagram}
                   onClick={() => {
-                    setAddFriendModal(!addFriendModal);
-                    SocialMediaClaimHandler("instagram");
+                    setSoialModal(!socialModal);
+                    SocialMediaHandler("instagram");
                   }}
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 320 512"
@@ -387,7 +437,7 @@ function Tasks() {
                 <svg
                   className="h-6"
                   onClick={() => {
-                    setAddFriendModal(!addFriendModal);
+                    setSoialModal(!socialModal);
                   }}
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 512 512"
@@ -409,19 +459,19 @@ function Tasks() {
                   <div>
                     <img src={dollar} className="h-5" alt="" />
                   </div>
-                  <p className="font-bold text-sm">5000 Coins</p>
+                  <p className="font-bold text-sm">100,000 Coins</p>
                 </div>
               </div>
             </div>
 
             <div className="flex items-center">
-              {!addFriendModal ? (
+              {!socialModal ? (
                 <svg
                   className="h-6"
                   disabled={!userData.joinTwitter}
                   onClick={() => {
-                    setAddFriendModal(!addFriendModal);
-                    SocialMediaClaimHandler("twitter");
+                    setSoialModal(!socialModal);
+                    SocialMediaHandler("twitter");
                   }}
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 320 512"
@@ -432,7 +482,7 @@ function Tasks() {
                 <svg
                   className="h-6"
                   onClick={() => {
-                    setAddFriendModal(!addFriendModal);
+                    setSoialModal(!socialModal);
                   }}
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 512 512"
@@ -443,8 +493,8 @@ function Tasks() {
             </div>
           </div>
         </div>
-
-
+        
+        {/* levels  */}
         <div>
           <div className="text-center text-2xl font-bold mt-4">Levels</div>
           <div className="space-y-2">
@@ -464,8 +514,10 @@ function Tasks() {
                   <div>
                     <button
                       className="bg-orange-400 text-white px-4 py-1 rounded-md font-bold"
-                      disabled={userData.maxCoin> levels[level - 1 + index].end}
-                        // onClick={() => handleBuy(boost)}
+                      disabled={
+                        userData.maxCoin > levels[level - 1 + index].end
+                      }
+                      // onClick={() => handleBuy(boost)}
                     >
                       Claim
                     </button>
@@ -492,27 +544,32 @@ function Tasks() {
         </div>
       </div>
 
-      {addFriendModal && (
-        <div className="fixed inset-0 z-50  flex items-end justify-center  transition-opacity duration-300">
+      {socialModal && (
+        <div className="fixed z-40 inset-0 flex items-end justify-center bg-custom-gradient-tapgame transition-opacity duration-300">
           <div
-            className={`relative bg-white rounded-t-3xl w-screen shadow-lg h-2/3 transition-transform duration-300 ${
-              "ddf" ? "modal-enter" : "modal-exit"
-            }`}
+            className={`relative bg-custom-gradient-tapgame rounded-t-lg w-screen shadow-lg h-screen transition-transform duration-300`}
           >
-            <button
-              // onClick={onClose}
-              className="absolute top-2 right-2 p-2 text-gray-500 hover:text-gray-700"
-            >
-              {/* <XIcon className="h-6 w-6" /> */}
-            </button>
-            <h2 className="text-xl font-semibold mb-4">Modal Title</h2>
-            <p className="text-gray-700">This is the content of the modal.</p>
-            <button
-              // onClick={closeModal}
-              className="mt-4 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
-            >
-              Close Modal
-            </button>
+            <div className="flex flex-col items-center justify-center mx-16 space-y-3 h-[80%]">
+              <div>
+                <img src={socialModalData.image} className="h-40" alt="" />
+              </div>
+              <div className="text-center text-2xl font-bold">
+                {socialModalData?.heading}
+              </div>
+              <div className="text-center">{socialModalData?.description}</div>
+              <div className="flex space-x-2 font-bold items-center">
+                <img src={dollar} className="h-8" alt="" />
+                <h1 className="text-xl">+100,000</h1>
+              </div>
+
+              <div>
+                <button className="text-white font-bold text-xl bg-orange-400 px-4 py-1 border-white border-2 shadow-md rounded-sm">{socialModalData?.button1}</button>
+              </div>
+
+              <div>
+                <button className="text-white font-bold text-xl bg-orange-400 px-28 py-2 border-white border-2 shadow-md rounded-sm">{socialModalData?.button2}</button>
+              </div>
+            </div>
           </div>
         </div>
       )}

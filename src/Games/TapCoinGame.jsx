@@ -283,42 +283,31 @@ const TapCoinGame = () => {
       >
         <div className="space-y-2">
           {/* levels */}
-          <div className="flex  justify-between items-center bg-[#FFFFE5] text-black   shadow-md mx-3 px-1 border-orange-400 border rounded-xl py-1">
-            <div className="flex  w-full justify-between items-center space-x-2">
-              <div className="flex justify-center items-center">
-                <Profile />
-              </div>
-              <div className="flex justify-center items-center">
-                <div className="w-20">Level - {levelNames[level - 1]}</div>
-                <div className="w-[40vw] ">
-                  <div className="h-4 bg-orange-500 rounded-lg ">
-                    <div
-                      className="h-full bg-[#FDCD45] rounded-lg"
-                      style={{
-                        width: `${
-                          (userData.maxCoin / levelMinPoints[level]) * 100
-                        }%`,
-                      }}
-                    ></div>
+          <div className="flex items-center justify-between mx-4">
+            <div className="flex justify-center items-center">
+              <Profile />
+            </div>
+            <div className="flex  justify-between items-center bg-[#FFFFE5] text-black   shadow-md  px-2 border-orange-400 border rounded-xl py-1">
+              <div className="flex  w-full justify-between items-center space-x-2">
+                <div className="flex justify-center items-center">
+                  <div className="w-20">Level - {levelNames[level - 1]}</div>
+                  <div className="w-[40vw] ">
+                    <div className="h-4 bg-orange-500 rounded-lg ">
+                      <div
+                        className="h-full bg-[#FDCD45] rounded-lg"
+                        style={{
+                          width: `${
+                            (userData.maxCoin / levelMinPoints[level]) * 100
+                          }%`,
+                        }}
+                      ></div>
+                    </div>
                   </div>
-                </div>
-                <div
-                  onClick={() => {
-                    navigate("/levels");
-                  }}
-                >
-                  <svg
-                    className="h-3"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 320 512"
+                  <div
+                    onClick={() => {
+                      navigate("/levels");
+                    }}
                   >
-                    <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z" />
-                  </svg>
-                </div>
-              </div>
-              {/* 
-                {!showLevels ? (
-                  <span>
                     <svg
                       className="h-3"
                       xmlns="http://www.w3.org/2000/svg"
@@ -326,18 +315,9 @@ const TapCoinGame = () => {
                     >
                       <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z" />
                     </svg>
-                  </span>
-                ) : (
-                  <span>
-                    <svg
-                      className="h-3"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 512 512"
-                    >
-                      <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
-                    </svg>
-                  </span>
-                )} */}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -365,9 +345,8 @@ const TapCoinGame = () => {
               <div className="text-sm"> Daily Task</div>
             </div>
           </div>
-           
 
-           {/* balance  */}
+          {/* balance  */}
           <div className="flex items-center justify-center">
             <div className="flex items-center space-x-2">
               <img src={dollar} alt="" className="h-10 w-10" />

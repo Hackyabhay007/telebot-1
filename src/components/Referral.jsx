@@ -3,8 +3,7 @@ import { FaRobot } from "react-icons/fa";
 import { useSpring, animated } from "react-spring";
 import { UserDataContext } from "../Utils/userDataContext";
 import BottomNavBar from "./BottomNavBar";
-import Loader from "./Loader"; // Import the Loader component
-import Profile from "./Profile";
+import Loader from "./Loader";
 import share from "../../src/assets/share.png";
 import group from "../../src/assets/group.png";
 import dollar from "../../src/assets/dollar.png";
@@ -18,7 +17,7 @@ const Referral = () => {
   });
   const [addFriendModal, setAddFriendModal] = useState(false);
   const [referralLink, setReferralLink] = useState("");
-  const [copied, setCopied] = useState(false); // State to track if referral link is copied
+  const [copied, setCopied] = useState(false);
   const {
     getReferralCount,
     userData,
@@ -57,7 +56,7 @@ const Referral = () => {
   };
 
   if (isLoading) {
-    return <Loader />; // Display the loader while the content is loading
+    return <Loader />;
   }
 
   const handleInviteClick = () => {
@@ -81,6 +80,10 @@ const Referral = () => {
     });
   };
 
+  const AddFriendHandler = ()=>{
+    
+  }
+
   function getNthTerm(n) {
     const startNumber = 250;
     const commonRatio = 2;
@@ -92,7 +95,6 @@ const Referral = () => {
 
   return (
     <div className="mt-4 overflow-hidden rounded-lg chakra-petch-bold">
-  
       <div className="items-center mb-2 mt-6">
         <p className="text-3xl chakra-petch-bold text-black text-center mb-10">
           Referrals Count: {userData?.referralCount}
@@ -123,7 +125,12 @@ const Referral = () => {
                 </div>
               </div>
             </div>
-            <div className="flex items-center">
+            <div
+              className="flex items-center"
+              onClick={() => {
+                setAddFriendModal(!addFriendModal);
+              }}
+            >
               {addFriendModal && addFriendActiveModal === 1 ? (
                 <svg
                   className="h-6"
@@ -226,12 +233,12 @@ const Referral = () => {
               </div>
             </div>
             <div className="flex items-center">
-              {addFriendModal && addFriendActiveModal===3 ? (
+              {addFriendModal && addFriendActiveModal === 3 ? (
                 <svg
                   className="h-6"
                   onClick={() => {
                     setAddFriendModal(!addFriendModal);
-                    setAddFriendActiveModal(0)
+                    setAddFriendActiveModal(0);
                   }}
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 512 512"
@@ -243,7 +250,7 @@ const Referral = () => {
                   className="h-6"
                   onClick={() => {
                     setAddFriendModal(!addFriendModal);
-                    setAddFriendActiveModal(3)
+                    setAddFriendActiveModal(3);
                   }}
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 320 512"
@@ -334,37 +341,42 @@ const Referral = () => {
           </div>
         </div>
       </div>
-      {/* <div className="absolute bottom-[130px] left-1/2 transform -translate-x-1/2">
-        <button
-          onClick={handleInviteClick}
-          className="border-2 px-9 py-3 animate-scale-up-down bg-orange-400 text-white rounded-lg"
-        >
-          Invite a Friend
-        </button>
-      </div> */}
 
-      {/* <div className="fixed inset-0 z-50 flex items-end justify-center bg-black bg-opacity-50 transition-opacity duration-300">
-        <div
-          className={`relative bg-white rounded-t-lg w-screen shadow-lg h-1/2 transition-transform duration-300 ${
-            "ddf" ? "modal-enter" : "modal-exit"
-          }`}
-        >
-          <button
-            onClick={onClose}
-            className="absolute top-2 right-2 p-2 text-gray-500 hover:text-gray-700"
+      {addFriendModal && (
+        <div className="fixed z-40 inset-0 flex items-end justify-center bg-custom-gradient-tapgame transition-opacity duration-300">
+        
+          <div
+            className={`relative bg-custom-gradient-tapgame rounded-t-lg w-screen shadow-lg h-screen transition-transform duration-300`}
           >
-            <XIcon className="h-6 w-6" />
-          </button>
-          <h2 className="text-xl font-semibold mb-4">Modal Title</h2>
-          <p className="text-gray-700">This is the content of the modal.</p>
-          <button
-            onClick={closeModal}
-            className="mt-4 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
-          >
-            Close Modal
-          </button>
+            <div className="flex flex-col items-center justify-center mx-16 space-y-3 h-[80%]">
+            <button onClick={()=>{setAddFriendModal(false)}}>Xgffhfghfghf</button>
+              <div>
+                {/* <img src={socialModalData.image} className="h-40" alt="" /> */}
+              </div>
+              <div className="text-center text-2xl font-bold">
+                {/* {socialModalData?.heading} */}
+              </div>
+              {/* <div className="text-center">{socialModalData?.description}</div> */}
+              <div className="flex space-x-2 font-bold items-center">
+                <img src={dollar} className="h-8" alt="" />
+                <h1 className="text-xl">+100,000</h1>
+              </div>
+
+              <div>
+                <button className="text-white font-bold text-xl bg-orange-400 px-4 py-1 border-white border-2 shadow-md rounded-sm">
+                  {/* {socialModalData?.button1} */}
+                </button>
+              </div>
+
+              <div>
+                <button className="text-white font-bold text-xl bg-orange-400 px-28 py-2 border-white border-2 shadow-md rounded-sm">
+                  {/* {socialModalData?.button2} */}
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
-      </div> */}
+      )}
 
       <BottomNavBar />
     </div>

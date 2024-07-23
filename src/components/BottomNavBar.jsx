@@ -59,7 +59,7 @@ const BottomNavBar = () => {
   };
 
   return (
-    <div className="fixed bottom-2 w-full text-black z-50  bg-glass-bg/10 backdrop-blur  ">
+    <div className="fixed bottom-2 w-full text-black z-40  bg-glass-bg/10 backdrop-blur  ">
       <div className="flex justify-around py-2">
         {navItems.map((item, index) => (
           <NavLink
