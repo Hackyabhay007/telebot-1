@@ -59,14 +59,7 @@ const BottomNavBar = () => {
   };
 
   return (
-    <div
-      className="fixed bottom-2 w-full text-black z-50  bg-glass-bg/10 backdrop-blur  "
-      // style={{
-      //   backdropFilter: "blur(20px)",
-      //   WebkitBackdropFilter: "blur(10px)",
-      //   width: "100%",
-      // }}
-    >
+    <div className="fixed bottom-2 w-full text-black z-50  bg-glass-bg/10 backdrop-blur  ">
       <div className="flex justify-around py-2">
         {navItems.map((item, index) => (
           <NavLink
@@ -78,7 +71,7 @@ const BottomNavBar = () => {
           >
             <div className="flex flex-col items-center">
               <div
-                className={` rounded-xl p-1 border-2 shadow-md shadow-orange-500 w-16  h-20 flex flex-col items-center justify-center bg-[#F9C399] border-[#FA650F]
+                className={` rounded-xl p-1 border-2 shadow-md shadow-orange-500 w-20  h-20 flex flex-col items-center justify-center bg-[#F9C399] border-[#FA650F]
 ]`}
               >
                 <img src={item.img} className=" h-8" />
