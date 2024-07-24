@@ -480,7 +480,18 @@ export const UserDataProvider = ({ children }) => {
   useEffect( ()=>{
     fetchLevels ()
   })
-
+   
+  function sortUsersByMaxCoin(users) {
+    return users.sort((a, b) => {
+      // Convert to number to ensure proper comparison
+      const maxCoinA = Number(a.maxCoin);
+      const maxCoinB = Number(b.maxCoin);
+  
+      // Sort in descending order
+      return maxCoinB - maxCoinA;
+    });
+  }
+  
 
   const fetchUsers = async (specificUserId, minMaxCoin, maxMaxCoin) => {
     try {
@@ -529,7 +540,7 @@ export const UserDataProvider = ({ children }) => {
         });
       }
   
-      setUsers(rangeUsers.slice(0, 4)); // Ensure we have exactly four users
+      setUsers(sortUsersByMaxCoin(rangeUsers.slice(0, 4))); // Ensure we have exactly four users
     } catch (error) {
       console.error("Error fetching users: ", error);
     }

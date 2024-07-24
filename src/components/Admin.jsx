@@ -12,7 +12,7 @@ const Admin = () => {
   const navigate = useNavigate();
 
   const handle = () => {
-    navigate("/games");
+    navigate("/home/01");
   };
 
   return (

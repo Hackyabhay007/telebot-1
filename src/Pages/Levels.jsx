@@ -75,7 +75,7 @@ const Levels = () => {
 
   const levelMaxPoints = [
     500000, 1000000, 1500000, 2000000, 2500000, 3000000, 3500000, 4000000,
-    4800000, 5600000, 6400000, 7200000, 8800000, 9600000, 10400000, 11200000,
+    4800000, 5600000, 6400000, 7200000,8000000 ,8800000, 9600000, 10400000, 11200000,
   ];
 
   const imageData = [
@@ -149,12 +149,22 @@ const Levels = () => {
     },
   ];
 
+
+
   useEffect(() => {
     const chatId = localStorage.getItem("chatId");
     if (chatId) {
-      fetchUsers(chatId, 0, 500000);
+      fetchUsers(chatId, 0, userData.maxCoin);
     }
-  }, []);
+  
+    
+    const calculateLevel = (maxCoin) => {
+      return levelMaxPoints.findIndex(threshold => maxCoin < threshold);
+    };
+  
+    setLevel(calculateLevel(userData.maxCoin));
+  }, [userData.maxCoin ]);
+
 
   function formatNumber(num) {
     if (num >= 1000000) {
@@ -165,7 +175,7 @@ const Levels = () => {
       return num.toString(); // Return number as is if it's less than 1000
     }
   }
-  const chatId=localStorage.getItem('chatId');
+  const chatId = localStorage.getItem("chatId");
   return (
     <WebAppProvider>
       <div className=" min-h-screen  overflow-hidden   flex flex-col justify-start mt-10  bg-custom-gradient-tapgame text-white font-display chakra-petch-bold  ">
@@ -199,14 +209,12 @@ const Levels = () => {
                 onClick={() => {
                   if (level >= 1) {
                     setLevel(level - 1);
-                    // console.log(levelMaxPoints[level-1])
-                    fetchUsers(chatId , 0 , levelMaxPoints[level-1])
+                    fetchUsers(chatId, 0, levelMaxPoints[level - 1]);
                   } else {
                     setLevel(16);
-                    console.log(levelMaxPoints[15])
-                    fetchUsers(chatId , 0 , levelMaxPoints[15])
+                    console.log(levelMaxPoints[15]);
+                    fetchUsers(chatId, 0, levelMaxPoints[15]);
                   }
-                  
                 }}
               >
                 <svg
@@ -224,12 +232,12 @@ const Levels = () => {
                 className="absolute right-5 top-1/2"
                 onClick={() => {
                   if (level < 16) {
-                    fetchUsers(chatId , 0 , levelMaxPoints[level])
+                    fetchUsers(chatId, 0, levelMaxPoints[level]);
 
                     setLevel(level + 1);
                   } else {
                     setLevel(0);
-                    fetchUsers(chatId , 0 , 500000)
+                    fetchUsers(chatId, 0, 500000);
                   }
                 }}
               >
@@ -267,7 +275,7 @@ const Levels = () => {
                       ? `${user.id}`
                       : ` ${user.id}(you)`}
                   </div>
-                  <div>Rank {index < 3 && index + 1}</div>
+                  <div>Rank {index + 1}</div>
                 </div>
               </div>
               <div>

@@ -43,7 +43,7 @@ const navItems = [
 ];
 
 const BottomNavBar = () => {
-  const [selectedItem, setSelectedItem] = useState(null);
+  const [selectedItem, setSelectedItem] = useState(0);
   const isPlay = useSelector((state) => state.engine.play);
   const bgMusic = useRef(null);
   const marioDie = useRef(null);
@@ -59,19 +59,19 @@ const BottomNavBar = () => {
   };
 
   return (
-    <div className="fixed bottom-2 w-full text-black z-40  bg-glass-bg/10 backdrop-blur  ">
-      <div className="flex justify-around py-2">
+    <div className="fixed bottom-2  text-black z-40 w-[95vw] bg-glass-bg/40 shadow-md backdrop-blur   p-2 rounded-3xl">
+      <div className="flex">
         {navItems.map((item, index) => (
           <NavLink
             key={index}
             to={item.to}
             activeClassName="border border-white text-golden"
-            className="text-black  flex-grow flex-shrink "
+            className={`text-black  flex-grow flex-shrink  ${selectedItem===index? "text-white":""}`}
             onClick={() => handleItemSelect(index)}
           >
             <div className="flex flex-col items-center">
               <div
-                className={` rounded-xl p-1 border-2 shadow-md shadow-orange-500 w-20  h-20 flex flex-col items-center justify-center bg-[#F9C399] border-[#FA650F]
+                className={` rounded-xl p-1 border-2 shadow-md shadow-orange-500 w-20  h-24 flex flex-col items-center justify-center bg-[#F9C399] border-[#FA650F]
 ]`}
               >
                 <img src={item.img} className=" h-8" />

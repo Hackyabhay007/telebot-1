@@ -49,7 +49,7 @@ const AuthPage = () => {
             coin: 100000,
             maxCoin: 100000,
             referralCount: 0,
-            invitefriendsclaim:[],
+            invitefriendsclaim: [],
             refs: [],
             limit10x: 3,
             limit20x: 3,
@@ -58,6 +58,26 @@ const AuthPage = () => {
             startDay20x: new Date().getDate(),
             nextDay20x: new Date().getDate() + 1,
             DailyReward: [
+              true,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
               false,
               false,
               false,
@@ -69,11 +89,11 @@ const AuthPage = () => {
               false,
               false,
             ],
-            created_at:new Date().getDate(),
-            joinYoutube:false,
-            joinTelegram:false,
-            joinTwitter:false,
-            joinInstagram:false , 
+            created_at: new Date(),
+            joinYoutube: false,
+            joinTelegram: false,
+            joinTwitter: false,
+            joinInstagram: false,
           };
 
           const createdUser = await createUser(userData);
@@ -272,7 +292,7 @@ const AuthPage = () => {
           </div>
         </div>
       )}
-      <BottomNavBar/>
+      <BottomNavBar />
     </div>
   );
 };

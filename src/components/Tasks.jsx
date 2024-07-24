@@ -29,6 +29,9 @@ import level15 from "../../src/assets/level-15.png";
 import level16 from "../../src/assets/level-16.png";
 import level17 from "../../src/assets/level-17.png";
 import socialYoutube from "../../src/assets/socialYoutube.png";
+import socialTelegram from "../../src/assets/telegramSocial.png";
+import socialTwitter from "../../src/assets/twitterSocial.png";
+import socialInstagram from "../../src/assets/instagramSocial.png";
 import { button } from "@material-tailwind/react";
 
 function Tasks() {
@@ -43,9 +46,8 @@ function Tasks() {
   const [socialModal, setSoialModal] = useState(false);
   const [socialModalData, setSoialModalData] = useState({});
 
-
-  // state for levels 
-  const [levelModal , setLevelModal]=useState(false)
+  // state for levels
+  const [levelModal, setLevelModal] = useState(false);
 
   const socialData = [
     {
@@ -62,8 +64,8 @@ function Tasks() {
       heading: "Who is Satoshi Nakamoto? The Creator of Bitcoin?",
       description:
         "These are 6 cruptography expertspeople thought could be Satoshi Nakamoto",
-      image: telegram,
-      button1: "Watch Video & Earn",
+      image: socialTelegram,
+      button1: "Open Link",
       button2: "Check",
     },
     {
@@ -71,8 +73,8 @@ function Tasks() {
       heading: "Who is Satoshi Nakamoto? The Creator of Bitcoin?",
       description:
         "These are 6 cruptography experts people thought could be Satoshi Nakamoto",
-      image: instagram,
-      button1: "Watch Video & Earn",
+      image: socialInstagram,
+      button1: "Open Link",
       button2: "Check",
     },
     {
@@ -80,8 +82,8 @@ function Tasks() {
       heading: "Who is Satoshi Nakamoto? The Creator of Bitcoin?",
       description:
         "These are 6 cruptography experts people thought could be Satoshi Nakamoto",
-      image: twitter,
-      button1: "Watch Video & Earn",
+      image: socialTwitter,
+      button1: "Open Link",
       button2: "Check",
     },
   ];
@@ -305,6 +307,55 @@ function Tasks() {
     setSoialModalData(activeData);
   };
 
+  const LevelClaimHandler = (level) => {
+    console.log(level);
+
+    const newData = {
+      maxCoin: userData.maxCoin + level.start,
+      coin: userData.coin + level.start,
+    };
+    updateUserData(newData);
+  };
+
+  const SocialCheckHandler = () => {
+    setLoading(true);
+    let newData;
+    console.log(socialModalData);
+
+    if (socialModalData.id == "twitter") {
+      newData = {
+        maxCoin: userData.maxCoin + 100000,
+        coin: userData.coin + 1000000,
+        joinTwitter: true,
+      };
+    } else if (socialModalData.id == "youtube") {
+      newData = {
+        maxCoin: userData.maxCoin + 100000,
+        coin: userData.coin + 1000000,
+        joinYoutube: true,
+      };
+    } else if (socialModalData.id == "instagram") {
+      newData = {
+        maxCoin: userData.maxCoin + 100000,
+        coin: userData.coin + 1000000,
+        joinInstagram: true,
+      };
+    } else {
+      newData = {
+        maxCoin: userData.maxCoin + 100000,
+        coin: userData.coin + 1000000,
+        joinTelegram: true,
+      };
+    }
+
+    setTimeout(() => {
+      updateUserData(newData);
+      setSoialModal(false);
+      setSoialModalData(false);
+      setLoading(false);
+    }, 3000);
+  };
+
   return (
     <div className="py-4 overflow-hidden space-y-2">
       <div className=" mx-4">
@@ -329,21 +380,24 @@ function Tasks() {
 
             <div className="flex items-center">
               {!socialModal ? (
-                <svg
-                  className="h-6"
-                  disabled={!userData.joinYoutube}
-                  onClick={() => {
-                    setSoialModal(!socialModal);
-                    SocialMediaHandler("youtube");
-                  }}
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 320 512"
-                >
-                  <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z" />
-                </svg>
+                <button disabled={userData.joinYoutube}>
+                  <svg
+                    className="h-6"
+                    disabled={userData.joinYoutube}
+                    onClick={() => {
+                      setSoialModal(!socialModal);
+                      SocialMediaHandler("youtube");
+                    }}
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 320 512"
+                  >
+                    <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z" />
+                  </svg>
+                </button>
               ) : (
                 <svg
                   className="h-6"
+                  disabled={userData.joinYoutube}
                   onClick={() => {
                     setSoialModal(!socialModal);
                   }}
@@ -374,18 +428,20 @@ function Tasks() {
 
             <div className="flex items-center">
               {!socialModal ? (
-                <svg
-                  className="h-6"
-                  disabled={!userData.joinTelegram}
-                  onClick={() => {
-                    setSoialModal(!socialModal);
-                    SocialMediaHandler("telegram");
-                  }}
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 320 512"
-                >
-                  <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z" />
-                </svg>
+                <button disabled={userData.joinTelegram}>
+                  <svg
+                    className="h-6"
+                    disabled={!userData.joinTelegram}
+                    onClick={() => {
+                      setSoialModal(!socialModal);
+                      SocialMediaHandler("telegram");
+                    }}
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 320 512"
+                  >
+                    <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z" />
+                  </svg>
+                </button>
               ) : (
                 <svg
                   className="h-6"
@@ -421,18 +477,20 @@ function Tasks() {
 
             <div className="flex items-center">
               {!socialModal ? (
-                <svg
-                  className="h-6"
-                  disabled={!userData.joinInstagram}
-                  onClick={() => {
-                    setSoialModal(!socialModal);
-                    SocialMediaHandler("instagram");
-                  }}
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 320 512"
-                >
-                  <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z" />
-                </svg>
+                <button disabled={userData.joinInstagram}>
+                  <svg
+                    className="h-6"
+                    disabled={!userData.joinInstagram}
+                    onClick={() => {
+                      setSoialModal(!socialModal);
+                      SocialMediaHandler("instagram");
+                    }}
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 320 512"
+                  >
+                    <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z" />
+                  </svg>
+                </button>
               ) : (
                 <svg
                   className="h-6"
@@ -466,18 +524,20 @@ function Tasks() {
 
             <div className="flex items-center">
               {!socialModal ? (
-                <svg
-                  className="h-6"
-                  disabled={!userData.joinTwitter}
-                  onClick={() => {
-                    setSoialModal(!socialModal);
-                    SocialMediaHandler("twitter");
-                  }}
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 320 512"
-                >
-                  <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z" />
-                </svg>
+                <button disabled={userData.joinTwitter}>
+                  <svg
+                    className="h-6"
+                    disabled={!userData.joinTwitter}
+                    onClick={() => {
+                      setSoialModal(!socialModal);
+                      SocialMediaHandler("twitter");
+                    }}
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 320 512"
+                  >
+                    <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z" />
+                  </svg>
+                </button>
               ) : (
                 <svg
                   className="h-6"
@@ -493,7 +553,7 @@ function Tasks() {
             </div>
           </div>
         </div>
-        
+
         {/* levels  */}
         <div>
           <div className="text-center text-2xl font-bold mt-4">Levels</div>
@@ -513,11 +573,15 @@ function Tasks() {
                   </div>
                   <div>
                     <button
-                      className="bg-orange-400 text-white px-4 py-1 rounded-md font-bold"
+                      className={`bg-orange-400 text-white px-4 py-1 rounded-md font-bold ${
+                        userData.maxCoin < levels[level - 1 + index].end
+                          ? "opacity-70"
+                          : ""
+                      } `}
                       disabled={
                         userData.maxCoin > levels[level - 1 + index].end
                       }
-                      // onClick={() => handleBuy(boost)}
+                      onClick={() => LevelClaimHandler(le)}
                     >
                       Claim
                     </button>
@@ -563,11 +627,54 @@ function Tasks() {
               </div>
 
               <div>
-                <button className="text-white font-bold text-xl bg-orange-400 px-4 py-1 border-white border-2 shadow-md rounded-sm">{socialModalData?.button1}</button>
+                <button className="text-white font-bold text-xl bg-orange-400 px-4 py-1 border-white border-2 shadow-md rounded-sm">
+                  {socialModalData?.button1}
+                </button>
               </div>
 
               <div>
-                <button className="text-white font-bold text-xl bg-orange-400 px-28 py-2 border-white border-2 shadow-md rounded-sm">{socialModalData?.button2}</button>
+                <button
+                  onClick={() => {
+                    SocialCheckHandler();
+                  }}
+                  className="text-white font-bold text-xl bg-orange-400 px-28 py-2 border-white border-2 shadow-md rounded-sm"
+                >
+                  {socialModalData?.button2}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {levelModal && (
+        <div className="fixed z-40 inset-0 flex items-end justify-center bg-custom-gradient-tapgame transition-opacity duration-300">
+          <div
+            className={`relative bg-custom-gradient-tapgame rounded-t-lg w-screen shadow-lg h-screen transition-transform duration-300`}
+          >
+            <div className="flex flex-col items-center justify-center mx-16 space-y-3 h-[80%]">
+              <div>
+                <img src={socialModalData?.image} className="h-40" alt="" />
+              </div>
+              <div className="text-center text-2xl font-bold">
+                {socialModalData?.heading}
+              </div>
+              <div className="text-center">{socialModalData?.description}</div>
+              <div className="flex space-x-2 font-bold items-center">
+                <img src={dollar} className="h-8" alt="" />
+                <h1 className="text-xl">+100,000</h1>
+              </div>
+
+              <div>
+                <button className="text-white font-bold text-xl bg-orange-400 px-4 py-1 border-white border-2 shadow-md rounded-sm">
+                  {socialModalData?.button1}
+                </button>
+              </div>
+
+              <div>
+                <button className="text-white font-bold text-xl bg-orange-400 px-28 py-2 border-white border-2 shadow-md rounded-sm">
+                  {socialModalData?.button2}
+                </button>
               </div>
             </div>
           </div>
