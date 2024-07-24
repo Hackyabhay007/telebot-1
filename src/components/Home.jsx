@@ -7,6 +7,7 @@ import { useSpring, animated } from "react-spring"; // Import animations
 import { ethers } from "ethers";
 import { UserDataContext } from "../Utils/userDataContext.jsx";
 import BottomNavBar from "./BottomNavBar.jsx";
+import wallet from "../../src/assets/wallet.png";
 
 const AuthPage = () => {
   const navigate = useNavigate();
@@ -211,19 +212,20 @@ const AuthPage = () => {
       {showPopup && (
         <div className="flex items-center justify-center md:mx-2 ">
           <div className="popup-content backdrop-blur  px-2 md:p-6 text-center">
-            <h2 className="text-md  text-golden font-bold text-sm md:text-lg">
-              Welcome, new User! , 100,000 Coins Added in your Wallet
+            <h2 className="text-xl font-bold">
+              Welcome, New User! , 100,000 Coins Added in your Wallet
             </h2>
-            <hr className="border-t-2 border-golden w-full opacity-50" />
-            <p className="chakra-petch-regular text-sm md:text-lg text-white md:py-2 py-1 mb-4 ">
+            <hr className="border-t-2 border-orange-400 border-dashed w-full opacity-50" />
+            <p className="font-bold text-sm  px-9 py-1 ">
               We have created a wallet for you and we will transfer all your
               points to your wallet.
             </p>
+
             <div className="flex justify-center w-full flex-col text-white">
               <div className="flex  items-center justify-center py-1">
-                <p className="text-md md:mr-2 t text-golden font-semibold md:font-bold">
-                  Wallet Id:
-                </p>
+                <div>
+                  <p className="text-xl text-black font-bold">Wallet Id:</p>
+                </div>
                 <div className="text-sm  md:text-base flex w-9/12 md:w-4/5  md:p-1 rounded-full backdrop-blur-sm bg-golden/10">
                   <input
                     type="text"
@@ -278,6 +280,33 @@ const AuthPage = () => {
               >
                 <span className="font-bold ">Warning:</span>Make sure you take
                 screenshot or copy your wallet id and passphrase
+              </div>
+            </div>
+
+            <div>
+              <div className="flex justify-between">
+                <div>Wallet Id : </div>
+                <div>
+                  <img src={wallet} alt="" />
+                </div>
+              </div>
+              <div className="flex justify-between">
+                <div className="w-[80%]">
+                  <input
+                    type="text"
+                    value={CreatedUserData.walletAddress}
+                    readOnly
+                    className=" w-full text-white p-1  truncate md:p-2 rounded-lg bg-transparent"
+                  />
+                </div>
+                <div>
+                  <button
+                    className="px-5 py-1 bg-orange-500 text-white  rounded-lg "
+                    onClick={handleCopyWalletAddress}
+                  >
+                    {walletCopied ? "Copied" : "Copy"}
+                  </button>
+                </div>
               </div>
             </div>
 

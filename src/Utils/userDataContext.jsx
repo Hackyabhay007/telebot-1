@@ -22,7 +22,7 @@ export const UserDataProvider = ({ children }) => {
 
   const [level, setLevel] = useState(1);
   const [users, setUsers] = useState([]);
-  const [levelsData, setLevelsData]= useState ([])
+  const [levelsData, setLevelsData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -94,24 +94,38 @@ export const UserDataProvider = ({ children }) => {
       if (userData) {
         if (userData.maxCoin < 500000) {
           setLevel(1);
-        } else if (userData.maxCoin >= 500000 && userData.maxCoin < 1000000) {
+        } else if (userData.maxCoin < 1000000) {
           setLevel(2);
-        } else if (userData.maxCoin >= 1000000 && userData.maxCoin < 1500000) {
+        } else if (userData.maxCoin < 1500000) {
           setLevel(3);
-        } else if (userData.maxCoin >= 1500000 && userData.maxCoin < 2000000) {
+        } else if (userData.maxCoin < 2000000) {
           setLevel(4);
-        } else if (userData.maxCoin >= 2000000 && userData.maxCoin < 2500000) {
+        } else if (userData.maxCoin < 2500000) {
           setLevel(5);
-        } else if (userData.maxCoin >= 2500000 && userData.maxCoin < 3000000) {
+        } else if (userData.maxCoin < 3000000) {
           setLevel(6);
-        } else if (userData.maxCoin >= 3000000 && userData.maxCoin < 3500000) {
+        } else if (userData.maxCoin < 3500000) {
           setLevel(7);
-        } else if (userData.maxCoin >= 3500000 && userData.maxCoin < 5000000) {
+        } else if (userData.maxCoin < 4000000) {
           setLevel(8);
-        } else if (userData.maxCoin >= 5000000 && userData.maxCoin < 6500000) {
+        } else if (userData.maxCoin < 4800000) {
           setLevel(9);
-        } else if (userData.maxCoin >= 6500000) {
+        } else if (userData.maxCoin < 5600000) {
           setLevel(10);
+        } else if (userData.maxCoin < 6400000) {
+          setLevel(11);
+        } else if (userData.maxCoin < 7200000) {
+          setLevel(12);
+        } else if (userData.maxCoin < 8000000) {
+          setLevel(13);
+        } else if (userData.maxCoin < 8800000) {
+          setLevel(14);
+        } else if (userData.maxCoin < 9600000) {
+          setLevel(15);
+        } else if (userData.maxCoin < 10400000) {
+          setLevel(16);
+        } else {
+          setLevel(17);
         }
       }
     }
@@ -361,91 +375,91 @@ export const UserDataProvider = ({ children }) => {
       end: 500000,
     },
     {
-      id:2 , 
-      start:500000,
-      end:1000000,
+      id: 2,
+      start: 500000,
+      end: 1000000,
     },
     {
-      id:3 , 
-      start:10000000,
-      end:1500000,
+      id: 3,
+      start: 10000000,
+      end: 1500000,
     },
     {
-      id:4 , 
-      start:1500000,
-      end:2000000,
+      id: 4,
+      start: 1500000,
+      end: 2000000,
     },
     {
-      id:5 , 
-      start:2000000,
-      end:2500000,
+      id: 5,
+      start: 2000000,
+      end: 2500000,
     },
     {
-      id:6 , 
-      start:2500000,
-      end:3000000,
+      id: 6,
+      start: 2500000,
+      end: 3000000,
     },
     {
-      id:7 , 
-      start:3000000,
-      end:3500000,
+      id: 7,
+      start: 3000000,
+      end: 3500000,
     },
     {
-      id:8 , 
-      start:3500000,
-      end:4000000,
+      id: 8,
+      start: 3500000,
+      end: 4000000,
     },
     {
-      id:9 , 
-      start:4000000,
-      end:4800000,
+      id: 9,
+      start: 4000000,
+      end: 4800000,
     },
     {
-      id:10 , 
-      start:4800000,
-      end:5600000,
+      id: 10,
+      start: 4800000,
+      end: 5600000,
     },
     {
-      id:11 , 
-      start:5600000,
-      end:6400000,
+      id: 11,
+      start: 5600000,
+      end: 6400000,
     },
     {
-      id:12 , 
-      start:6400000,
-      end:7200000,
+      id: 12,
+      start: 6400000,
+      end: 7200000,
     },
     {
-      id:13 , 
-      start:7200000,
-      end:8000000,
+      id: 13,
+      start: 7200000,
+      end: 8000000,
     },
     {
-      id:14 , 
-      start:8000000,
-      end:8800000,
+      id: 14,
+      start: 8000000,
+      end: 8800000,
     },
     {
-      id:15 , 
-      start:8800000,
-      end:9600000,
+      id: 15,
+      start: 8800000,
+      end: 9600000,
     },
     {
-      id:16 , 
-      start:9600000,
-      end:10400000,
+      id: 16,
+      start: 9600000,
+      end: 10400000,
     },
     {
-      id:17 , 
-      start:10400000,
-      end:11200000,
-    }
+      id: 17,
+      start: 10400000,
+      end: 11200000,
+    },
   ];
 
   const createLevels = async () => {
     try {
       // Add the task document to the 'tasks' collection in Firestore
-      await firestore.collection("Levels").add({Levels});
+      await firestore.collection("Levels").add({ Levels });
       return true; // Return true to indicate success
     } catch (error) {
       console.error("Error creating levels:", error);
@@ -455,9 +469,7 @@ export const UserDataProvider = ({ children }) => {
 
   const fetchLevels = async () => {
     try {
-      const levelsSnapshot = await firestore
-        .collection("Levels")
-        .get();
+      const levelsSnapshot = await firestore.collection("Levels").get();
 
       if (levelsSnapshot.empty) {
         console.log("No levels found.");
@@ -477,26 +489,25 @@ export const UserDataProvider = ({ children }) => {
     }
   };
 
-  useEffect( ()=>{
-    fetchLevels ()
-  })
-   
+  useEffect(() => {
+    fetchLevels();
+  });
+
   function sortUsersByMaxCoin(users) {
     return users.sort((a, b) => {
       // Convert to number to ensure proper comparison
       const maxCoinA = Number(a.maxCoin);
       const maxCoinB = Number(b.maxCoin);
-  
+
       // Sort in descending order
       return maxCoinB - maxCoinA;
     });
   }
-  
 
   const fetchUsers = async (specificUserId, minMaxCoin, maxMaxCoin) => {
     try {
       const usersRef = firestore.collection("users");
-  
+
       // Fetch users within the maxCoin range
       const rangeUsersSnapshot = await usersRef
         .where("maxCoin", ">=", minMaxCoin)
@@ -508,12 +519,12 @@ export const UserDataProvider = ({ children }) => {
         id: doc.id,
         ...doc.data(),
       }));
-  
+
       // Check if the specific user is in the range users
       const specificUserIndex = rangeUsers.findIndex(
         (user) => user.id === specificUserId
       );
-  
+
       if (specificUserIndex === -1) {
         // Specific user is not in the range users, fetch their data
         const specificUserDoc = await usersRef.doc(specificUserId).get();
@@ -525,7 +536,7 @@ export const UserDataProvider = ({ children }) => {
           rangeUsers.push(specificUserData);
         }
       }
-  
+
       // Fetch more users if we need to ensure we have four users total
       if (rangeUsers.length < 4) {
         const additionalUsersSnapshot = await usersRef
@@ -539,19 +550,17 @@ export const UserDataProvider = ({ children }) => {
           rangeUsers.push({ id: doc.id, ...doc.data() });
         });
       }
-  
+
       setUsers(sortUsersByMaxCoin(rangeUsers.slice(0, 4))); // Ensure we have exactly four users
     } catch (error) {
       console.error("Error fetching users: ", error);
     }
   };
-  
-
 
   return (
     <UserDataContext.Provider
       value={{
-        fetchLevels , 
+        fetchLevels,
         SocialMediaClaimDBHandler,
         ReferralClaimDBHandler,
         fetchTotalBalance,

@@ -32,7 +32,6 @@ import socialYoutube from "../../src/assets/socialYoutube.png";
 import socialTelegram from "../../src/assets/telegramSocial.png";
 import socialTwitter from "../../src/assets/twitterSocial.png";
 import socialInstagram from "../../src/assets/instagramSocial.png";
-import { button } from "@material-tailwind/react";
 
 function Tasks() {
   const [loading, setLoading] = useState(true); // Add loading state
@@ -40,14 +39,15 @@ function Tasks() {
   const [showSpecialTaskPopup, setShowSpecialTaskPopup] = useState(false);
   const [selectedSpecialTask, setSelectedSpecialTask] = useState(null);
   const [tasks, setTasks] = useState({ special: [], leagues: [], ref: [] });
-  const [levels, setLevels] = useState([]);
 
   // state for socails friends
   const [socialModal, setSoialModal] = useState(false);
   const [socialModalData, setSoialModalData] = useState({});
 
   // state for levels
+  const [levels, setLevels] = useState([]);
   const [levelModal, setLevelModal] = useState(false);
+  const [levelModalData, setLevelModalData] = useState({});
 
   const socialData = [
     {
@@ -86,6 +86,26 @@ function Tasks() {
       button1: "Open Link",
       button2: "Check",
     },
+  ];
+
+  const levelImages = [
+    level1,
+    level2,
+    level3,
+    level4,
+    level5,
+    level6,
+    level7,
+    level8,
+    level9,
+    level10,
+    level11,
+    level12,
+    level13,
+    level14,
+    level15,
+    level16,
+    level17,
   ];
 
   const {
@@ -269,52 +289,9 @@ function Tasks() {
     return <Loader />;
   }
 
-  const SocialMediaClaimHandler = (id) => {
-    if (id == "youtube") {
-      const newData = {
-        joinYoutube: true,
-        maxCoin: userData.maxCoin + 5000,
-        coin: userData.coin + 5000,
-      };
-
-      SocialMediaClaimDBHandler(newData);
-    } else if (id === "telegram") {
-      const newData = {
-        joinTelegram: true,
-        maxCoin: userData.maxCoin + 5000,
-        coin: userData.coin + 5000,
-      };
-      SocialMediaClaimDBHandler(newData);
-    } else if (id === "instagram") {
-      const newData = {
-        joinInstagram: true,
-        maxCoin: userData.maxCoin + 5000,
-        coin: userData.coin + 5000,
-      };
-      SocialMediaClaimDBHandler(newData);
-    } else {
-      const newData = {
-        joinTwitter: true,
-        maxCoin: userData.maxCoin + 5000,
-        coin: userData.coin + 5000,
-      };
-      SocialMediaClaimDBHandler(newData);
-    }
-  };
-
   const SocialMediaHandler = (id) => {
     const activeData = socialData.find((data) => data.id === id);
     setSoialModalData(activeData);
-  };
-
-  const LevelClaimHandler = (level) => {
-    console.log(level);
-
-    const newData = {
-      maxCoin: userData.maxCoin + level.start,
-      coin: userData.coin + level.start,
-    };
-    updateUserData(newData);
   };
 
   const SocialCheckHandler = () => {
@@ -356,6 +333,17 @@ function Tasks() {
     }, 3000);
   };
 
+  const LevelClaimHandler = (level) => {
+    console.log(level);
+
+    const newData = {
+      maxCoin: userData.maxCoin + 100000,
+      coin: userData.coin + 100000,
+    };
+    updateUserData(newData);
+  };
+ 
+  console.log("Level" , level)
   return (
     <div className="py-4 overflow-hidden space-y-2">
       <div className=" mx-4">
@@ -558,7 +546,7 @@ function Tasks() {
         <div>
           <div className="text-center text-2xl font-bold mt-4">Levels</div>
           <div className="space-y-2">
-            {levels.slice(level, level + 3).map((le, index) => (
+            {levels.map((le, index) => (
               <div
                 key={level.id}
                 className="space-y-2 border border-orange-400 shadow-md px-2 py-1 rounded-lg"
@@ -566,24 +554,29 @@ function Tasks() {
                 <div className="flex justify-between">
                   <div>
                     <img
-                      src={imageData[level - 1 + index].image}
+                      src={imageData[level - 1 + index]?.image}
                       alt=""
                       className="h-8"
                     />
                   </div>
                   <div>
                     <button
-                      className={`bg-orange-400 text-white px-4 py-1 rounded-md font-bold ${
-                        userData.maxCoin < levels[level - 1 + index].end
-                          ? "opacity-70"
-                          : ""
-                      } `}
                       disabled={
-                        userData.maxCoin > levels[level - 1 + index].end
+                        userData.maxCoin <= levels[level - 1 + index]?.end
                       }
-                      onClick={() => LevelClaimHandler(le)}
+                      onClick={() => {
+                        setLevelModal(true);
+                        console.log(level)
+                      }}
                     >
-                      Claim
+                      <svg
+                        className="h-6"
+                        onClick={() => {}}
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 320 512"
+                      >
+                        <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z" />
+                      </svg>
                     </button>
                   </div>
                 </div>
@@ -593,12 +586,14 @@ function Tasks() {
                       className="flex items-center h-full bg-progress-bar rounded-lg text-white"
                       style={{
                         width: `${
-                          (userData.maxCoin / levels[level - 1 + index].end) *
-                          100
+                          (userData.maxCoin > levels[level  + index]?.end
+                            ? 1
+                            : userData.maxCoin /
+                              levels[level - 1 + index]?.end) * 100
                         }%`,
                       }}
                     >
-                      {userData.maxCoin + "/" + levels[level - 1 + index].end}
+                      {userData.maxCoin + "/" + levels[level - 1 + index]?.end}
                     </div>
                   </div>
                 </div>
