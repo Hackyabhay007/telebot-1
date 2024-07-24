@@ -333,17 +333,32 @@ function Tasks() {
     }, 3000);
   };
 
-  const LevelClaimHandler = (level) => {
-    console.log(level);
+  const LevelHandler = (index) => {
+    const data = {
+      index: index,
+      image: imageData[index],
+      start: levels[index].start,
+      end: levels[index].end,
+    };
+    setLevelModalData (data)
+    console.log(data);
+  };
 
+  const ClaimLevelHandler = (index) => {
+    const i=index;
+    const levelClaimed=userData.LevelClaimed;
+    levelClaimed[i]=true;
     const newData = {
       maxCoin: userData.maxCoin + 100000,
       coin: userData.coin + 100000,
+      LevelClaimed:levelClaimed,
     };
+
+    console.log(newData)
     updateUserData(newData);
+    setLevelModalData({})
+    setLevelModal(false)
   };
- 
-  console.log("Level" , level)
   return (
     <div className="py-4 overflow-hidden space-y-2">
       <div className=" mx-4">
@@ -545,7 +560,7 @@ function Tasks() {
         {/* levels  */}
         <div>
           <div className="text-center text-2xl font-bold mt-4">Levels</div>
-          <div className="space-y-2">
+          <div className="space-y-2 h-80 overflow-y-auto px-2">
             {levels.map((le, index) => (
               <div
                 key={level.id}
@@ -553,20 +568,14 @@ function Tasks() {
               >
                 <div className="flex justify-between">
                   <div>
-                    <img
-                      src={imageData[level - 1 + index]?.image}
-                      alt=""
-                      className="h-8"
-                    />
+                    <img src={imageData[index]?.image} alt="" className="h-8" />
                   </div>
                   <div>
                     <button
-                      disabled={
-                        userData.maxCoin <= levels[level - 1 + index]?.end
-                      }
+                      disabled={userData.LevelClaimed[index]}
                       onClick={() => {
+                        LevelHandler(index);
                         setLevelModal(true);
-                        console.log(level)
                       }}
                     >
                       <svg
@@ -586,14 +595,13 @@ function Tasks() {
                       className="flex items-center h-full bg-progress-bar rounded-lg text-white"
                       style={{
                         width: `${
-                          (userData.maxCoin > levels[level  + index]?.end
+                          (userData.maxCoin > levels[index].end
                             ? 1
-                            : userData.maxCoin /
-                              levels[level - 1 + index]?.end) * 100
+                            : userData.maxCoin / levels[index]?.end) * 100
                         }%`,
                       }}
                     >
-                      {userData.maxCoin + "/" + levels[level - 1 + index]?.end}
+                      {userData.maxCoin + "/" + levels[index]?.end}
                     </div>
                   </div>
                 </div>
@@ -649,26 +657,39 @@ function Tasks() {
           >
             <div className="flex flex-col items-center justify-center mx-16 space-y-3 h-[80%]">
               <div>
-                <img src={socialModalData?.image} className="h-40" alt="" />
+                <img src={imageData[levelModalData.index].image} className="h-40" alt="" />
               </div>
               <div className="text-center text-2xl font-bold">
-                {socialModalData?.heading}
+                Level - { levelModalData.index + 1   }
               </div>
-              <div className="text-center">{socialModalData?.description}</div>
               <div className="flex space-x-2 font-bold items-center">
                 <img src={dollar} className="h-8" alt="" />
                 <h1 className="text-xl">+100,000</h1>
               </div>
+             
+              <div className="w-full border-orange-500 border-2  rounded-lg ">
+                  <div className="h-4 bg-orange-500 rounded-lg">
+                    <div
+                      className="flex items-center h-full bg-progress-bar rounded-lg text-black"
+                      style={{
+                        width: `${
+                          (userData.maxCoin > levels[levelModalData.index].end
+                            ? 1
+                            : userData.maxCoin / levels[levelModalData.index]?.end) * 100
+                        }%`,
+                      }}
+                    >
+                      {userData.maxCoin + "/" + levels[levelModalData.index]?.end}
+                    </div>
+                  </div>
+                </div>
 
               <div>
-                <button className="text-white font-bold text-xl bg-orange-400 px-4 py-1 border-white border-2 shadow-md rounded-sm">
-                  {socialModalData?.button1}
-                </button>
-              </div>
-
-              <div>
-                <button className="text-white font-bold text-xl bg-orange-400 px-28 py-2 border-white border-2 shadow-md rounded-sm">
-                  {socialModalData?.button2}
+                <button
+                 disabled={userData.maxCoin< levelModalData.end}
+                 onClick={()=>{ClaimLevelHandler(levelModalData.index)}}
+                className="text-white font-bold text-xl bg-orange-400 px-20 py-2 border-white border-2 shadow-md rounded-sm">
+                  Claim
                 </button>
               </div>
             </div>
