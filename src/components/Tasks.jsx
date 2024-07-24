@@ -118,23 +118,23 @@ function Tasks() {
     ReferralClaimDBHandler,
     fetchLevels,
     SocialMediaClaimDBHandler,
-    showLevel , 
+    showLevel,
     setShowLevel,
   } = useContext(UserDataContext);
   const { updateCoinValue } = useContext(CoinContext);
-  
-  const [level , setLevel]=useState(1)
+
+  const [level, setLevel] = useState(1);
   useEffect(() => {
     const fetchData = async () => {
       const data = await fetchLevels();
       setLevels(data.Levels);
     };
 
-    for (let i=0 ; i<userData?.LevelClaimed?.length ; i++){
-        if(userData.LevelClaimed[i]){
-          setShowLevel(i+1);
-          break;
-        }
+    for (let i = 0; i < userData?.LevelClaimed?.length; i++) {
+      if (userData.LevelClaimed[i]) {
+        setShowLevel(i + 1);
+        break;
+      }
     }
 
     fetchData();
@@ -368,11 +368,11 @@ function Tasks() {
     updateUserData(newData);
     setLevelModalData({});
     setLevelModal(false);
-    setShowLevel(showLevel + 1)
+    setShowLevel(showLevel + 1);
   };
 
-  const d=localStorage.setItem("level" , 1)
-  const a =localStorage.getItem("level")
+  const d = localStorage.setItem("level", 1);
+  const a = localStorage.getItem("level");
   return (
     <div className="py-4 overflow-hidden space-y-2">
       <div className=" mx-4">
@@ -593,57 +593,61 @@ function Tasks() {
         <div>
           <div className="text-center text-2xl font-bold mt-4">Levels</div>
           <div className="space-y-2 h-80 overflow-y-auto px-2">
-            {level && levels?.slice(showLevel, showLevel + 2)?.map((le, index) => (
-              <>
-                {!userData.LevelClaimed[index] && !userData?.LevelClaimed[index] && (
-                  <div
-                    key={index}
-                    className="space-y-2 border border-orange-400 shadow-md p-2 rounded-lg"
-                  >
-                    <div className="flex justify-between items-center">
-                      <div className="flex">
-                        <div className="w-12">
-                          <img
-                            src={imageData[index]?.image}
-                            alt=""
-                            className="h-10"
-                          />
-                        </div>
-                        <div>
-                          <div className="text-base font-bold">
-                            Level - {  index + 1}
-                          </div>
-                          <div className="flex  items-center space-x-1">
-                            <div>
-                              <img src={dollar} className="h-5" alt="" />
+            {level &&
+              levels?.slice(showLevel, showLevel + 2)?.map((le, index) => (
+                <>
+                  {!userData.LevelClaimed[index] &&
+                    !userData?.LevelClaimed[index] && (
+                      <div
+                        key={index}
+                        className="space-y-2 border border-orange-400 shadow-md p-2 rounded-lg"
+                      >
+                        <div className="flex justify-between items-center">
+                          <div className="flex">
+                            <div className="w-12">
+                              <img
+                                src={imageData[index]?.image}
+                                alt=""
+                                className="h-10"
+                              />
                             </div>
-                            <p className="font-bold text-sm">100,000 Coins</p>
+                            <div>
+                              <div className="text-base font-bold">
+                                Level - {index + 1}
+                              </div>
+                              <div className="flex  items-center space-x-1">
+                                <div>
+                                  <img src={dollar} className="h-5" alt="" />
+                                </div>
+                                <p className="font-bold text-sm">
+                                  100,000 Coins
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                          <div>
+                            <button
+                              disabled={userData.LevelClaimed[index]}
+                              onClick={() => {
+                                LevelHandler(index);
+                                setLevelModal(true);
+                              }}
+                            >
+                              <svg
+                                className="h-6"
+                                onClick={() => {}}
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 320 512"
+                              >
+                                <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z" />
+                              </svg>
+                            </button>
                           </div>
                         </div>
                       </div>
-                      <div>
-                        <button
-                          disabled={userData.LevelClaimed[index]}
-                          onClick={() => {
-                            LevelHandler(index);
-                            setLevelModal(true);
-                          }}
-                        >
-                          <svg
-                            className="h-6"
-                            onClick={() => {}}
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 320 512"
-                          >
-                            <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z" />
-                          </svg>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </>
-            ))}
+                    )}
+                </>
+              ))}
           </div>
         </div>
       </div>
@@ -741,7 +745,9 @@ function Tasks() {
           </div>
         </div>
       )}
-      <BottomNavBar></BottomNavBar>
+      <div className="flex justify-center items-center">
+        <BottomNavBar />
+      </div>
     </div>
   );
 }

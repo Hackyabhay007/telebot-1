@@ -377,8 +377,9 @@ const Referral = () => {
           </div>
         </div>
       )}
-
-      <BottomNavBar />
+    <div className="flex justify-center items-center">
+          <BottomNavBar />
+        </div>
     </div>
   );
 };

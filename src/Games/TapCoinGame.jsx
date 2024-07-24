@@ -435,7 +435,9 @@ const TapCoinGame = () => {
           </div>
         ))}
 
-        <BottomNavBar></BottomNavBar>
+        <div className="flex justify-center items-center">
+          <BottomNavBar />
+        </div>
       </div>
       <BackButton onClick={() => navigate("/games")} />;
     </WebAppProvider>

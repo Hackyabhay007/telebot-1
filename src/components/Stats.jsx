@@ -33,7 +33,6 @@ const TapSwapStats = () => {
     console.log(balance);
     return balance;
   };
-   
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -57,19 +56,19 @@ const TapSwapStats = () => {
   };
 
   // updating total balance distributed
-    useEffect(() => {
-      const intervalId = setInterval(() => {
-          const newNumber = getRandomNumber(500, 1000);
-          setTotalBalanceDistributedBalance( (prevScore) => prevScore + newNumber)
-          const  newUsers= getRandomNumber(1 ,2);
-          setTotalUsers((prevUsers)=> prevUsers + newUsers);
-          const newGames= getRandomNumber (100 , 200);
-          setTotalGamesPlayed((prevScore)=> prevScore + newGames)
-          const newOnlineUsers= getRandomNumber(-10 , 10);
-          setOnlineUsers((prevScore)=>prevScore + newOnlineUsers)
-      }, 1000);
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      const newNumber = getRandomNumber(500, 1000);
+      setTotalBalanceDistributedBalance((prevScore) => prevScore + newNumber);
+      const newUsers = getRandomNumber(1, 2);
+      setTotalUsers((prevUsers) => prevUsers + newUsers);
+      const newGames = getRandomNumber(100, 200);
+      setTotalGamesPlayed((prevScore) => prevScore + newGames);
+      const newOnlineUsers = getRandomNumber(-10, 10);
+      setOnlineUsers((prevScore) => prevScore + newOnlineUsers);
+    }, 1000);
 
-      return () => clearInterval(intervalId);
+    return () => clearInterval(intervalId);
   }, []);
 
   const level1Props = useSpring({
@@ -90,9 +89,7 @@ const TapSwapStats = () => {
     delay: 1500,
   });
 
-
-
-   if (isLoading) {
+  if (isLoading) {
     return <Loader />; // Display the loader while the content is loading
   }
 
@@ -135,7 +132,9 @@ const TapSwapStats = () => {
           <p className="text-lg chakra-petch-bold">{onlineUsers}</p>
         </animated.div>
       </div>
-      <BottomNavBar />
+      <div className="flex justify-center items-center">
+        <BottomNavBar />
+      </div>
     </div>
   );
 };
