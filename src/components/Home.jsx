@@ -216,66 +216,77 @@ const AuthPage = () => {
               Welcome, New User! , 100,000 Coins Added in your Wallet
             </h2>
             <hr className="border-t-2 border-orange-400 border-dashed w-full opacity-50" />
-            <p className="font-bold text-sm  px-9 py-1 ">
+            <p className="font-bold text-sm  px-9 py-1 mt-1 my-2 ">
               We have created a wallet for you and we will transfer all your
               points to your wallet.
             </p>
+          
 
+        
             <div className="flex justify-center w-full flex-col text-white">
-              <div className="flex  items-center justify-center py-1">
-                <div>
-                  <p className="text-xl text-black font-bold">Wallet Id:</p>
+                   {/* wallet id */}
+              <div className="border border-orange-400  p-2 rounded-xl shadow-md">
+                <div className="flex justify-between items-center pb-2 ">
+                  <div className="text-black text-xl font-semibold">Wallet ID</div>
+                  <div>
+                    <img src={wallet} alt="" />
+                  </div>
                 </div>
-                <div className="text-sm  md:text-base flex w-9/12 md:w-4/5  md:p-1 rounded-full backdrop-blur-sm bg-golden/10">
-                  <input
-                    type="text"
-                    value={CreatedUserData.walletAddress}
-                    readOnly
-                    className=" w-full text-white p-1  truncate md:p-2 rounded-lg bg-transparent"
-                  />
-                  <button
-                    className="p-1 md:p-2 bg-golden text-black rounded-full "
-                    onClick={handleCopyWalletAddress}
-                  >
-                    {walletCopied ? "Copied" : "Copy"}
-                  </button>
+                <div className="flex justify-between">
+                  <div className="w-[70%]">
+                    <input
+                      type="text"
+                      value={CreatedUserData.walletAddress}
+                      readOnly
+                      className=" w-full text-black bg-white px-4 py-1 truncate  rounded-md bg-transparent"
+                    />
+                  </div>
+                  <div>
+                    <button
+                      className="px-5 py-1 bg-orange-500 border border-white text-white  rounded-lg "
+                      onClick={handleCopyWalletAddress}
+                    >
+                      {walletCopied ? "Copied" : "Copy"}
+                    </button>
+                  </div>
                 </div>
               </div>
 
               {/* passphrase */}
-              <div className="flex   flex-col items-center mb-2 mt-6 relative rounded-lg border border-golden backdrop-blur-sm bg-golden/5 bg-opacity-25 px-1.5 md:px-4 pt-2 md:py-2">
-                <div className="flex w-full justify-center items-center space-x-4 mb-2">
-                  <p className="text-md md:text-xl  md:font-bold md:chakra-petch-semibold text-white">
+              <div className="flex   flex-col bg-[#FDE5C1] p-2 rounded-lg shadow-md border border-orange-400 my-4">
+                <div className="flex w-full justify-between items-center px-3 pb-1">
+                  <p className="text-black text-xl font-semibold">
                     Pass Phrase
                   </p>
                   <button
-                    className="text-sm  md:text-md  w-20 flex p-1 md:p-2 bg-golden text-black rounded-full justify-center"
+                    className="px-5 py-1 bg-orange-500 border border-white text-white  rounded-lg"
                     onClick={handleCopyPassphrase}
                   >
                     {copied ? (
                       "Copied"
                     ) : (
-                      <span className="flex justify-center items-center space-x-1">
-                        Copy
-                        <FaCopy className="ml-1" />
-                      </span>
+                        'Copy'
                     )}
                   </button>
                 </div>
-                <div className="text-sm mb-2 md:text-lg  p-2 md:px-4 md:py-2 pb-1 text-white grid grid-cols-3 gap-2 md:gap-4 w-full h-68 overflow-y-auto items-center md:mb-2 rounded-md backdrop-blur-sm  bg-golden/5">
+                <div className="grid grid-cols-3 border-2 gap-2 place-content-between place-items-center">
                   {CreatedUserData.passphrase.split(" ").map((word, index) => (
                     <div
-                      className="rounded-lg  border py-1  truncate border-golden flex px-1 md:px-3 space-x-2 md:space-x-4"
+                      className="text-black font-semibold text-md border-2 border-orange-400 px-6 py-1 w-24 shadow-md rounded-lg "
                       key={index}
                     >
-                      <div>{index + 1}.</div>
-                      <div className="">{word}</div>
+                      {word}
                     </div>
                   ))}
                 </div>
               </div>
+
+
+
+
+
               <div
-                class="text-left   md:text-lg   mb-4 text-sm text-yellow-800 rounded-lg dark:text-yellow-300"
+                class="text-center text-black font-semibold my-2"
                 role="alert"
               >
                 <span className="font-bold ">Warning:</span>Make sure you take
@@ -283,36 +294,9 @@ const AuthPage = () => {
               </div>
             </div>
 
-            <div>
-              <div className="flex justify-between">
-                <div>Wallet Id : </div>
-                <div>
-                  <img src={wallet} alt="" />
-                </div>
-              </div>
-              <div className="flex justify-between">
-                <div className="w-[80%]">
-                  <input
-                    type="text"
-                    value={CreatedUserData.walletAddress}
-                    readOnly
-                    className=" w-full text-white p-1  truncate md:p-2 rounded-lg bg-transparent"
-                  />
-                </div>
-                <div>
-                  <button
-                    className="px-5 py-1 bg-orange-500 text-white  rounded-lg "
-                    onClick={handleCopyWalletAddress}
-                  >
-                    {walletCopied ? "Copied" : "Copy"}
-                  </button>
-                </div>
-              </div>
-            </div>
-
             <div className="py-4">
               <button
-                className="bg-golden text-black py-2 px-4 rounded-full "
+                className="bg-orange-500 text-white text-xl px-6 border-2 rounded-md py-3"
                 onClick={closePopup}
               >
                 Go to Games
