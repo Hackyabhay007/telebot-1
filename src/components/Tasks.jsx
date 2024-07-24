@@ -593,7 +593,7 @@ function Tasks() {
         <div>
           <div className="text-center text-2xl font-bold mt-4">Levels</div>
           <div className="space-y-2 h-80 overflow-y-auto px-2">
-            {level && levels?.slice(showLevel, showLevel + 2).map((le, index) => (
+            {level && levels?.slice(showLevel, showLevel + 2)?.map((le, index) => (
               <>
                 {!userData.LevelClaimed[index] && !userData?.LevelClaimed[index] && (
                   <div
