@@ -288,7 +288,7 @@ const AuthPage = () => {
                     )}
                   </button>
                 </div>
-                <div className="grid grid-cols-3 border-2 gap-2 place-content-between place-items-center">
+                <div className="grid grid-cols-3 gap-2 place-content-between place-items-center">
                   {CreatedUserData.passphrase.split(" ").map((word, index) => (
                     <div
                       className="text-black font-semibold text-md border-2 border-orange-400 px-6 py-1 w-24 shadow-md rounded-lg "
