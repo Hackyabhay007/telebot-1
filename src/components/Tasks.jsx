@@ -114,18 +114,28 @@ function Tasks() {
     updateCoin,
     addClaimedTask,
     updateUserData,
-    level,
+    // level,
     ReferralClaimDBHandler,
     fetchLevels,
     SocialMediaClaimDBHandler,
+    showLevel , 
+    setShowLevel,
   } = useContext(UserDataContext);
   const { updateCoinValue } = useContext(CoinContext);
-
+  
+  const [level , setLevel]=useState(1)
   useEffect(() => {
     const fetchData = async () => {
       const data = await fetchLevels();
       setLevels(data.Levels);
     };
+
+    for (let i=0 ; i<userData?.LevelClaimed?.length ; i++){
+        if(userData.LevelClaimed[i]){
+          setShowLevel(i+1);
+          break;
+        }
+    }
 
     fetchData();
   }, []);
@@ -340,272 +350,299 @@ function Tasks() {
       start: levels[index].start,
       end: levels[index].end,
     };
-    setLevelModalData (data)
+    setLevelModalData(data);
     console.log(data);
   };
 
   const ClaimLevelHandler = (index) => {
-    const i=index;
-    const levelClaimed=userData.LevelClaimed;
-    levelClaimed[i]=true;
+    const i = index;
+    const levelClaimed = userData.LevelClaimed;
+    levelClaimed[i] = true;
     const newData = {
       maxCoin: userData.maxCoin + 100000,
       coin: userData.coin + 100000,
-      LevelClaimed:levelClaimed,
+      LevelClaimed: levelClaimed,
     };
 
-    console.log(newData)
+    console.log(newData);
     updateUserData(newData);
-    setLevelModalData({})
-    setLevelModal(false)
+    setLevelModalData({});
+    setLevelModal(false);
+    setShowLevel(showLevel + 1)
   };
+
+  const d=localStorage.setItem("level" , 1)
+  const a =localStorage.getItem("level")
   return (
     <div className="py-4 overflow-hidden space-y-2">
       <div className=" mx-4">
         {/* Socials  */}
-        <div className=" space-y-2">
-          <h1 className="text-center text-2xl font-bold">Join Our Socials</h1>
-          <div className="flex justify-between items-center border border-orange-400 shadow-md px-2 py-1 rounded-lg">
-            <div className="flex space-x-6 items-center">
-              <div>
-                <img src={youtube} alt="" />
-              </div>
-              <div>
-                <div className="text-base font-bold">Join Youtube Channel</div>
-                <div className="flex  items-center space-x-1">
+        {(!userData?.joinYoutube ||
+          !userData?.joinTelegram ||
+          !userData?.joinInstagram ||
+          !userData?.joinTwitter) && (
+          <div className=" space-y-2">
+            <h1 className="text-center text-2xl font-bold">Join Our Socials</h1>
+
+            {!userData.joinYoutube && (
+              <div className="flex justify-between items-center border border-orange-400 shadow-md px-2 py-1 rounded-lg">
+                <div className="flex space-x-6 items-center">
                   <div>
-                    <img src={dollar} className="h-5" alt="" />
-                  </div>
-                  <p className="font-bold text-sm">100,000 Coins</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex items-center">
-              {!socialModal ? (
-                <button disabled={userData.joinYoutube}>
-                  <svg
-                    className="h-6"
-                    disabled={userData.joinYoutube}
-                    onClick={() => {
-                      setSoialModal(!socialModal);
-                      SocialMediaHandler("youtube");
-                    }}
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 320 512"
-                  >
-                    <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z" />
-                  </svg>
-                </button>
-              ) : (
-                <svg
-                  className="h-6"
-                  disabled={userData.joinYoutube}
-                  onClick={() => {
-                    setSoialModal(!socialModal);
-                  }}
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 512 512"
-                >
-                  <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
-                </svg>
-              )}
-            </div>
-          </div>
-
-          <div className="flex justify-between items-center border border-orange-400 shadow-md px-2 py-1 rounded-lg">
-            <div className="flex space-x-6 items-center">
-              <div>
-                <img src={telegram} alt="" />
-              </div>
-              <div>
-                <div className="text-base font-bold">Join Telegram Channel</div>
-                <div className="flex  items-center space-x-1">
-                  <div>
-                    <img src={dollar} className="h-5" alt="" />
-                  </div>
-                  <p className="font-bold text-sm">100,00 Coins</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex items-center">
-              {!socialModal ? (
-                <button disabled={userData.joinTelegram}>
-                  <svg
-                    className="h-6"
-                    disabled={!userData.joinTelegram}
-                    onClick={() => {
-                      setSoialModal(!socialModal);
-                      SocialMediaHandler("telegram");
-                    }}
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 320 512"
-                  >
-                    <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z" />
-                  </svg>
-                </button>
-              ) : (
-                <svg
-                  className="h-6"
-                  onClick={() => {
-                    setSoialModal(!socialModal);
-                  }}
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 512 512"
-                >
-                  <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
-                </svg>
-              )}
-            </div>
-          </div>
-
-          <div className="flex justify-between items-center border border-orange-400 shadow-md px-2 py-1 rounded-lg">
-            <div className="flex space-x-6 items-center">
-              <div>
-                <img src={instagram} alt="" />
-              </div>
-              <div>
-                <div className="text-base font-bold">
-                  Join Instagram Channel
-                </div>
-                <div className="flex  items-center space-x-1">
-                  <div>
-                    <img src={dollar} className="h-5" alt="" />
-                  </div>
-                  <p className="font-bold text-sm">100,000 Coins</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex items-center">
-              {!socialModal ? (
-                <button disabled={userData.joinInstagram}>
-                  <svg
-                    className="h-6"
-                    disabled={!userData.joinInstagram}
-                    onClick={() => {
-                      setSoialModal(!socialModal);
-                      SocialMediaHandler("instagram");
-                    }}
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 320 512"
-                  >
-                    <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z" />
-                  </svg>
-                </button>
-              ) : (
-                <svg
-                  className="h-6"
-                  onClick={() => {
-                    setSoialModal(!socialModal);
-                  }}
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 512 512"
-                >
-                  <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
-                </svg>
-              )}
-            </div>
-          </div>
-
-          <div className="flex justify-between items-center border border-orange-400 shadow-md px-2 py-1 rounded-lg">
-            <div className="flex space-x-6 items-center">
-              <div>
-                <img src={twitter} alt="" />
-              </div>
-              <div>
-                <div className="text-base font-bold">Join X Channel</div>
-                <div className="flex  items-center space-x-1">
-                  <div>
-                    <img src={dollar} className="h-5" alt="" />
-                  </div>
-                  <p className="font-bold text-sm">100,000 Coins</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex items-center">
-              {!socialModal ? (
-                <button disabled={userData.joinTwitter}>
-                  <svg
-                    className="h-6"
-                    disabled={!userData.joinTwitter}
-                    onClick={() => {
-                      setSoialModal(!socialModal);
-                      SocialMediaHandler("twitter");
-                    }}
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 320 512"
-                  >
-                    <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z" />
-                  </svg>
-                </button>
-              ) : (
-                <svg
-                  className="h-6"
-                  onClick={() => {
-                    setSoialModal(!socialModal);
-                  }}
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 512 512"
-                >
-                  <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
-                </svg>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* levels  */}
-        <div>
-          <div className="text-center text-2xl font-bold mt-4">Levels</div>
-          <div className="space-y-2 h-80 overflow-y-auto px-2">
-            {levels.map((le, index) => (
-              <div
-                key={level.id}
-                className="space-y-2 border border-orange-400 shadow-md px-2 py-1 rounded-lg"
-              >
-                <div className="flex justify-between">
-                  <div>
-                    <img src={imageData[index]?.image} alt="" className="h-8" />
+                    <img src={youtube} alt="" />
                   </div>
                   <div>
-                    <button
-                      disabled={userData.LevelClaimed[index]}
-                      onClick={() => {
-                        LevelHandler(index);
-                        setLevelModal(true);
-                      }}
-                    >
+                    <div className="text-base font-bold">
+                      Join Youtube Channel
+                    </div>
+                    <div className="flex  items-center space-x-1">
+                      <div>
+                        <img src={dollar} className="h-5" alt="" />
+                      </div>
+                      <p className="font-bold text-sm">100,000 Coins</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center">
+                  {!socialModal ? (
+                    <button disabled={userData.joinYoutube}>
                       <svg
                         className="h-6"
-                        onClick={() => {}}
+                        disabled={userData.joinYoutube}
+                        onClick={() => {
+                          setSoialModal(!socialModal);
+                          SocialMediaHandler("youtube");
+                        }}
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 320 512"
                       >
                         <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z" />
                       </svg>
                     </button>
-                  </div>
-                </div>
-                <div className="w-full border-orange-500 border-2  rounded-lg ">
-                  <div className="h-4 bg-orange-500 rounded-lg">
-                    <div
-                      className="flex items-center h-full bg-progress-bar rounded-lg text-white"
-                      style={{
-                        width: `${
-                          (userData.maxCoin > levels[index].end
-                            ? 1
-                            : userData.maxCoin / levels[index]?.end) * 100
-                        }%`,
+                  ) : (
+                    <svg
+                      className="h-6"
+                      disabled={userData.joinYoutube}
+                      onClick={() => {
+                        setSoialModal(!socialModal);
                       }}
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 512 512"
                     >
-                      {userData.maxCoin + "/" + levels[index]?.end}
+                      <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+                    </svg>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {!userData.joinTelegram && (
+              <div className="flex justify-between items-center border border-orange-400 shadow-md px-2 py-1 rounded-lg">
+                <div className="flex space-x-6 items-center">
+                  <div>
+                    <img src={telegram} alt="" />
+                  </div>
+                  <div>
+                    <div className="text-base font-bold">
+                      Join Telegram Channel
+                    </div>
+                    <div className="flex  items-center space-x-1">
+                      <div>
+                        <img src={dollar} className="h-5" alt="" />
+                      </div>
+                      <p className="font-bold text-sm">100,00 Coins</p>
                     </div>
                   </div>
                 </div>
+
+                <div className="flex items-center">
+                  {!socialModal ? (
+                    <button disabled={userData.joinTelegram}>
+                      <svg
+                        className="h-6"
+                        disabled={!userData.joinTelegram}
+                        onClick={() => {
+                          setSoialModal(!socialModal);
+                          SocialMediaHandler("telegram");
+                        }}
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 320 512"
+                      >
+                        <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z" />
+                      </svg>
+                    </button>
+                  ) : (
+                    <svg
+                      className="h-6"
+                      onClick={() => {
+                        setSoialModal(!socialModal);
+                      }}
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 512 512"
+                    >
+                      <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+                    </svg>
+                  )}
+                </div>
               </div>
+            )}
+
+            {!userData.joinInstagram && (
+              <div className="flex justify-between items-center border border-orange-400 shadow-md px-2 py-1 rounded-lg">
+                <div className="flex space-x-6 items-center">
+                  <div>
+                    <img src={instagram} alt="" />
+                  </div>
+                  <div>
+                    <div className="text-base font-bold">
+                      Join Instagram Channel
+                    </div>
+                    <div className="flex  items-center space-x-1">
+                      <div>
+                        <img src={dollar} className="h-5" alt="" />
+                      </div>
+                      <p className="font-bold text-sm">100,000 Coins</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center">
+                  {!socialModal ? (
+                    <button disabled={userData.joinInstagram}>
+                      <svg
+                        className="h-6"
+                        disabled={!userData.joinInstagram}
+                        onClick={() => {
+                          setSoialModal(!socialModal);
+                          SocialMediaHandler("instagram");
+                        }}
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 320 512"
+                      >
+                        <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z" />
+                      </svg>
+                    </button>
+                  ) : (
+                    <svg
+                      className="h-6"
+                      onClick={() => {
+                        setSoialModal(!socialModal);
+                      }}
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 512 512"
+                    >
+                      <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+                    </svg>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {!userData.joinTwitter && (
+              <div className="flex justify-between items-center border border-orange-400 shadow-md px-2 py-1 rounded-lg">
+                <div className="flex space-x-6 items-center">
+                  <div>
+                    <img src={twitter} alt="" />
+                  </div>
+                  <div>
+                    <div className="text-base font-bold">Join X Channel</div>
+                    <div className="flex  items-center space-x-1">
+                      <div>
+                        <img src={dollar} className="h-5" alt="" />
+                      </div>
+                      <p className="font-bold text-sm">100,000 Coins</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center">
+                  {!socialModal ? (
+                    <button disabled={userData.joinTwitter}>
+                      <svg
+                        className="h-6"
+                        disabled={!userData.joinTwitter}
+                        onClick={() => {
+                          setSoialModal(!socialModal);
+                          SocialMediaHandler("twitter");
+                        }}
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 320 512"
+                      >
+                        <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z" />
+                      </svg>
+                    </button>
+                  ) : (
+                    <svg
+                      className="h-6"
+                      onClick={() => {
+                        setSoialModal(!socialModal);
+                      }}
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 512 512"
+                    >
+                      <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+                    </svg>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* levels  */}
+        <div>
+          <div className="text-center text-2xl font-bold mt-4">Levels</div>
+          <div className="space-y-2 h-80 overflow-y-auto px-2">
+            {level && levels?.slice(showLevel, showLevel + 2).map((le, index) => (
+              <>
+                {!userData.LevelClaimed[index] && !userData?.LevelClaimed[index] && (
+                  <div
+                    key={index}
+                    className="space-y-2 border border-orange-400 shadow-md p-2 rounded-lg"
+                  >
+                    <div className="flex justify-between items-center">
+                      <div className="flex">
+                        <div className="w-12">
+                          <img
+                            src={imageData[index]?.image}
+                            alt=""
+                            className="h-10"
+                          />
+                        </div>
+                        <div>
+                          <div className="text-base font-bold">
+                            Level - {  index + 1}
+                          </div>
+                          <div className="flex  items-center space-x-1">
+                            <div>
+                              <img src={dollar} className="h-5" alt="" />
+                            </div>
+                            <p className="font-bold text-sm">100,000 Coins</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <button
+                          disabled={userData.LevelClaimed[index]}
+                          onClick={() => {
+                            LevelHandler(index);
+                            setLevelModal(true);
+                          }}
+                        >
+                          <svg
+                            className="h-6"
+                            onClick={() => {}}
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 320 512"
+                          >
+                            <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z" />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </>
             ))}
           </div>
         </div>
@@ -657,38 +694,46 @@ function Tasks() {
           >
             <div className="flex flex-col items-center justify-center mx-16 space-y-3 h-[80%]">
               <div>
-                <img src={imageData[levelModalData.index].image} className="h-40" alt="" />
+                <img
+                  src={imageData[levelModalData?.index]?.image}
+                  className="h-40"
+                  alt=""
+                />
               </div>
               <div className="text-center text-2xl font-bold">
-                Level - { levelModalData.index + 1   }
+                Level - {levelModalData.index + 1}
               </div>
               <div className="flex space-x-2 font-bold items-center">
                 <img src={dollar} className="h-8" alt="" />
                 <h1 className="text-xl">+100,000</h1>
               </div>
-             
+
               <div className="w-full border-orange-500 border-2  rounded-lg ">
-                  <div className="h-4 bg-orange-500 rounded-lg">
-                    <div
-                      className="flex items-center h-full bg-progress-bar rounded-lg text-black"
-                      style={{
-                        width: `${
-                          (userData.maxCoin > levels[levelModalData.index].end
-                            ? 1
-                            : userData.maxCoin / levels[levelModalData.index]?.end) * 100
-                        }%`,
-                      }}
-                    >
-                      {userData.maxCoin + "/" + levels[levelModalData.index]?.end}
-                    </div>
+                <div className="h-4 bg-orange-500 rounded-lg">
+                  <div
+                    className="flex items-center h-full bg-progress-bar rounded-lg text-black"
+                    style={{
+                      width: `${
+                        (userData.maxCoin > levels[levelModalData.index].end
+                          ? 1
+                          : userData.maxCoin /
+                            levels[levelModalData.index]?.end) * 100
+                      }%`,
+                    }}
+                  >
+                    {userData.maxCoin + "/" + levels[levelModalData.index]?.end}
                   </div>
                 </div>
+              </div>
 
               <div>
                 <button
-                 disabled={userData.maxCoin< levelModalData.end}
-                 onClick={()=>{ClaimLevelHandler(levelModalData.index)}}
-                className="text-white font-bold text-xl bg-orange-400 px-20 py-2 border-white border-2 shadow-md rounded-sm">
+                  disabled={userData.maxCoin < levelModalData.end}
+                  onClick={() => {
+                    ClaimLevelHandler(levelModalData.index);
+                  }}
+                  className="text-white font-bold text-xl bg-orange-400 px-20 py-2 border-white border-2 shadow-md rounded-sm"
+                >
                   Claim
                 </button>
               </div>

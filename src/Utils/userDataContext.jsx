@@ -23,6 +23,7 @@ export const UserDataProvider = ({ children }) => {
   const [level, setLevel] = useState(1);
   const [users, setUsers] = useState([]);
   const [levelsData, setLevelsData] = useState([]);
+  const [showLevel , setShowLevel]=useState(1)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -560,6 +561,8 @@ export const UserDataProvider = ({ children }) => {
   return (
     <UserDataContext.Provider
       value={{
+        showLevel,
+        setShowLevel,
         fetchLevels,
         SocialMediaClaimDBHandler,
         ReferralClaimDBHandler,
